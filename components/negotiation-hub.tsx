@@ -275,6 +275,14 @@ export function NegotiationHub({
                       </span>
                     )}
                   </span>
+                  {c.machineId && (
+                    <span
+                      className="num text-[11px] leading-4 text-faint"
+                      title={`Fly Machine ${c.machineId}`}
+                    >
+                      Fly Machine {c.machineId.slice(0, 6)}…{c.machineId.slice(-2)}
+                    </span>
+                  )}
                 </button>
               );
             })}

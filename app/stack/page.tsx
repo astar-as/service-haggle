@@ -15,6 +15,29 @@ interface Row {
   where?: string;
 }
 
+// Live view of the agent machines straight from the Fly Machines API.
+async function flyMachines() {
+  const app = process.env.FLY_APP_NAME;
+  const token = process.env.FLY_API_TOKEN;
+  if (!app || !token) return null;
+  try {
+    const res = await fetch(`https://api.machines.dev/v1/apps/${app}/machines`, {
+      headers: { Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    const ms = (await res.json()) as { state: string; region: string }[];
+    return {
+      app,
+      running: ms.filter((m) => m.state === "started").length,
+      warm: ms.filter((m) => m.state === "stopped" || m.state === "suspended").length,
+      regions: [...new Set(ms.map((m) => m.region))],
+    };
+  } catch {
+    return null;
+  }
+}
+
 export default async function StackPage() {
   const [deals, calls, prices, signals, policies, stances] = await Promise.all([
     store.deals(),
@@ -25,6 +48,7 @@ export default async function StackPage() {
     store.stances(),
   ]);
   const models = describeModels();
+  const fly = await flyMachines();
   const emails = deals.reduce(
     (a, d) => a + d.mails.filter((m) => m.direction !== "draft").length,
     0,
@@ -68,7 +92,7 @@ export default async function StackPage() {
     {
       name: "Fly.io",
       role: "Every negotiation line runs on its own Machine for as long as the conversation lasts, and a warm pool picks up new lines instantly.",
-      live: `${n(machines, "machine")} used · ${n(calls.length, "negotiation line")}`,
+      live: `${fly ? `${fly.app}: ${fly.running} running, ${fly.warm} warm in ${fly.regions.join(", ")} · ` : ""}${n(machines, "machine")} used · ${n(calls.length, "negotiation line")}`,
       on: !!process.env.FLY_API_TOKEN,
       off: "lines run in-process",
       href: "/negotiation/auto-northstar",
