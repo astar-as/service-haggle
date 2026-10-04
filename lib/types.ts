@@ -104,8 +104,26 @@ export interface Call {
   transcript: Turn[];
 }
 
+// One price Maya could pay for a policy. Estimates come from published rates and campaigns;
+// obtainable prices were offered to her directly (live quote, retention offer, cancel-flow probe).
+export type PriceSource = "published" | "campaign" | "network" | "quote" | "retention";
+
+export interface PriceCandidate {
+  id: string;
+  policyId: string;
+  insurer: string;
+  source: PriceSource;
+  monthly: number;
+  obtainable: boolean;
+  basis: string;
+  url?: string;
+  expiresOn?: string;
+  at: string;
+}
+
 export type StoreEvent =
   | { type: "call"; call: Call }
   | { type: "stance"; stance: Stance }
   | { type: "signal"; signal: Signal }
-  | { type: "policy"; policy: Policy };
+  | { type: "policy"; policy: Policy }
+  | { type: "price"; price: PriceCandidate };

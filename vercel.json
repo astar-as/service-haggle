@@ -1,0 +1,3 @@
+{
+  "crons": [{ "path": "/api/prices?refresh=1", "schedule": "0 */6 * * *" }]
+}

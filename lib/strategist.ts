@@ -2,6 +2,7 @@ import { competingOffers } from "./agents";
 import { sendConfirmation } from "./mail";
 import { generateLine, hasModel } from "./models";
 import { computeAnchors, detectLifeEvents, networkStats, REFERENCE_FACTS, type NetworkStats } from "./monitor";
+import { priceBoard } from "./pricing";
 import { store } from "./store";
 import type { Call, Person, Policy, Stance, Turn } from "./types";
 
@@ -103,6 +104,22 @@ async function buildBrief(policyId: string): Promise<Brief> {
       say: `${net.count} people with ${person.firstName}'s profile pay ${usd(net.min)} to ${usd(net.max)} a month at ${net.insurer}`,
     });
   }
+  // Cheapest published rates and campaigns from other insurers, from the price ledger.
+  const board = await priceBoard(policyId).catch(() => null);
+  const cheaper = (board?.candidates ?? []).filter(
+    (c) => !c.obtainable && c.source !== "network" && c.insurer !== policy.insurer && c.monthly < policy.monthlyPremium,
+  );
+  for (const c of cheaper.slice(0, 2)) {
+    evidence.push({
+      kind: "exa",
+      label: `${c.insurer} ${usd(c.monthly)} · ${c.source === "campaign" ? "campaign" : "published rate"}`,
+      say:
+        c.source === "campaign"
+          ? `${c.insurer} is advertising ${c.basis.split(",")[0]}, which brings their published rate to about ${usd(c.monthly)} a month`
+          : `${c.insurer} publishes ${usd(c.monthly)} a month for ${c.basis.split(" · ")[0]}`,
+      url: c.url,
+    });
+  }
   for (const e of detectLifeEvents(transactions)) {
     if (e.disclosure !== "shareable" || !e.shareable || !e.kinds.includes(String(policy.kind))) continue;
     evidence.push({
@@ -111,7 +128,7 @@ async function buildBrief(policyId: string): Promise<Brief> {
       say: `${e.shareable}, so the mileage on file is out of date`,
     });
   }
-  for (const s of signals.filter((x) => x.source === "exa" && x.url).slice(0, 2)) {
+  for (const s of signals.filter((x) => x.source === "exa" && x.url && !x.id.startsWith("sig-price-")).slice(0, 2)) {
     const title = s.title.replace(/^[a-z0-9.-]+\.[a-z]{2,}:\s*/i, "");
     evidence.push({ kind: "exa", label: `${title.length > 48 ? `${title.slice(0, 45)}…` : title} · Exa`, say: title, url: s.url });
   }

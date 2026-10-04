@@ -1,9 +1,9 @@
 import { EventEmitter } from "node:events";
 import { neon } from "@neondatabase/serverless";
 import * as seed from "./seed";
-import type { Call, MemberRate, Person, Policy, Signal, Stance, StoreEvent, Transaction } from "./types";
+import type { Call, MemberRate, Person, Policy, PriceCandidate, Signal, Stance, StoreEvent, Transaction } from "./types";
 
-type Collection = "person" | "policy" | "stance" | "signal" | "transaction" | "member_rate" | "call";
+type Collection = "person" | "policy" | "stance" | "signal" | "transaction" | "member_rate" | "call" | "price";
 
 interface Backend {
   all<T>(collection: Collection): Promise<T[]>;
@@ -23,6 +23,7 @@ function seedDocs(): Record<Collection, Map<string, unknown>> {
     transaction: m(seed.transactions, (x) => x.id),
     member_rate: m(seed.memberRates, (x) => x.id),
     call: new Map(),
+    price: new Map(),
   };
 }
 
@@ -95,6 +96,7 @@ function startPolling() {
         else if (r.collection === "stance") emit({ type: "stance", stance: r.data });
         else if (r.collection === "signal") emit({ type: "signal", signal: r.data });
         else if (r.collection === "policy") emit({ type: "policy", policy: r.data });
+        else if (r.collection === "price") emit({ type: "price", price: r.data });
       }
     } catch (e) {
       console.error("[store poll]", e);
@@ -154,6 +156,17 @@ export const store = {
   async memberRates(filter?: Partial<Pick<MemberRate, "insurer" | "kind">>): Promise<MemberRate[]> {
     const all = await db().all<MemberRate>("member_rate");
     return all.filter((m) => (!filter?.insurer || m.insurer === filter.insurer) && (!filter?.kind || m.kind === filter.kind));
+  },
+  async prices(policyId?: string): Promise<PriceCandidate[]> {
+    const all = await db().all<PriceCandidate>("price");
+    return policyId ? all.filter((p) => p.policyId === policyId) : all;
+  },
+  async putPrice(p: PriceCandidate) {
+    await db().put("price", p.id, p);
+    emit({ type: "price", price: p });
+  },
+  async removePrice(id: string) {
+    await db().remove("price", id);
   },
   async call(id: string) {
     return db().get<Call>("call", id);
