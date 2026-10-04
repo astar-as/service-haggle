@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Northstar Mutual · Auto Renewal Declarations</title>
+<style>
+  @page { size: Letter; margin: 0.55in 0.6in; }
+  * { box-sizing: border-box; }
+  body { font: 10pt/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif; color: #1b1f24; margin: 0; }
+  .top { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid #12355b; padding-bottom: 10px; }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .mark { width: 34px; height: 34px; background: #12355b; color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 18px; border-radius: 4px; }
+  .brand b { display: block; font-size: 15pt; letter-spacing: -0.01em; color: #12355b; }
+  .brand span { font-size: 8.5pt; color: #5a6270; }
+  .doc { text-align: right; }
+  .doc b { display: block; font-size: 12pt; color: #12355b; }
+  .doc span { font-size: 8.5pt; color: #5a6270; }
+  h2 { font-size: 9pt; text-transform: uppercase; letter-spacing: 0.06em; color: #12355b; margin: 16px 0 6px; border-bottom: 1px solid #c9d1db; padding-bottom: 3px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 28px; }
+  .kv { display: flex; justify-content: space-between; gap: 12px; padding: 2px 0; }
+  .kv span:first-child { color: #5a6270; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font-size: 8.5pt; color: #5a6270; font-weight: 600; border-bottom: 1px solid #c9d1db; padding: 4px 6px; }
+  td { padding: 4px 6px; border-bottom: 1px solid #eef1f4; vertical-align: top; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.sub td { color: #5a6270; }
+  .totals { margin-top: 10px; margin-left: auto; width: 55%; }
+  .totals .kv { padding: 3px 6px; }
+  .totals .due { background: #12355b; color: #fff; font-weight: 700; padding: 6px; margin-top: 4px; }
+  .totals .due span:first-child { color: #fff; }
+  .change { color: #a1260d; font-weight: 600; }
+  .note { margin-top: 16px; font-size: 8.5pt; color: #5a6270; border-top: 1px solid #c9d1db; padding-top: 8px; }
+  .note p { margin: 0 0 4px; }
+</style>
+</head>
+<body>
+  <div class="top">
+    <div class="brand">
+      <div class="mark">N</div>
+      <div><b>Northstar Mutual</b><span>Insurance Company · San Francisco, CA</span></div>
+    </div>
+    <div class="doc">
+      <b>Personal Auto Policy</b>
+      <span>Renewal Declarations · Issued September 20, 2026</span>
+    </div>
+  </div>
+
+  <h2>Policy information</h2>
+  <div class="grid">
+    <div class="kv"><span>Named insured</span><span>Maya Okafor</span></div>
+    <div class="kv"><span>Policy number</span><span>NSM-CA-20419-7731</span></div>
+    <div class="kv"><span>Mailing address</span><span>1450 Owens St, Apt 612, San Francisco, CA 94158</span></div>
+    <div class="kv"><span>Customer since</span><span>2019</span></div>
+    <div class="kv"><span>Current term</span><span>04/20/2026 – 10/20/2026</span></div>
+    <div class="kv"><span>Renewal term</span><span>10/20/2026 – 04/20/2027</span></div>
+    <div class="kv"><span>Term length</span><span>6 months, 12:01 a.m. standard time</span></div>
+    <div class="kv"><span>Customer service</span><span>1-800-555-0142</span></div>
+  </div>
+
+  <h2>Drivers</h2>
+  <table>
+    <tr><th>Driver</th><th>Date of birth</th><th>License</th><th>Licensed since</th><th>Violations</th><th>At-fault accidents</th></tr>
+    <tr><td>Maya Okafor</td><td>03/14/1997</td><td>CA D4417820</td><td>2014</td><td>None</td><td>None</td></tr>
+  </table>
+
+  <h2>Vehicle</h2>
+  <table>
+    <tr><th>Vehicle</th><th>VIN</th><th>Garaging ZIP</th><th>Use</th><th class="num">Annual mileage</th></tr>
+    <tr><td>2019 Honda Civic LX 4D</td><td>2HGFC2F59KH512844</td><td>94158</td><td>Commute</td><td class="num">12,000</td></tr>
+  </table>
+
+  <h2>Coverages, limits and premium</h2>
+  <table>
+    <tr><th>Coverage</th><th>Limits</th><th>Deductible</th><th class="num">6-month premium</th></tr>
+    <tr><td>Bodily injury liability</td><td>$100,000 each person / $300,000 each accident</td><td>—</td><td class="num">$412.00</td></tr>
+    <tr><td>Property damage liability</td><td>$100,000 each accident</td><td>—</td><td class="num">$268.00</td></tr>
+    <tr><td>Uninsured motorist bodily injury</td><td>$100,000 / $300,000</td><td>—</td><td class="num">$96.00</td></tr>
+    <tr><td>Collision</td><td>Actual cash value</td><td>$500</td><td class="num">$388.00</td></tr>
+    <tr><td>Comprehensive</td><td>Actual cash value</td><td>$500</td><td class="num">$142.00</td></tr>
+    <tr><td>Medical payments</td><td>$5,000 each person</td><td>—</td><td class="num">$48.00</td></tr>
+    <tr><td>Rental reimbursement</td><td>$40 per day, 30 days max</td><td>—</td><td class="num">$38.00</td></tr>
+    <tr><td>Roadside assistance</td><td>Included</td><td>—</td><td class="num">$16.00</td></tr>
+    <tr class="sub"><td>Policy fee</td><td></td><td></td><td class="num">$80.00</td></tr>
+  </table>
+
+  <div class="totals">
+    <div class="kv"><span>Discounts applied</span><span>Good driver · Paperless · Multi-year loyalty</span></div>
+    <div class="kv"><span>Current term premium</span><span>$1,260.00</span></div>
+    <div class="kv"><span>Change from current term</span><span class="change">+18.1%</span></div>
+    <div class="kv due"><span>Renewal term premium (6 months)</span><span>$1,488.00</span></div>
+    <div class="kv"><span>Payment plan</span><span>EFT monthly · $248.00 per month</span></div>
+  </div>
+
+  <div class="note">
+    <p>Your policy renews automatically on October 20, 2026 unless you tell us otherwise. Premium changes reflect updated rates in your area.</p>
+    <p>Specimen document created for the Lowball demo. Northstar Mutual and all policy details are fictional.</p>
+  </div>
+</body>
+</html>
