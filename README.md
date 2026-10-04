@@ -1,6 +1,6 @@
-# insurance-agent-hack
+# service-haggle
 
-**A personal agent that shops and negotiates your insurance renewals. You only sign.**
+**A personal agent that shops and negotiates your insurance renewals and subscriptions. You only sign.**
 
 Built at the [Build Personal Agents Hack](https://build-personal-agents.com/), San Francisco, 4 October 2026.
 
