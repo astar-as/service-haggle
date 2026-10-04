@@ -44,8 +44,8 @@ export default async function ProfilePage() {
           Tell me what changed
         </h2>
         <p className="-mt-2 px-1 text-[13px] text-subtle">
-          I&apos;ll ask if something&apos;s unclear, then propose the change. Mastra agent ·
-          assistant-ui
+          I&apos;ll ask if something&apos;s unclear, then propose the change. A Mastra agent
+          with tools, in an assistant-ui chat.
         </p>
         <ProfileChat />
       </section>

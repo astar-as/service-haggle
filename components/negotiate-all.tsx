@@ -29,7 +29,7 @@ export function NegotiateAll() {
         className="inline-flex min-h-11 items-center gap-1.5 font-semibold text-ink disabled:opacity-50"
       >
         <Play />
-        {busy === "replay" ? "Replaying…" : "Replay the last 30 days"}
+        {busy === "replay" ? "Replaying…" : "Replay the last 30 days with Exa"}
       </button>
       {error && <span className="text-[#b42318]">{error}</span>}
       <button

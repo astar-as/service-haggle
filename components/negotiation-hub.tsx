@@ -160,7 +160,7 @@ export function NegotiationHub({
         {lines.length > 0 && (
           <span className="inline-flex items-center gap-2 text-sm text-subtle">
             {active && <span className="live size-1.5 rounded-full bg-accent" />}
-            {lines.length} {lines.length === 1 ? "agent" : "agents"} · shared memory
+            {lines.length} {lines.length === 1 ? "agent" : "agents"} on Fly.io · shared memory in Neon
             {active && <StopButton policyId={policy.id} />}
           </span>
         )}
@@ -299,9 +299,12 @@ export function NegotiationHub({
             <h2 className="text-[15px] leading-[22px] font-semibold">
               {line.channel === "email" ? "Email thread" : "Call"} with {line.counterpart}
             </h2>
-            {line.target && !line.target.startsWith("slot:") && (
-              <span className="text-[13px] text-subtle">{line.target.replace("mailto:", "")}</span>
-            )}
+            <span className="text-[13px] text-subtle">
+              {line.channel === "email" ? "via AgentMail" : "via GPT-Live"}
+              {line.target &&
+                !line.target.startsWith("slot:") &&
+                ` · ${line.target.replace("mailto:", "")}`}
+            </span>
           </div>
           {turns.length === 0 && (
             <p className="py-4 text-center text-[15px] text-subtle">{lineStatus(line)}</p>
@@ -365,7 +368,12 @@ export function NegotiationHub({
       {board && board.candidates.length > 0 && (
         <section aria-label="Prices found" className="flex flex-col gap-3">
           <div className="flex items-baseline justify-between px-1">
-            <h2 className="text-[15px] leading-[22px] font-semibold">Prices found</h2>
+            <span className="flex flex-col">
+              <h2 className="text-[15px] leading-[22px] font-semibold">Prices found</h2>
+              <span className="text-[13px] text-subtle">
+                Published prices and campaigns found with Exa
+              </span>
+            </span>
             {board.bestObtainable && (
               <span className="text-sm text-subtle">
                 Cheapest you can sign:{" "}

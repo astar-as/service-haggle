@@ -83,8 +83,8 @@ export function CloseDeal({
       <p className="px-1 text-[13px] leading-[18px] text-subtle">
         {error ??
           (autopilot
-            ? `I'll close it with ${insurer} end to end by email and send you the signed receipt.`
-            : `I'll get ${insurer} to confirm in writing, ask before sharing any sealed details, check the contract, and you sign.`)}
+            ? `I'll close it with ${insurer} end to end over AgentMail and send you the signed receipt.`
+            : `I'll get ${insurer} to confirm in writing over AgentMail, ask before sharing any sealed details, check the contract, and you sign.`)}
       </p>
     </div>
   );

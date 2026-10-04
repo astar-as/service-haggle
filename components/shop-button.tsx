@@ -34,7 +34,14 @@ export function ShopButton({ policyId, insurer }: { policyId: string; insurer: s
         <Phone size={17} />
         {busy ? "Starting agents…" : `Negotiate with ${insurer} and competitors`}
       </button>
-      {error && <span className="px-1 text-sm text-[#b42318]">{error}</span>}
+      {error ? (
+        <span className="px-1 text-sm text-[#b42318]">{error}</span>
+      ) : (
+        <span className="px-1 text-[13px] leading-[18px] text-subtle">
+          Every line runs on its own Fly.io Machine. Calls speak through GPT-Live, emails go out
+          from AgentMail.
+        </span>
+      )}
     </div>
   );
 }

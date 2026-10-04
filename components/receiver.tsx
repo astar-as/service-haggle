@@ -225,6 +225,7 @@ export function Receiver({ slot, insurer, name }: { slot: string; insurer: strin
             <>
               <h1 className="text-2xl font-semibold tracking-[-0.02em]">Ready</h1>
               <p className="text-base text-muted">This phone will ring when Lowball calls {insurer}.</p>
+              <p className="max-w-[300px] text-sm text-subtle">The agent runs on its own Fly.io Machine and speaks through GPT-Live.</p>
             </>
           )}
           {live.error && <p className="text-sm text-[#b42318]">{live.error}</p>}

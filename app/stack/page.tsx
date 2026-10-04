@@ -88,6 +88,8 @@ export default async function StackPage() {
       live: `${n(docs, "record")} · AI Gateway ${models.provider === "neon" ? `on (${models.chat})` : "off"}`,
       on: !!process.env.DATABASE_URL,
       off: "in-memory demo store",
+      href: "/negotiation/auto-northstar",
+      where: "Shared memory",
     },
     {
       name: "Fly.io",
@@ -120,6 +122,8 @@ export default async function StackPage() {
       live: n(probes, "retention check"),
       on: !!process.env.KERNEL_API_KEY,
       off: "portal API fallback",
+      href: "/insurers/northstar-mutual/cancel",
+      where: "Cancel flow",
     },
     {
       name: "OpenAI GPT-Live",
@@ -128,6 +132,8 @@ export default async function StackPage() {
         ? `text models: ${models.provider} · ${models.chat}`
         : "no model configured",
       on: !!process.env.OPENAI_API_KEY,
+      href: "/demo/receiver/1",
+      where: "Demo phone",
     },
   ];
 

@@ -38,7 +38,7 @@ export default async function DealsPage() {
           Deals and receipts
         </h1>
         <p className="text-[17px] leading-[26px] text-ink-2">
-          Every deal I've closed over email, with the contract I checked and the receipt you signed.
+          Every deal I've closed over email with AgentMail, with the contract I checked and the receipt you signed.
           {signed.length > 0 && (
             <>
               {" "}

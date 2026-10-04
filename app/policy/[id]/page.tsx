@@ -84,6 +84,12 @@ export default async function PolicyPage({ params }: { params: Promise<{ id: str
           <h2 id="noticed" className="px-1 text-[15px] leading-[22px] font-semibold">
             What I&apos;ve noticed
           </h2>
+          <p className="-mt-2 px-1 text-[13px] text-subtle">
+            I gather published prices and discount campaigns with Exa
+            {signals.some((s) => s.source === "kernel")
+              ? ", and a Kernel browser checks what they offer when you try to leave."
+              : "."}
+          </p>
           <div className="overflow-hidden rounded-[18px] bg-white shadow-[0_0_0_1px_var(--color-line)]">
             {signals.slice(0, 6).map((s) => (
               <div
