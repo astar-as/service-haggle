@@ -76,10 +76,25 @@ export async function refreshPrices(policyId: string): Promise<PriceBoard> {
   const contenders = [
     ...new Set(offers.filter((o) => o.monthly < policy.monthlyPremium).map((o) => o.insurer)),
   ].slice(0, 4);
+  // Other policies she holds unlock bundle discounts; shareable life events unlock others
+  // (e.g. low-mileage when she's driving less).
+  const others = (await store.policies())
+    .filter((p) => p.id !== policy.id)
+    .map((p) => String(p.kind));
+  const lifeEvents = detectLifeEvents(await store.transactions())
+    .filter(
+      (e) => e.disclosure === "shareable" && e.shareable && e.kinds.includes(String(policy.kind)),
+    )
+    .map((e) => e.shareable!);
   const profile = [...person.facts, ...policy.facts]
     .filter((f) => f.disclosure === "shareable")
     .map((f) => `${f.label}: ${f.value}`)
-    .concat(`Lives in ${person.city}, ${person.state}`, `Product: ${policy.product}`)
+    .concat(
+      `Lives in ${person.city}, ${person.state}`,
+      `Product: ${policy.product}`,
+      `Also has ${others.join(", ")} insurance`,
+      ...lifeEvents,
+    )
     .join("; ");
   const campaigns =
     hasExa() && contenders.length
@@ -90,7 +105,13 @@ export async function refreshPrices(policyId: string): Promise<PriceBoard> {
         ).campaigns
       : [];
 
-  if (process.env.PRICING_DEBUG) console.log("[pricing] campaigns", policyId, contenders, campaigns.map((c) => `${c.fitsProfile} ${c.percentOff ?? "-"}% ${c.insurer}: ${c.offer}`));
+  if (process.env.PRICING_DEBUG)
+    console.log(
+      "[pricing] campaigns",
+      policyId,
+      contenders,
+      campaigns.map((c) => `${c.fitsProfile} ${c.percentOff ?? "-"}% ${c.insurer}: ${c.offer}`),
+    );
   const at = new Date().toISOString();
   const fresh: PriceCandidate[] = [
     ...offers.map((o) => publishedCandidate(policyId, o, at)),
