@@ -143,7 +143,7 @@ export function Receiver({ slot, insurer, name }: { slot: string; insurer: strin
       ) : inCall || (mine && live.status === "ending") ? (
         <section className="flex flex-1 flex-col gap-5 pt-6">
           <div className="flex flex-col items-center gap-1 text-center">
-            <span className="text-[22px] leading-7 font-semibold">Lowball</span>
+            <span className="text-[22px] leading-7 font-semibold">Service Haggle</span>
             <span className="text-sm text-subtle">
               AI assistant for {firstName} · <span className="num">{clock(call?.startedAt)}</span>
             </span>
@@ -189,7 +189,7 @@ export function Receiver({ slot, insurer, name }: { slot: string; insurer: strin
               <span className="grid size-20 place-items-center rounded-full bg-accent text-[28px] font-semibold text-white">L</span>
             </span>
             <div className="flex flex-col gap-1.5">
-              <h1 className="text-[34px] leading-10 font-semibold tracking-[-0.03em]">Lowball</h1>
+              <h1 className="text-[34px] leading-10 font-semibold tracking-[-0.03em]">Service Haggle</h1>
               <p className="text-base leading-6 text-muted">AI assistant calling about {firstName}&apos;s insurance</p>
             </div>
           </div>
@@ -224,7 +224,7 @@ export function Receiver({ slot, insurer, name }: { slot: string; insurer: strin
           ) : (
             <>
               <h1 className="text-2xl font-semibold tracking-[-0.02em]">Ready</h1>
-              <p className="text-base text-muted">This phone will ring when Lowball calls {insurer}.</p>
+              <p className="text-base text-muted">This phone will ring when Service Haggle calls {insurer}.</p>
               <p className="max-w-[300px] text-sm text-subtle">The agent runs on its own Fly.io Machine and speaks through GPT-Live.</p>
             </>
           )}

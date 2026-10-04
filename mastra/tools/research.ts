@@ -43,12 +43,12 @@ export const kernelPage = createTool({
 
 export const networkRates = createTool({
   id: "network-rates",
-  description: "Pooled monthly rates Lowball members with the same profile pay at this insurer and its competitors (demo data).",
+  description: "Pooled monthly rates Service Haggle members with the same profile pay at this insurer and its competitors (demo data).",
   inputSchema: z.object({ policyId: z.string() }),
   execute: async ({ policyId }) => {
     const policy = await store.policy(policyId);
     if (!policy) return { error: `Unknown policy ${policyId}` };
-    return { network: await networkStats(policy), note: "Seeded demo data from the Lowball member network." };
+    return { network: await networkStats(policy), note: "Seeded demo data from the Service Haggle member network." };
   },
 });
 

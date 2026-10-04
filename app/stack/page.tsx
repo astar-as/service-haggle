@@ -102,7 +102,7 @@ export default async function StackPage() {
     },
     {
       name: "Mastra",
-      role: "Three agents with typed tools: Lowball answers your questions, the strategist holds your limits and never says them, and the profile agent asks before it proposes edits.",
+      role: "Three agents with typed tools: Service Haggle answers your questions, the strategist holds your limits and never says them, and the profile agent asks before it proposes edits.",
       live: "3 agents",
       on: true,
       href: "/profile",
@@ -148,7 +148,7 @@ export default async function StackPage() {
       </Link>
       <section className="flex flex-col gap-2">
         <h1 className="text-[32px] leading-[38px] font-semibold tracking-[-0.03em]">
-          How Lowball works
+          How Service Haggle works
         </h1>
         <p className="text-[17px] leading-[26px] text-ink-2">
           What each part does for you, with live numbers from this deployment.

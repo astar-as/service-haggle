@@ -81,7 +81,7 @@ export class AgentMailAdapter implements MailClient {
         return (await this.client.inboxes.get(preferred)).inboxId;
       } catch {}
     }
-    const displayName = "Lowball (AI assistant)";
+    const displayName = "Service Haggle (AI assistant)";
     const username = preferred?.split("@")[0];
     if (username) {
       try {

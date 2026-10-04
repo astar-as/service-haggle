@@ -14,7 +14,7 @@ const SCRIPTS: Step[][] = [
   [
     [1500, "agent", "Hi, I'm an AI assistant calling on behalf of Maya Okafor about her auto renewal."],
     [2500, "counterpart", "Sure, I see it. It renews at $248 a month."],
-    [2500, "agent", "Drivers with her profile pay $172 to $198 with you, and she's driving far less since August. Can you get closer to that?", { ask: 178, citing: ["14 drivers like Maya · Lowball network", "Driving less since Aug · bank data"] }],
+    [2500, "agent", "Drivers with her profile pay $172 to $198 with you, and she's driving far less since August. Can you get closer to that?", { ask: 178, citing: ["14 drivers like Maya · Service Haggle network", "Driving less since Aug · bank data"] }],
     [6000, "counterpart", "Best I can do is $205.", { theirOffer: 205 }],
     [4500, "agent", "Another provider just offered $189 for the same cover. Can you beat that?", { citing: ["Bayline offer $189 · live call"] }],
     [4000, "counterpart", "Okay, fine. $185 a month.", { theirOffer: 185 }],

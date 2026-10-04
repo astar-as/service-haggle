@@ -356,7 +356,7 @@ export function policyDocument(i: PolicyDocInput): Buffer {
   p.text(
     L,
     footY + 11,
-    `Specimen document created for the Lowball demo. ${insurer} and all policy details are fictional.`,
+    `Specimen document created for the Service Haggle demo. ${insurer} and all policy details are fictional.`,
     { size: 7, color: GRAY },
   );
   return p.build();

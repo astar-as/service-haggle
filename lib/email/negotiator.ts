@@ -133,7 +133,7 @@ class EmailLine {
       body,
       "",
       "Thank you,",
-      "Lowball",
+      "Service Haggle",
       `AI assistant for ${this.person.name}`,
       refTag(this.callId),
     ].join("\n");
@@ -168,8 +168,8 @@ class EmailLine {
     }
     if (!line) line = `What is the best monthly price you can offer for exactly this coverage?`;
     const intro = retention
-      ? `I'm Lowball, an AI assistant writing on behalf of ${this.person.name}, a ${this.call.insurer} customer since ${this.policy.memberSince}. Her ${kind} policy renews on ${longDate(this.policy.renewsOn)} and she is reviewing her options before renewing.`
-      : `I'm Lowball, an AI assistant writing on behalf of ${this.person.name}. She is comparing ${kind} insurance before her renewal on ${longDate(this.policy.renewsOn)} and would like a quote for identical coverage.`;
+      ? `I'm Service Haggle, an AI assistant writing on behalf of ${this.person.name}, a ${this.call.insurer} customer since ${this.policy.memberSince}. Her ${kind} policy renews on ${longDate(this.policy.renewsOn)} and she is reviewing her options before renewing.`
+      : `I'm Service Haggle, an AI assistant writing on behalf of ${this.person.name}. She is comparing ${kind} insurance before her renewal on ${longDate(this.policy.renewsOn)} and would like a quote for identical coverage.`;
     const ask = `${line}\n\nA short reply with the monthly figure is perfect. ${this.first} reviews and signs anything herself.`;
     const text = this.compose(
       [intro, "", "Details:", ...this.facts().map((f) => `- ${f}`), "", ask].join("\n"),

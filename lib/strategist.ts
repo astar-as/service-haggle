@@ -117,7 +117,7 @@ async function buildBrief(policyId: string): Promise<Brief> {
   if (net) {
     evidence.push({
       kind: "network",
-      label: `${net.count} ${who} like ${person.firstName} · Lowball network`,
+      label: `${net.count} ${who} like ${person.firstName} · Service Haggle network`,
       say: `${net.count} people with ${person.firstName}'s profile pay ${usd(net.min)} to ${usd(net.max)} a month at ${net.insurer}`,
     });
   }
@@ -494,7 +494,7 @@ export function evidenceFor(brief: Brief, insurer?: string): Evidence[] {
   return [
     {
       kind: "network",
-      label: `${peer.count} ${who} like ${brief.person.firstName} at ${insurer.split(" ")[0]} · Lowball network`,
+      label: `${peer.count} ${who} like ${brief.person.firstName} at ${insurer.split(" ")[0]} · Service Haggle network`,
       say: `${peer.count} people with ${brief.person.firstName}'s profile pay ${usd(peer.min)} to ${usd(peer.max)} a month at ${insurer}`,
     },
     ...rest,
@@ -595,7 +595,7 @@ async function phrase(
     const say = await generateLine({
       tier: "fast",
       timeoutMs: Number(process.env.STRATEGIST_TIMEOUT_MS ?? 1800),
-      system: `You are the negotiation strategist behind Lowball's voice agent. The agent is on a live phone call with a representative at ${insurer} (${role === "retention" ? `${brief.person.firstName}'s current insurer` : "a competitor giving a quote"}) on behalf of ${brief.person.name}. The decision below is final; write the exact next line the agent should say.
+      system: `You are the negotiation strategist behind Service Haggle's voice agent. The agent is on a live phone call with a representative at ${insurer} (${role === "retention" ? `${brief.person.firstName}'s current insurer` : "a competitor giving a quote"}) on behalf of ${brief.person.name}. The decision below is final; write the exact next line the agent should say.
 Rules: 1-2 short spoken sentences, warm and confident, no lists, no markdown. Use only the dollar amounts in DECISION and EVIDENCE, exactly. Refer to the customer as ${brief.person.firstName} or "she". Never mention any walk-away, limit, budget, minimum, salary, income or anything not in SHAREABLE FACTS or EVIDENCE. If the representative asked something in REQUEST, answer briefly from SHAREABLE FACTS (or say she can follow up by email) before the decision. Output only the line.`,
       prompt: JSON.stringify({
         DECISION: {
@@ -984,7 +984,7 @@ export async function decide(state: DecideState): Promise<Decision> {
         talking_points: [
           `Agreed price: ${usd(p.agreed!)} a month`,
           "Same coverage as today",
-          `${brief.person.firstName} signs; Lowball never signs or pays`,
+          `${brief.person.firstName} signs; Service Haggle never signs or pays`,
         ],
       };
     case "walk":

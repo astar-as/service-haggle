@@ -31,7 +31,7 @@ export default async function Home() {
       <header className="flex items-center justify-between gap-3">
         <span className="inline-flex items-center gap-2 text-[19px] leading-6 font-bold tracking-[-0.02em]">
           <span className="size-2.5 rounded-[3px] bg-accent" />
-          lowball
+          Service Haggle
         </span>
         <nav className="flex items-center gap-4">
           <Link href="/deals" className="text-[15px] font-medium text-muted hover:text-ink">
@@ -86,7 +86,7 @@ export default async function Home() {
       )}
 
       <div className="flex flex-col gap-3">
-        <Ask placeholder="Ask Lowball anything…" />
+        <Ask placeholder="Ask Service Haggle anything…" />
         <DecPageUpload />
         <NegotiateAll />
       </div>

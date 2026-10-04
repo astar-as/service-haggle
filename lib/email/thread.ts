@@ -9,8 +9,8 @@ export type EmailCall = Call & {
   leverageSent?: number[];
 };
 
-export const REF = /\[Lowball ref ([\w-]+)\]/i;
-export const refTag = (callId: string) => `[Lowball ref ${callId}]`;
+export const REF = /\[(?:Service Haggle|Lowball) ref ([\w-]+)\]/i;
+export const refTag = (callId: string) => `[Service Haggle ref ${callId}]`;
 export const mailTurnId = (messageId: string) => `mail-${messageId}`;
 export const messageIdOf = (turnId: string) => (turnId.startsWith("mail-") ? turnId.slice(5) : undefined);
 export const emailOf = (call: Pick<Call, "target">) => (call.target?.startsWith("mailto:") ? call.target.slice(7) : undefined);

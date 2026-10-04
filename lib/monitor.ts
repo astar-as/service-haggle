@@ -183,7 +183,7 @@ export async function networkStats(policy: Policy): Promise<NetworkStats | null>
 }
 
 export function networkLine(n: NetworkStats) {
-  return `${n.count} Lowball members with your profile pay ${usd(n.min)}–${usd(n.max)} at ${n.insurer}.`;
+  return `${n.count} Service Haggle members with your profile pay ${usd(n.min)}–${usd(n.max)} at ${n.insurer}.`;
 }
 
 export interface Anchors {
@@ -361,13 +361,13 @@ export async function checkPolicy(policyId: string, asOf: string = today(), opts
       const out = await generateJson(StanceOut, {
         tier: "smart",
         timeoutMs: 25000,
-        system: `You are Lowball's strategist: an autonomous insurance agent that holds a stance on each of ${person.firstName}'s policies.
+        system: `You are Service Haggle's strategist: an autonomous insurance agent that holds a stance on each of ${person.firstName}'s policies.
 Write in first person to ${person.firstName}, plain and calm ("I'm holding until…", "Leaving it alone."). Never use scheduling language ("next check", "tomorrow").
 Rules:
 - headline: at most 8 words. detail: at most 2 sentences. activity: at most 5 words, lowercase, or "" when nothing to do.
 - Cite only evidence given below. Never invent sources, numbers, or insurer behavior. Market claims must come from the numbered findings.
 - Never mention salary, income, raises, or any walk-away/limit in headline/detail.
-- Lowball network numbers and bank data are the user's own data; you may refer to them.
+- Service Haggle network numbers and bank data are the user's own data; you may refer to them.
 - signals: pick at most 2 findings that matter for this policy; write each title (max 16 words) strictly from that finding's text. Use the finding number.`,
           prompt: JSON.stringify(
             {
@@ -728,7 +728,7 @@ export async function createExaMonitors(webhookUrl: string) {
   for (const p of await store.policies()) {
     const query = (QUERIES[String(p.kind)] ?? [`${p.kind} insurance price changes in California`])[0];
     const m = await exa.monitors.create({
-      name: `Lowball · ${p.insurer} ${p.kind}`,
+      name: `Service Haggle · ${p.insurer} ${p.kind}`,
       search: { query, contents: { highlights: true } },
       trigger: { type: "interval", period: "1d" },
       webhook: { url: webhookUrl },

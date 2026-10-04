@@ -5,9 +5,9 @@ import { refTag } from "./thread";
 
 // Mock insurance brokers with their own AgentMail inboxes, so email lines run agent to agent in
 // the demo. Stateless: on each poll of an email line, the broker looks at its own inbox and
-// answers when the newest message on that line's thread came from Lowball. It opens with a quote,
+// answers when the newest message on that line's thread came from Service Haggle. It opens with a quote,
 // concedes halfway toward its floor on each counter, accepts any ask at or above the floor,
-// confirms in writing, and stays quiet once Lowball says it went elsewhere.
+// confirms in writing, and stays quiet once Service Haggle says it went elsewhere.
 
 interface Broker {
   username: string;
@@ -90,7 +90,7 @@ export async function brokerTick(callId: string, email: string, policy: Policy) 
     .filter((m) => (m.subject ?? "").includes(ref))
     .sort((x, y) => new Date(x.timestamp ?? 0).getTime() - new Date(y.timestamp ?? 0).getTime());
   const last = thread.at(-1);
-  if (!last || last.from.toLowerCase().includes(inbox)) return; // nothing new from Lowball
+  if (!last || last.from.toLowerCase().includes(inbox)) return; // nothing new from Service Haggle
   if (Date.now() - new Date(last.timestamp ?? Date.now()).getTime() < 4000) return; // reply like a person, not instantly
 
   const full = (await mail().inboxes.messages.get(inbox, last.messageId)) as Msg;

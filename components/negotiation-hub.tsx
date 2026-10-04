@@ -44,7 +44,7 @@ function lineStatus(c: Call) {
 const SOURCE: Record<string, string> = {
   published: "Published price",
   campaign: "Campaign",
-  network: "Lowball network",
+  network: "Service Haggle network",
   quote: "Quote",
   retention: "Retention offer",
 };

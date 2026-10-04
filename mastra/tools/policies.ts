@@ -7,7 +7,7 @@ import type { Fact } from "@/lib/types";
 
 export const listPolicies = createTool({
   id: "list-policies",
-  description: "List the user's insurance policies with Lowball's current stance on each (verdict, fair price, headline, what it's doing).",
+  description: "List the user's insurance policies with Service Haggle's current stance on each (verdict, fair price, headline, what it's doing).",
   inputSchema: z.object({}),
   execute: async () => {
     const [policies, stances, calls] = await Promise.all([store.policies(), store.stances(), store.calls()]);
@@ -36,7 +36,7 @@ export const listPolicies = createTool({
 
 export const listSignals = createTool({
   id: "list-signals",
-  description: "List what Lowball has noticed (signals) for one policy or all policies, newest first, with sources and links.",
+  description: "List what Service Haggle has noticed (signals) for one policy or all policies, newest first, with sources and links.",
   inputSchema: z.object({ policyId: z.string().optional(), limit: z.number().int().min(1).max(50).optional() }),
   execute: async ({ policyId, limit }) => {
     const signals = await store.signals(policyId);
@@ -46,7 +46,7 @@ export const listSignals = createTool({
 
 export const explainStance = createTool({
   id: "explain-stance",
-  description: "Explain why Lowball holds its stance on a policy: the numbers, network rates, bank-derived life events, research signals with URLs, and the negotiation limits.",
+  description: "Explain why Service Haggle holds its stance on a policy: the numbers, network rates, bank-derived life events, research signals with URLs, and the negotiation limits.",
   inputSchema: z.object({ policyId: z.string() }),
   execute: async ({ policyId }) => {
     const policy = await store.policy(policyId);
@@ -68,7 +68,7 @@ export const explainStance = createTool({
 
 export const runCheck = createTool({
   id: "run-check",
-  description: "Re-check one policy now: gather fresh research (Exa), network rates and bank signals, then update Lowball's stance.",
+  description: "Re-check one policy now: gather fresh research (Exa), network rates and bank signals, then update Service Haggle's stance.",
   inputSchema: z.object({ policyId: z.string() }),
   execute: async ({ policyId }) => {
     const res = await checkPolicy(policyId);
@@ -78,7 +78,7 @@ export const runCheck = createTool({
 
 export const negotiationTargetsTool = createTool({
   id: "negotiation-targets",
-  description: "List the policies Lowball has flagged for negotiation, with the gap to a fair price and the channel it will use.",
+  description: "List the policies Service Haggle has flagged for negotiation, with the gap to a fair price and the channel it will use.",
   inputSchema: z.object({}),
   execute: async () => ({ targets: await negotiationTargets() }),
 });

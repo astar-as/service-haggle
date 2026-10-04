@@ -12,7 +12,7 @@ export const SOURCE_LABEL: Record<SignalSource, string> = {
   exa: "Exa",
   kernel: "Kernel",
   bank: "Bank data",
-  network: "Lowball network",
+  network: "Service Haggle network",
   email: "Email",
   call: "Call",
 };

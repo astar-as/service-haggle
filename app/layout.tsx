@@ -9,7 +9,7 @@ const host = Host_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Lowball",
+  title: "Service Haggle",
   description: "A personal agent that keeps your insurance fair.",
 };
 

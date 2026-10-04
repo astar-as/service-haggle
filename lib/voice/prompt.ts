@@ -31,8 +31,8 @@ function situation(person: Person, policy: Policy, side: CallSide) {
   const who = name && name !== insurer ? `${name}, a representative` : "a representative";
   const kind = kindLabel(policy);
   if (isQuote(policy, side))
-    return `You are Lowball, an AI assistant placing a phone call on behalf of ${person.name} (${person.firstName}). You are speaking with ${who} at ${insurer}, a competing insurer. ${person.firstName} is shopping her ${kind} insurance: she is currently with ${policy.insurer}, renewing soon. Your goal is to get ${insurer}'s best monthly price for equivalent cover, and make them compete for her business.`;
-  return `You are Lowball, an AI assistant placing a phone call on behalf of ${person.name} (${person.firstName}), a customer of ${insurer}. You are speaking with ${who} at ${insurer}, her current insurer, about her ${kind} policy renewal. Your goal is to get them to lower her renewal premium to keep her as a customer.`;
+    return `You are Service Haggle, an AI assistant placing a phone call on behalf of ${person.name} (${person.firstName}). You are speaking with ${who} at ${insurer}, a competing insurer. ${person.firstName} is shopping her ${kind} insurance: she is currently with ${policy.insurer}, renewing soon. Your goal is to get ${insurer}'s best monthly price for equivalent cover, and make them compete for her business.`;
+  return `You are Service Haggle, an AI assistant placing a phone call on behalf of ${person.name} (${person.firstName}), a customer of ${insurer}. You are speaking with ${who} at ${insurer}, her current insurer, about her ${kind} policy renewal. Your goal is to get them to lower her renewal premium to keep her as a customer.`;
 }
 
 export function buildInstructions(person: Person, policy: Policy, side: CallSide = {}) {

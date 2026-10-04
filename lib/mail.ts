@@ -59,7 +59,7 @@ export async function sendConfirmation(call: Call): Promise<SendResult> {
   const person = await store.person();
   const insurer = call.insurer ?? policy.insurer;
   const retention = insurer === policy.insurer;
-  const subject = `Confirming ${usd(call.agreedMonthly)}/mo for ${person.name}'s ${policy.kind} policy [Lowball ref ${call.id}]`;
+  const subject = `Confirming ${usd(call.agreedMonthly)}/mo for ${person.name}'s ${policy.kind} policy [Service Haggle ref ${call.id}]`;
   const lines = [
     `Hi${call.counterpart && !call.counterpart.startsWith(insurer) ? ` ${call.counterpart.split(" · ")[0]}` : ""},`,
     "",
@@ -73,7 +73,7 @@ export async function sendConfirmation(call: Call): Promise<SendResult> {
     `Please reply to this email to confirm these terms in writing. ${person.firstName} will review and sign any documents herself; I can't sign or pay on her behalf.`,
     "",
     "Thank you,",
-    `Lowball, AI assistant for ${person.name}`,
+    `Service Haggle, AI assistant for ${person.name}`,
   ];
   const res = await mail().inboxes.messages.send(await inboxId(), { to, subject, text: lines.join("\n") });
   sent.add(call.id);

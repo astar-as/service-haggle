@@ -15,7 +15,7 @@ import type { Call, Policy, PriceCandidate } from "./types";
 // The price ledger: every price Maya could pay for a policy, from four kinds of evidence.
 //   published  benchmark rates from rate studies and comparison pages (estimate)
 //   campaign   a published rate with a discount she qualifies for applied (estimate)
-//   network    what Lowball members with her profile pay at her insurer (estimate)
+//   network    what Service Haggle members with her profile pay at her insurer (estimate)
 //   quote / retention   offered to her directly on a call, email or cancel flow (obtainable)
 // The cheapest obtainable price is what we can actually sign; the cheapest estimate is the
 // anchor the agent pushes toward.
@@ -235,7 +235,7 @@ function fromNetwork(
       source: "network",
       monthly: min,
       obtainable: false,
-      basis: `lowest of ${own.length} Lowball members with her profile at ${policy.insurer}`,
+      basis: `lowest of ${own.length} Service Haggle members with her profile at ${policy.insurer}`,
       at: new Date().toISOString(),
     },
   ];
