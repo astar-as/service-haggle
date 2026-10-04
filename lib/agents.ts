@@ -3,18 +3,42 @@ import { store } from "./store";
 import type { Call } from "./types";
 
 export interface CallTarget {
-  phone: string;
+  phone?: string;
+  email?: string;
+  slot?: string;
   name: string;
   insurer?: string;
 }
 
+export const DEMO_TARGETS: Record<string, CallTarget[]> = {
+  "auto-northstar": [
+    { slot: "1", name: "Jordan", insurer: "Northstar Mutual" },
+    { slot: "2", name: "Priya", insurer: "Bayline Auto" },
+    { slot: "3", name: "Sam", insurer: "Harbor & Pine" },
+  ],
+};
+
 export function callTargets(): Record<string, CallTarget[]> {
   try {
     const raw = JSON.parse(process.env.CALL_TARGETS ?? "{}") as Record<string, CallTarget | CallTarget[]>;
-    return Object.fromEntries(Object.entries(raw).map(([k, v]) => [k, Array.isArray(v) ? v : [v]]));
+    const parsed = Object.fromEntries(Object.entries(raw).map(([k, v]) => [k, Array.isArray(v) ? v : [v]]));
+    return Object.keys(parsed).length ? parsed : DEMO_TARGETS;
   } catch {
-    return {};
+    return DEMO_TARGETS;
   }
+}
+
+function channelFor(t: CallTarget): Call["channel"] {
+  if (t.email) return "email";
+  if (t.phone) return "phone";
+  return "browser";
+}
+
+function targetFor(t: CallTarget) {
+  if (t.email) return `mailto:${t.email}`;
+  if (t.phone) return t.phone;
+  if (t.slot) return `slot:${t.slot}`;
+  return undefined;
 }
 
 const flyConfigured = () => !!(process.env.FLY_API_TOKEN && process.env.FLY_APP_NAME && process.env.FLY_IMAGE_REF);
@@ -41,9 +65,13 @@ async function launchFlyMachine(callId: string) {
   return ((await res.json()) as { id: string }).id;
 }
 
-async function runInProcess(callId: string) {
-  const { runNegotiation } = await import("./voice/negotiator");
-  keepAlive(runNegotiation(callId).catch(async (e: unknown) => {
+async function runInProcess(call: Call) {
+  const callId = call.id;
+  const run =
+    call.channel === "email"
+      ? (await import("./email/negotiator")).runEmailNegotiation
+      : (await import("./voice/negotiator")).runNegotiation;
+  keepAlive(run(callId).catch(async (e: unknown) => {
     const call = await store.call(callId);
     if (call) await store.putCall({ ...call, status: "ended", endedAt: new Date().toISOString() });
     console.error(`[negotiator ${callId}]`, e);
@@ -52,14 +80,15 @@ async function runInProcess(callId: string) {
 
 async function start(call: Call) {
   await store.putCall(call);
-  if (call.channel !== "phone") return call;
+  const receiver = call.channel === "browser" && call.target?.startsWith("slot:");
+  if (call.channel === "browser" && !receiver) return call;
   if (flyConfigured()) {
     const machineId = await launchFlyMachine(call.id);
     const withMachine = { ...call, machineId };
     await store.putCall(withMachine);
     return withMachine;
   }
-  await runInProcess(call.id);
+  if (!receiver) await runInProcess(call);
   return call;
 }
 
@@ -67,7 +96,7 @@ export async function launchRound(policyId: string, targets: CallTarget[], chann
   const policy = await store.policy(policyId);
   if (!policy) throw new Error(`Unknown policy ${policyId}`);
   const roundId = `round-${policyId}-${Date.now().toString(36)}`;
-  const list = targets.length ? targets : [{ phone: "", name: "", insurer: policy.insurer }];
+  const list: CallTarget[] = targets.length ? targets : [{ name: "", insurer: policy.insurer }];
   return Promise.all(
     list.map((t, i) => {
       const insurer = t.insurer ?? policy.insurer;
@@ -78,8 +107,8 @@ export async function launchRound(policyId: string, targets: CallTarget[], chann
         insurer,
         role: insurer === policy.insurer ? "retention" : "quote",
         status: "dialing",
-        channel: channel ?? (t.phone ? "phone" : "browser"),
-        target: t.phone || undefined,
+        channel: channel ?? channelFor(t),
+        target: targetFor(t),
         counterpart: t.name ? `${t.name} · ${insurer}` : insurer,
         startedAt: new Date().toISOString(),
         citing: [],

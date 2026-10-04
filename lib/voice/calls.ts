@@ -66,7 +66,7 @@ export async function startBrowserCall(input: { sdp: string; callId?: string; po
   try {
     const { sessionId, sdp } = await createWebrtcSession(input.sdp, ctx.instructions);
     await putVoiceCall({ ...call, sessionId });
-    runInBackground(call.id);
+    if (!call.machineId) runInBackground(call.id);
     return { callId: call.id, sessionId, sdp, greeting: ctx.greeting };
   } catch (err) {
     await putVoiceCall({ ...call, status: "ended", endedAt: new Date().toISOString() });

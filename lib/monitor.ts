@@ -35,14 +35,17 @@ export const REFERENCE_FACTS: ReferenceFact[] = [
 
 export const QUERIES: Record<string, string[]> = {
   auto: [
-    "California auto insurance rate increase approved by the Department of Insurance",
-    "low mileage car insurance discount California",
-    "average cost of full coverage car insurance in San Francisco",
+    "News: California Department of Insurance approves auto insurance rate change for a major insurer",
+    "News: California drivers' car insurance premiums rising or falling, insurer rate filing",
+    "News: insurers expand low-mileage and usage-based car insurance discounts for remote workers",
   ],
-  health: ["Covered California 2027 health insurance premium rates", "California individual market silver plan premium changes 2027"],
-  pet: ["pet insurance for cats accident and illness premium prices"],
-  renters: ["renters insurance cost in San Francisco"],
-  life: ["20-year term life insurance rates for a 30 year old non-smoker"],
+  health: [
+    "News: Covered California announces 2027 premium rates for individual health plans",
+    "News: California individual-market health premiums for 2027 after enhanced subsidies expired",
+  ],
+  pet: ["News: pet insurance premiums rising for cat and dog owners"],
+  renters: ["News: renters insurance prices in California"],
+  life: ["News: term life insurance rates for young adults"],
 };
 
 const KIND_TERMS: Record<string, string[]> = {

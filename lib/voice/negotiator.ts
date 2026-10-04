@@ -87,7 +87,7 @@ class Negotiation implements ActiveNegotiation {
       let sessionId: string | undefined;
       if (call.channel === "browser") {
         this.greetOwner = "browser";
-        sessionId = await this.waitForSession(30_000);
+        sessionId = await this.waitForSession(180_000);
       } else if (call.channel === "phone") {
         sessionId = await this.dial(ctx.instructions);
       } else throw new VoiceError(`Channel ${call.channel} is not a voice channel`, 400, "bad_channel");

@@ -19,6 +19,14 @@ function exa() {
   return exaClient;
 }
 
+const LOW_QUALITY_HOSTS = ["joingerald.com", "madmadnews.com"];
+const LOW_QUALITY_TITLE = /cash advance|buy now pay later|coupon|promo code|casino/i;
+
+function lowQuality(url: string, title: string) {
+  const host = hostOf(url);
+  return LOW_QUALITY_HOSTS.some((h) => host.endsWith(h)) || LOW_QUALITY_TITLE.test(title);
+}
+
 export async function exaSearch(query: string, window?: { start?: string; end?: string }): Promise<Finding[]> {
   const res = await exa().search(query, {
     type: "auto",
@@ -26,7 +34,7 @@ export async function exaSearch(query: string, window?: { start?: string; end?: 
     ...(window?.start ? { startPublishedDate: window.start } : {}),
     ...(window?.end ? { endPublishedDate: window.end } : {}),
   });
-  return res.results.map((r) => ({
+  return res.results.filter((r) => !lowQuality(r.url, r.title ?? "")).map((r) => ({
     title: (r.title ?? "").trim() || hostOf(r.url),
     url: r.url,
     publishedDate: r.publishedDate,
