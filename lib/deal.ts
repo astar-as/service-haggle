@@ -34,6 +34,8 @@ const slug = (s: string) =>
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
+// Lower-case a label for prose, but keep acronyms like VIN.
+const lower = (s: string) => (s === s.toUpperCase() ? s : s.toLowerCase());
 const sha256 = (b: Buffer | string) => createHash("sha256").update(b).digest("hex");
 
 // ---- sealed facts -----------------------------------------------------------------------
@@ -224,7 +226,7 @@ async function confirmStep(deal: Deal, policy: Policy, person: Person) {
       from: deal.desk,
       to: deal.inbox,
       subject: reply.subject ?? "",
-      summary: `Confirmed ${usd(deal.monthly)}/mo. Needs ${asked.map((s) => s.label.toLowerCase()).join(", ")} to bind.`,
+      summary: `Confirmed ${usd(deal.monthly)}/mo. Needs ${asked.map((s) => lower(s.label)).join(", ")} to bind.`,
       labels: ["binding-request"],
       messageId: reply.messageId,
     },
@@ -306,7 +308,7 @@ async function releaseStep(deal: Deal) {
       from: deal.inbox,
       to: deal.desk,
       subject: `Re: [${deal.ref}]`,
-      summary: `Sent ${deal.requested.map((r) => r.label.toLowerCase()).join(", ")} after Maya approved the draft.`,
+      summary: `Sent ${deal.requested.map((r) => lower(r.label)).join(", ")} after Maya approved the draft.`,
       labels: ["sensitive", "released"],
       messageId: sent.messageId,
     },
