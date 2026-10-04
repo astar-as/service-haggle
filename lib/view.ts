@@ -31,6 +31,7 @@ export interface Row {
   gap: number;
   live: boolean;
   callId?: string;
+  agreed?: number;
 }
 
 export function buildRows(policies: Policy[], stances: Stance[], calls: Call[] = []) {
@@ -38,9 +39,12 @@ export function buildRows(policies: Policy[], stances: Stance[], calls: Call[] =
   const rows: Row[] = policies.map((policy) => {
     const stance = byId.get(policy.id);
     const call = calls.find((c) => c.status !== "ended" && c.policyId === policy.id);
+    const deal = calls
+      .filter((c) => c.policyId === policy.id && c.agreedMonthly !== undefined && c.agreedMonthly < policy.monthlyPremium)
+      .sort((a, b) => b.startedAt.localeCompare(a.startedAt))[0];
     const open = stance && ["overpaying", "waiting", "negotiating"].includes(stance.verdict);
-    const gap = open && stance ? Math.max(0, policy.monthlyPremium - stance.fairMonthly) : 0;
-    return { policy, stance, gap, live: !!call, callId: call?.id };
+    const gap = open && stance && !deal ? Math.max(0, policy.monthlyPremium - stance.fairMonthly) : 0;
+    return { policy, stance, gap, live: !!call && !deal, callId: call?.id, agreed: deal?.agreedMonthly };
   });
   const needs = rows.filter((r) => r.gap > 0 || r.live).sort((a, b) => Number(b.live) - Number(a.live) || b.gap - a.gap);
   const fair = rows.filter((r) => !(r.gap > 0 || r.live)).sort((a, b) => b.policy.monthlyPremium - a.policy.monthlyPremium);
@@ -50,7 +54,8 @@ export function buildRows(policies: Policy[], stances: Stance[], calls: Call[] =
 }
 
 export function subtitle(row: Row) {
-  if (row.live) return "on the phone now";
+  if (row.agreed !== undefined) return `agreed ${usd(row.agreed)} · confirming by email`;
+  if (row.live) return "negotiating now";
   return row.stance?.activity || "";
 }
 

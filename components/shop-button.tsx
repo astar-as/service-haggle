@@ -20,7 +20,7 @@ export function ShopButton({ policyId, insurer }: { policyId: string; insurer: s
     const json = (await res.json().catch(() => ({}))) as { calls?: { id: string }[]; error?: string };
     setBusy(false);
     if (!res.ok || !json.calls?.length) return setError(json.error ?? "Couldn't start the agents.");
-    router.push(`/call/${json.calls[0].id}`);
+    router.push(`/negotiation/${policyId}`);
   };
 
   return (

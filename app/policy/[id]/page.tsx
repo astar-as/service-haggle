@@ -48,7 +48,7 @@ export default async function PolicyPage({ params }: { params: Promise<{ id: str
         )}
         {live ? (
           <Link
-            href={`/call/${live.id}`}
+            href={`/negotiation/${policy.id}`}
             className="flex min-h-14 items-center gap-3 rounded-2xl bg-accent px-5 text-white transition-transform duration-150 ease-out-strong active:scale-[0.99]"
           >
             <span className="live size-2 rounded-full bg-white" />
@@ -105,7 +105,7 @@ export default async function PolicyPage({ params }: { params: Promise<{ id: str
           </h2>
           <div className="overflow-hidden rounded-[18px] bg-white shadow-[0_0_0_1px_var(--color-line)]">
             {rounds.map((c) => (
-              <Link key={c.id} href={`/call/${c.id}`} className="group flex min-h-16 items-center gap-4 border-t border-hair px-5 first:border-t-0 hover:bg-[#fafbfb]">
+              <Link key={c.id} href={`/negotiation/${policy.id}?line=${c.id}`} className="group flex min-h-16 items-center gap-4 border-t border-hair px-5 first:border-t-0 hover:bg-[#fafbfb]">
                 <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                   <span className="text-base leading-[22px] font-semibold">{c.insurer}</span>
                   <span className="text-sm leading-5 text-subtle">

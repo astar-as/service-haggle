@@ -1,4 +1,6 @@
 import { AgentMailClient } from "agentmail";
+import { AgentMailAdapter } from "./email/client";
+import { appendInboundTurn, REF, type EmailCall } from "./email/thread";
 import { store } from "./store";
 import type { Call, Signal } from "./types";
 
@@ -16,7 +18,13 @@ function mail() {
 }
 
 async function inboxId() {
-  return process.env.AGENTMAIL_INBOX ?? (await store.person()).inbox;
+  const preferred = (await store.person()).inbox;
+  if (process.env.AGENTMAIL_INBOX) return process.env.AGENTMAIL_INBOX;
+  try {
+    return await new AgentMailAdapter().resolveInbox(preferred);
+  } catch {
+    return preferred;
+  }
 }
 
 export function brokerEmailFor(insurer: string) {
@@ -26,8 +34,6 @@ export function brokerEmailFor(insurer: string) {
   } catch {}
   return process.env.BROKER_EMAIL;
 }
-
-const REF = /\[Lowball ref ([\w-]+)\]/i;
 
 const sent = new Set<string>();
 
@@ -40,6 +46,7 @@ export interface SendResult {
 
 export async function sendConfirmation(call: Call): Promise<SendResult> {
   if (call.agreedMonthly === undefined) return { ok: false, error: "Call has no agreed price" };
+  if (call.channel === "email") return { ok: true, error: "email lines confirm in their own thread" };
   if (sent.has(call.id)) return { ok: true };
   const signalId = `sig-mail-confirm-${call.id}`;
   const policy = await store.policy(call.policyId);
@@ -88,6 +95,7 @@ interface InboundMessage {
   text: string;
   messageId?: string;
   threadId?: string;
+  at?: string;
 }
 
 function pick(o: Record<string, unknown> | undefined, ...keys: string[]) {
@@ -104,7 +112,9 @@ export function parseInbound(body: unknown): { eventType?: string; message?: Inb
   const text = pick(m, "extracted_text", "extractedText", "text", "preview") ?? "";
   const subject = pick(m, "subject") ?? "";
   if (!from && !text && !subject) return { eventType };
-  return { eventType, message: { from, subject, text, messageId: pick(m, "message_id", "messageId"), threadId: pick(m, "thread_id", "threadId") } };
+  const ts = pick(m, "timestamp", "created_at", "createdAt");
+  const at = ts && !Number.isNaN(Date.parse(ts)) ? new Date(ts).toISOString() : undefined;
+  return { eventType, message: { from, subject, text, messageId: pick(m, "message_id", "messageId"), threadId: pick(m, "thread_id", "threadId"), at } };
 }
 
 const CONFIRM = /\b(confirm(ed)?|approved|agreed|that'?s correct|all set|locked in|we can do)\b/i;
@@ -114,11 +124,19 @@ export async function handleInboundMail(body: unknown) {
   const { eventType, message } = parseInbound(body);
   if (!message) return { handled: false, reason: "no message in payload" };
   if (eventType && eventType !== "message.received") return { handled: false, reason: `ignored ${eventType}` };
-  const ownInbox = (process.env.AGENTMAIL_INBOX ?? (await store.person()).inbox).toLowerCase();
-  if (message.from.toLowerCase().includes(ownInbox)) return { handled: false, reason: "own message" };
-
   const ref = message.subject.match(REF)?.[1] ?? message.text.match(REF)?.[1];
-  const refCall = ref ? await store.call(ref) : undefined;
+  const refCall = ref ? ((await store.call(ref)) as EmailCall | undefined) : undefined;
+  const own = [process.env.AGENTMAIL_INBOX, (await store.person()).inbox, refCall?.inbox].filter((x): x is string => !!x).map((x) => x.toLowerCase());
+  if (own.some((x) => message.from.toLowerCase().includes(x))) return { handled: false, reason: "own message" };
+
+  const thread =
+    refCall?.channel === "email" && message.messageId
+      ? await appendInboundTurn(refCall.id, { messageId: message.messageId, text: message.text, at: message.at })
+      : undefined;
+  const signalId = `sig-mail-${message.messageId ?? Date.now().toString(36)}`;
+  if (message.messageId && (await store.signals()).some((s) => s.id === signalId)) {
+    return { handled: true, duplicate: true, callId: refCall?.id, ...(thread ? { appended: thread.appended } : {}) };
+  }
   const policies = await store.policies();
   const haystack = `${message.subject} ${message.text}`.toLowerCase();
   const policy =
@@ -138,7 +156,7 @@ export async function handleInboundMail(body: unknown) {
   const confirmed = !!call?.agreedMonthly && CONFIRM.test(message.text) && !NEGATIVE.test(message.text);
 
   await store.addSignal({
-    id: `sig-mail-${message.messageId ?? Date.now().toString(36)}`,
+    id: signalId,
     personId: person.id,
     policyId: policy?.id,
     at,
@@ -171,5 +189,5 @@ export async function handleInboundMail(body: unknown) {
       invalidateBrief(policy.id);
     } catch {}
   }
-  return { handled: true, confirmed, policyId: policy?.id, callId: call?.id };
+  return { handled: true, confirmed, policyId: policy?.id, callId: call?.id, ...(thread ? { appended: thread.appended } : {}) };
 }
