@@ -43,8 +43,8 @@ export const policies: Policy[] = [
     personId: PERSON_ID,
     kind: "health",
     insurer: "Meridian Health",
-    product: "Silver PPO",
-    monthlyPremium: 286,
+    product: "Silver PPO · Covered California",
+    monthlyPremium: 642,
     renewsOn: "2027-01-01",
     memberSince: 2023,
     facts: [
@@ -91,20 +91,21 @@ export const stances: Stance[] = [
   {
     policyId: "auto-northstar",
     verdict: "overpaying",
-    fairMonthly: 200,
-    walkAwayMonthly: 214,
-    headline: "Overpaying about $48 a month.",
+    fairMonthly: 178,
+    walkAwayMonthly: 198,
+    headline: "Overpaying about $70 a month.",
     detail:
-      "Drivers with your profile pay $186–$214 at Northstar, and you've been driving far less since August. Worth a call before the Oct 20 renewal.",
+      "Drivers with your profile pay $172–$198 at Northstar, GEICO publishes $138 for clean-record drivers in San Francisco, and you've been driving far less since August. Worth a call before the Oct 20 renewal.",
     activity: "calling before renewal",
     updatedAt: "2026-10-04T08:00:00Z",
   },
   {
     policyId: "health-meridian",
     verdict: "waiting",
-    fairMonthly: 256,
-    headline: "Probably $30 a month too high.",
-    detail: "I'm holding until open enrollment on Nov 1, when a cheaper plan with your doctors becomes available.",
+    fairMonthly: 595,
+    headline: "About $47 a month above the cheapest Silver plan.",
+    detail:
+      "Silver plans for a 29-year-old in San Francisco run $595–$746 without a subsidy. Plan prices are fixed, so there's nothing to haggle; I'll switch you at open enrollment on Nov 1 to the cheapest one with your doctors.",
     activity: "waiting for Nov 1",
     updatedAt: "2026-10-02T08:00:00Z",
   },
@@ -122,7 +123,7 @@ export const stances: Stance[] = [
     verdict: "fair",
     fairMonthly: 24,
     headline: "Fair for a 20-year term at 29.",
-    detail: "Nothing better turned up this month.",
+    detail: "New buyers pay about $15–$21 for the same cover, but your rate is locked for 20 years and switching means new medical underwriting. Not worth it for a few dollars.",
     activity: "",
     updatedAt: "2026-10-01T08:00:00Z",
   },
@@ -131,7 +132,7 @@ export const stances: Stance[] = [
     verdict: "fair",
     fairMonthly: 18,
     headline: "Fair.",
-    detail: "Cheapest of 9 quotes with the same cover. Leaving it alone.",
+    detail: "Published rates for $30k of contents in San Francisco run $14–$35. You're near the bottom. Leaving it alone.",
     activity: "",
     updatedAt: "2026-09-20T08:00:00Z",
   },
@@ -197,7 +198,7 @@ export function buildTransactions(): Transaction[] {
     }
     if (dom === 1) push(day, -2650, "Mission Bay Apartments", "rent");
     if (dom === 20) push(day, -248, "Northstar Mutual", "insurance");
-    if (dom === 1) push(day, -286, "Meridian Health", "insurance");
+    if (dom === 1) push(day, -642, "Meridian Health", "insurance");
     if (dom === 5) push(day, day >= new Date("2026-09-01T00:00:00Z") ? -22 : -31, "Pawsure", "insurance");
     if (dom === 12) push(day, -24, "Evergreen Term", "insurance");
     if (dom === 3) push(day, -18, "Hearthly", "insurance");
@@ -225,9 +226,9 @@ export function buildMemberRates(): MemberRate[] {
       out.push({ id: `mr-${++n}`, insurer, kind, profile, monthly: Math.round(v) });
     }
   };
-  add("Northstar Mutual", "auto", NORTHSTAR_PROFILE, 186, 214, 14);
-  add("Bayline Auto", "auto", NORTHSTAR_PROFILE, 189, 207, 9);
-  add("Meridian Health", "health", "29 · San Francisco · silver PPO", 249, 268, 12);
+  add("Northstar Mutual", "auto", NORTHSTAR_PROFILE, 172, 198, 14);
+  add("Bayline Auto", "auto", NORTHSTAR_PROFILE, 158, 184, 9);
+  add("Meridian Health", "health", "29 · San Francisco · silver PPO", 595, 655, 12);
   add("Pawsure", "pet", "1 cat · accident & illness", 19, 26, 8);
   add("Hearthly", "renters", "San Francisco · $30k contents", 16, 21, 10);
   add("Evergreen Term", "life", "29 · non-smoker · 20yr $500k", 22, 27, 6);
