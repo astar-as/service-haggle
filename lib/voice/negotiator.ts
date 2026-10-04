@@ -1,9 +1,17 @@
 import { randomUUID } from "node:crypto";
 import { competingOffers } from "../agents";
 import { store } from "../store";
-import { handleDelegation, type DelegationResult } from "../strategist";
+import { handleDelegation, type DelegationResult, reconcileAgreement } from "../strategist";
 import type { Turn } from "../types";
-import { callContext, E164, emitReflectedAudio, loadCall, voiceState, type ActiveNegotiation, type VoiceCall } from "./context";
+import {
+  callContext,
+  E164,
+  emitReflectedAudio,
+  loadCall,
+  voiceState,
+  type ActiveNegotiation,
+  type VoiceCall,
+} from "./context";
 import { createSipSession, hangupSession, sipTrunkFromEnv, VoiceError } from "./openai";
 import { marketFact, marketInstruction, type MarketOffer } from "./prompt";
 import {
@@ -59,7 +67,8 @@ class Negotiation implements ActiveNegotiation {
   private ended = false;
   private closing = false;
   private seen = new Set<string>();
-  private open: Partial<Record<Speaker, { turnId: string; timer: ReturnType<typeof setTimeout> }>> = {};
+  private open: Partial<Record<Speaker, { turnId: string; timer: ReturnType<typeof setTimeout> }>> =
+    {};
   private lastOutputAt = 0;
   private lastInputAt = 0;
   private delegationSeq = 0;
@@ -90,7 +99,8 @@ class Negotiation implements ActiveNegotiation {
         sessionId = await this.waitForSession(180_000);
       } else if (call.channel === "phone") {
         sessionId = await this.dial(ctx.instructions);
-      } else throw new VoiceError(`Channel ${call.channel} is not a voice channel`, 400, "bad_channel");
+      } else
+        throw new VoiceError(`Channel ${call.channel} is not a voice channel`, 400, "bad_channel");
       if (!sessionId) return await this.finish("no_session");
       this.sessionId = sessionId;
       if (this.call.sessionId !== sessionId) this.patch({ sessionId });
@@ -109,7 +119,8 @@ class Negotiation implements ActiveNegotiation {
 
   private async dial(instructions: string) {
     const target = this.call.target;
-    if (!target || !E164.test(target)) throw new VoiceError(`Call ${this.callId} has no valid E.164 target`, 400, "bad_target");
+    if (!target || !E164.test(target))
+      throw new VoiceError(`Call ${this.callId} has no valid E.164 target`, 400, "bad_target");
     let mode = phoneMode();
     if (mode === "sip") {
       const trunk = sipTrunkFromEnv();
@@ -120,7 +131,10 @@ class Negotiation implements ActiveNegotiation {
         this.patch({ sessionId, status: "dialing" });
         return sessionId;
       } catch (err) {
-        if (!(err instanceof VoiceError && err.code === OUTBOUND_SIP_NOT_ENABLED && twilioFromEnv())) throw err;
+        if (
+          !(err instanceof VoiceError && err.code === OUTBOUND_SIP_NOT_ENABLED && twilioFromEnv())
+        )
+          throw err;
         console.warn(`[live ${this.callId}] outbound SIP not enabled, falling back to Twilio`);
         mode = "twilio";
       }
@@ -138,7 +152,10 @@ class Negotiation implements ActiveNegotiation {
       const fresh = await loadCall(this.callId);
       if (!fresh || fresh.status === "ended") return undefined;
       if (fresh.sessionId) {
-        this.call = { ...fresh, transcript: this.call.transcript.length ? this.call.transcript : fresh.transcript };
+        this.call = {
+          ...fresh,
+          transcript: this.call.transcript.length ? this.call.transcript : fresh.transcript,
+        };
         return fresh.sessionId;
       }
       await sleep(400);
@@ -204,7 +221,8 @@ class Negotiation implements ActiveNegotiation {
         this.appendText("agent", e.delta);
         break;
       case ServerEvent.delegationCreated:
-        if (e.delegation?.id && (!e.delegation.target || e.delegation.target === "client")) void this.delegate(e.delegation.id);
+        if (e.delegation?.id && (!e.delegation.target || e.delegation.target === "client"))
+          void this.delegate(e.delegation.id);
         break;
       case ServerEvent.transportAnswered:
         this.markLive();
@@ -245,7 +263,10 @@ class Negotiation implements ActiveNegotiation {
     }
     turn.text += delta;
     if (open) clearTimeout(open.timer);
-    this.open[speaker] = { turnId: turn.id, timer: setTimeout(() => this.finalizeTurn(speaker), TURN_IDLE_MS) };
+    this.open[speaker] = {
+      turnId: turn.id,
+      timer: setTimeout(() => this.finalizeTurn(speaker), TURN_IDLE_MS),
+    };
     this.scheduleFlush();
   }
 
@@ -270,17 +291,25 @@ class Negotiation implements ActiveNegotiation {
     const request = last?.text.trim() || "The call just connected. What should I open with?";
     let result: DelegationResult;
     try {
-      result = await handleDelegation({ callId: this.callId, policyId: this.call.policyId, request, transcript });
+      result = await handleDelegation({
+        callId: this.callId,
+        policyId: this.call.policyId,
+        request,
+        transcript,
+      });
     } catch (err) {
       console.error(`[live ${this.callId}] strategist failed`, err);
-      result = { say: "I'm still checking on that. Could you tell me the best monthly price you can offer?" };
+      result = {
+        say: "I'm still checking on that. Could you tell me the best monthly price you can offer?",
+      };
     }
     if (this.ended) return;
     const update: Partial<VoiceCall> = {};
     if (result.theirOffer != null) update.theirOffer = result.theirOffer;
     if (result.ask != null) update.ask = result.ask;
     if (result.agreedMonthly != null) update.agreedMonthly = result.agreedMonthly;
-    if (result.citing?.length) update.citing = [...new Set([...this.call.citing, ...result.citing])];
+    if (result.citing?.length)
+      update.citing = [...new Set([...this.call.citing, ...result.citing])];
     if (Object.keys(update).length) this.patch(update, true);
     const superseded = seq !== this.delegationSeq;
     if (superseded && result.agreedMonthly == null && !result.endCall) return;
@@ -326,8 +355,14 @@ class Negotiation implements ActiveNegotiation {
     });
     if (!fresh.length || this.call.agreedMonthly != null) return;
     for (const o of offers) this.announced.set(o.callId, `${o.monthly}:${o.agreed}`);
-    const best = [...fresh].sort((a, b) => a.monthly - b.monthly || Number(b.agreed) - Number(a.agreed))[0];
-    const offer: MarketOffer = { insurer: best.insurer, monthly: best.monthly, agreed: best.agreed };
+    const best = [...fresh].sort(
+      (a, b) => a.monthly - b.monthly || Number(b.agreed) - Number(a.agreed),
+    )[0];
+    const offer: MarketOffer = {
+      insurer: best.insurer,
+      monthly: best.monthly,
+      agreed: best.agreed,
+    };
     this.send(appendEvent("thinking", marketFact(offer), null, eid("market")));
     this.pendingPrompt = { offer, since: Date.now() };
   }
@@ -342,7 +377,9 @@ class Negotiation implements ActiveNegotiation {
     const quiet = Date.now() - Math.max(this.lastInputAt, this.lastOutputAt);
     if (quiet < PAUSE_MS) return;
     this.pendingPrompt = undefined;
-    this.send(appendEvent("instructions", marketInstruction(p.offer, this.quote), null, eid("leverage")));
+    this.send(
+      appendEvent("instructions", marketInstruction(p.offer, this.quote), null, eid("leverage")),
+    );
   }
 
   private async watchExternalEnd() {
@@ -361,7 +398,9 @@ class Negotiation implements ActiveNegotiation {
     this.send(closeEvent(eid("close")));
     this.after(8000, async () => {
       if (this.ended) return;
-      await hangupSession(this.sessionId!).catch((e) => console.error(`[live ${this.callId}] hangup api`, e));
+      await hangupSession(this.sessionId!).catch((e) =>
+        console.error(`[live ${this.callId}] hangup api`, e),
+      );
       this.after(4000, () => void this.finish(reason));
     });
     return this.done;
@@ -379,6 +418,9 @@ class Negotiation implements ActiveNegotiation {
     this.call.endedAt = now();
     this.call.endReason = reason;
     await this.flush();
+    await reconcileAgreement(this.callId).catch((e) =>
+      console.error(`[live ${this.callId}] agreement check failed`, e),
+    );
     this.resolveDone();
   }
 

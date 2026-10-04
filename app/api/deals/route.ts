@@ -32,8 +32,12 @@ export async function POST(req: Request) {
     autopilot?: boolean;
   };
   if (body.callId) {
+    const open = (await store.deals()).find(
+      (d) => d.callId === body.callId && d.status !== "failed" && d.status !== "declined",
+    );
+    if (open) return Response.json({ deal: open });
     const call = await store.call(body.callId);
-    const monthly = call?.agreedMonthly ?? call?.theirOffer;
+    const monthly = call?.agreedMonthly ?? body.monthly ?? call?.theirOffer;
     if (!call || monthly === undefined)
       return Response.json({ error: "Call has no agreed price" }, { status: 400 });
     return Response.json({
