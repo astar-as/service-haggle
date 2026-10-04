@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lowball — Live call (Daylight)</title>
+<link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F8}
+a{color:#575B62}a:hover{color:#13161B}
+.num{font-variant-numeric:tabular-nums}
+@keyframes wave{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
+.bar{transform-origin:center;animation:wave 1s cubic-bezier(.45,0,.55,1) infinite}
+.bar:nth-child(3n){animation-delay:-.25s}.bar:nth-child(3n+1){animation-delay:-.6s}.bar:nth-child(5n){animation-delay:-.85s}
+@keyframes breathe{0%,100%{opacity:1}50%{opacity:.35}}
+.live{animation:breathe 1.6s ease-in-out infinite}
+@keyframes caret{50%{opacity:0}}
+.caret{animation:caret 1s steps(1) infinite}
+@media (prefers-reduced-motion:reduce){.bar,.live,.caret{animation:none}}
+</style>
+</head>
+<body>
+<div style="min-height: 100vh; box-sizing: border-box; background: #F6F7F8; color: #13161B; font-family: 'Host Grotesk', ui-sans-serif, system-ui, sans-serif; font-size: 15px; line-height: 22px">
+<div style="max-width: 1240px; margin: 0 auto; padding: 24px 24px 48px; display: flex; flex-direction: column; gap: 32px">
+
+<header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px">
+<a href="day-state.html" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; text-decoration: none; font-size: 15px; font-weight: 500"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"></path><path d="m11 18-6-6 6-6"></path></svg>All policies</a>
+<span style="font-size: 15px; color: #575B62">Northstar Mutual · Auto renewal</span>
+<div style="display: flex; gap: 8px">
+<button type="button" style="min-height: 44px; padding: 0 18px; border: 0; border-radius: 12px; background: #FFFFFF; box-shadow: inset 0 0 0 1px #E3E5E7; color: #13161B; font: 600 14px 'Host Grotesk', sans-serif; cursor: pointer">Take over</button>
+<button type="button" style="min-height: 44px; padding: 0 18px; border: 0; border-radius: 12px; background: #13161B; color: #FFFFFF; font: 600 14px 'Host Grotesk', sans-serif; cursor: pointer">End call</button>
+</div>
+</header>
+
+<section style="display: flex; flex-direction: column; align-items: center; gap: 22px; text-align: center">
+<div style="display: flex; align-items: center; gap: 20px">
+<span style="width: 64px; height: 64px; border-radius: 999px; background: #2258E5; display: grid; place-items: center">
+<span aria-hidden="true" style="display: flex; align-items: center; gap: 3px; height: 26px">
+<span class="bar" style="width: 3px; height: 12px; border-radius: 2px; background: #FFFFFF"></span><span class="bar" style="width: 3px; height: 24px; border-radius: 2px; background: #FFFFFF"></span><span class="bar" style="width: 3px; height: 16px; border-radius: 2px; background: #FFFFFF"></span><span class="bar" style="width: 3px; height: 26px; border-radius: 2px; background: #FFFFFF"></span><span class="bar" style="width: 3px; height: 10px; border-radius: 2px; background: #FFFFFF"></span>
+</span>
+</span>
+<span style="display: flex; flex-direction: column; align-items: center; gap: 2px">
+<span class="num" style="font-family: 'Geist Mono', monospace; font-size: 13px; line-height: 18px; color: #2258E5; display: inline-flex; align-items: center; gap: 6px"><span class="live" style="width: 6px; height: 6px; border-radius: 999px; background: #2258E5"></span>03:12</span>
+<span style="width: 72px; height: 2px; background: repeating-linear-gradient(90deg, #C9CDD2 0 4px, transparent 4px 8px)"></span>
+</span>
+<span style="width: 64px; height: 64px; border-radius: 999px; background: #FFFFFF; box-shadow: inset 0 0 0 1px #E3E5E7; display: grid; place-items: center; font-size: 18px; font-weight: 600; color: #575B62">JN</span>
+</div>
+<p style="margin: 0; font-size: 15px; line-height: 22px; color: #6E7278">Lowball, as Maya's AI assistant, talking to <span style="color: #13161B; font-weight: 500">Jordan at Northstar renewals</span></p>
+<div style="display: flex; align-items: center; justify-content: center; gap: 28px; flex-wrap: wrap">
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="num" style="font-size: 88px; line-height: 88px; font-weight: 600; letter-spacing: -0.05em">$219</span><span style="font-size: 14px; color: #6E7278">their offer</span></div>
+<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C9CDD2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+<div style="display: flex; flex-direction: column; gap: 4px"><span class="num" style="font-size: 88px; line-height: 88px; font-weight: 600; letter-spacing: -0.05em; color: #2258E5">$200</span><span style="font-size: 14px; color: #6E7278">asking for</span></div>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #6E7278">Renewal was <span class="num" style="text-decoration: line-through">$248</span> · fair is <span class="num">$186–$214</span> · Plan B is Bayline at <span class="num">$196</span></p>
+</section>
+
+<section aria-label="Transcript" style="width: 100%; max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px">
+<div style="align-self: flex-end; max-width: 78%; padding: 12px 16px; border-radius: 18px 18px 6px 18px; background: color-mix(in oklch, #2258E5 9%, white); font-size: 16px; line-height: 24px; color: #2D3138">Hi Jordan, I'm an AI assistant calling for Maya Okafor about her auto renewal.</div>
+<div style="align-self: flex-start; max-width: 78%; padding: 12px 16px; border-radius: 18px 18px 18px 6px; background: #FFFFFF; box-shadow: inset 0 0 0 1px #E3E5E7; font-size: 16px; line-height: 24px; color: #2D3138">Sure, I have it here. It renews at $248 a month.</div>
+<div style="align-self: flex-end; max-width: 78%; padding: 12px 16px; border-radius: 18px 18px 6px 18px; background: color-mix(in oklch, #2258E5 9%, white); font-size: 16px; line-height: 24px; color: #2D3138">Bayline quoted her $196 with the same limits, and she's had a clean record since 2019. Can you get closer to that?</div>
+<div style="align-self: flex-start; max-width: 78%; padding: 12px 16px; border-radius: 18px 18px 18px 6px; background: #FFFFFF; box-shadow: inset 0 0 0 1px #E3E5E7; font-size: 16px; line-height: 24px; color: #13161B; font-weight: 500">Okay. Best I can do is $219.</div>
+<div style="align-self: flex-end; max-width: 78%; padding: 14px 18px; border-radius: 18px 18px 6px 18px; background: #2258E5; font-size: 18px; line-height: 26px; color: #FFFFFF; text-align: left">Northstar cut its California rates about 4% last month, and drivers with Maya's profile pay $186 to $214 with you. <span style="opacity: 0.6">At $200 she stays</span><span class="caret" style="display: inline-block; width: 2px; height: 18px; margin-left: 3px; vertical-align: -3px; background: #FFFFFF"></span></div>
+</section>
+
+<section aria-label="Why $200" style="display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 15px; line-height: 22px; font-weight: 600; color: #575B62">Why $200</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 10px">
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 16px 18px; border-radius: 16px; background: #FFFFFF; box-shadow: 0 0 0 1.5px #2258E5">
+<span style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px; line-height: 18px; color: #6E7278"><span>Rate filing · Exa</span><span style="color: #2258E5; font-weight: 600">Citing now</span></span>
+<span style="font-size: 15px; line-height: 22px">Northstar's California auto rates down 4.1%, effective Sep 1.</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 16px 18px; border-radius: 16px; background: #FFFFFF; box-shadow: 0 0 0 1.5px #2258E5">
+<span style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px; line-height: 18px; color: #6E7278"><span>Lowball network · Neon</span><span style="color: #2258E5; font-weight: 600">Citing now</span></span>
+<span style="font-size: 15px; line-height: 22px">14 members with Maya's profile pay $186–$214 at Northstar.</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 16px 18px; border-radius: 16px; background: #FFFFFF; box-shadow: 0 0 0 1px #E3E5E7">
+<span style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px; line-height: 18px; color: #6E7278"><span>Competitor quote · Kernel</span><span class="num">Cited 00:19</span></span>
+<span style="font-size: 15px; line-height: 22px; color: #575B62">Bayline: $196/mo, same limits and deductible.</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 16px 18px; border-radius: 16px; background: #FFFFFF; box-shadow: 0 0 0 1px #E3E5E7">
+<span style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px; line-height: 18px; color: #6E7278"><span>Her policy · AgentMail</span><span class="num">Cited 00:19</span></span>
+<span style="font-size: 15px; line-height: 22px; color: #575B62">Clean record since 2019, no claims, 7 years with Northstar.</span>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lowball — Live call (Daylight, simpler)</title>
+<link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F6F7F8}
+a{color:#575B62}a:hover{color:#13161B}
+.num{font-variant-numeric:tabular-nums}
+@keyframes breathe{0%,100%{opacity:1}50%{opacity:.35}}
+.live{animation:breathe 1.6s ease-in-out infinite}
+@keyframes caret{50%{opacity:0}}
+.caret{animation:caret 1s steps(1) infinite}
+@media (prefers-reduced-motion:reduce){.live,.caret{animation:none}}
+</style>
+</head>
+<body>
+<div style="min-height: 100vh; box-sizing: border-box; background: #F6F7F8; color: #13161B; font-family: 'Host Grotesk', ui-sans-serif, system-ui, sans-serif; font-size: 15px; line-height: 22px">
+<div style="max-width: 720px; margin: 0 auto; padding: 28px 20px 56px; display: flex; flex-direction: column; gap: 40px">
+
+<header style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<a href="b2-state.html" style="display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin: -10px 0 -10px -4px; text-decoration: none; font-size: 15px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>All policies</a>
+<button type="button" style="min-height: 44px; padding: 0 18px; border: 0; border-radius: 12px; background: #FFFFFF; box-shadow: inset 0 0 0 1px #E3E5E7; color: #13161B; font: 600 14px 'Host Grotesk', sans-serif; cursor: pointer">Take over</button>
+</header>
+
+<section style="display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center">
+<span style="display: inline-flex; align-items: center; gap: 8px; font-size: 15px; line-height: 22px; color: #575B62"><span class="live" style="width: 8px; height: 8px; border-radius: 999px; background: #2258E5"></span>On the phone with Jordan at Northstar · <span class="num">03:12</span></span>
+<div style="display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap">
+<span class="num" style="font-size: 96px; line-height: 96px; font-weight: 600; letter-spacing: -0.05em; color: #B4B8BE">$219</span>
+<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#C9CDD2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+<span class="num" style="font-size: 96px; line-height: 96px; font-weight: 600; letter-spacing: -0.05em; color: #2258E5">$200</span>
+</div>
+<span style="font-size: 15px; line-height: 22px; color: #6E7278">Their offer → what Lowball is asking for</span>
+</section>
+
+<section aria-label="Transcript" style="display: flex; flex-direction: column; gap: 10px">
+<div style="align-self: flex-start; max-width: 80%; padding: 12px 16px; border-radius: 18px 18px 18px 6px; background: #FFFFFF; box-shadow: inset 0 0 0 1px #E3E5E7; font-size: 16px; line-height: 24px">Okay. Best I can do is $219.</div>
+<div style="align-self: flex-end; max-width: 80%; display: flex; flex-direction: column; align-items: flex-end; gap: 8px">
+<div style="padding: 14px 18px; border-radius: 18px 18px 6px 18px; background: #2258E5; font-size: 18px; line-height: 26px; color: #FFFFFF; text-align: left">Northstar cut its California rates about 4% last month, and drivers with Maya's profile pay $186 to $214 with you. <span style="opacity: 0.6">At $200 she stays</span><span class="caret" style="display: inline-block; width: 2px; height: 18px; margin-left: 3px; vertical-align: -3px; background: #FFFFFF"></span></div>
+<div style="display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px">
+<span style="padding: 4px 10px; border-radius: 999px; background: #FFFFFF; box-shadow: inset 0 0 0 1px #E3E5E7; font-size: 13px; line-height: 18px; color: #575B62">Northstar rate filing · Exa</span>
+<span style="padding: 4px 10px; border-radius: 999px; background: #FFFFFF; box-shadow: inset 0 0 0 1px #E3E5E7; font-size: 13px; line-height: 18px; color: #575B62">14 drivers like Maya · Lowball network</span>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+</body>
+</html>

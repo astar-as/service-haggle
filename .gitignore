@@ -9,3 +9,7 @@ dist/
 .DS_Store
 .mastra/
 data/private/
+next-env.d.ts
+*.tsbuildinfo
+.vercel
+.fly/

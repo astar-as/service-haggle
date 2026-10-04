@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-host), ui-sans-serif, system-ui, sans-serif;
+  --color-canvas: #f6f7f8;
+  --color-ink: #13161b;
+  --color-ink-2: #2d3138;
+  --color-muted: #575b62;
+  --color-subtle: #6e7278;
+  --color-faint: #9a9ea5;
+  --color-line: #e3e5e7;
+  --color-hair: #eef0f2;
+  --color-accent: #2258e5;
+  --color-accent-soft: #e9effd;
+  --color-money: #298646;
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 22px;
+  }
+  ::selection {
+    background: var(--color-accent-soft);
+  }
+}
+
+@utility num {
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.live {
+  animation: breathe 1.6s ease-in-out infinite;
+}
+
+.caret {
+  animation: caret 1s steps(1) infinite;
+}
+
+.rise {
+  animation: rise 0.32s var(--ease-out-strong) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live,
+  .caret,
+  .rise {
+    animation: none;
+  }
+}

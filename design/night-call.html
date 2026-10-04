@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lowball — Live call (Night)</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Geist+Pixel&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0B0A08}
+a{color:#ADAAA5}a:hover{color:#F5F3EF}
+.num{font-variant-numeric:tabular-nums}
+@keyframes wave{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
+.bar{transform-origin:center;animation:wave 1s cubic-bezier(.45,0,.55,1) infinite}
+.bar:nth-child(3n){animation-delay:-.25s}.bar:nth-child(3n+1){animation-delay:-.6s}.bar:nth-child(5n){animation-delay:-.85s}
+@keyframes breathe{0%,100%{opacity:1}50%{opacity:.35}}
+.live{animation:breathe 1.6s ease-in-out infinite}
+@keyframes caret{50%{opacity:0}}
+.caret{animation:caret 1s steps(1) infinite}
+@media (prefers-reduced-motion:reduce){.bar,.live,.caret{animation:none}}
+</style>
+</head>
+<body>
+<div style="min-height: 100vh; box-sizing: border-box; background: #0B0A08; color: #F5F3EF; font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 15px; line-height: 22px">
+<div style="max-width: 1240px; margin: 0 auto; padding: 24px 24px 40px; display: flex; flex-direction: column; gap: 28px">
+
+<header style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px">
+<a href="night-state.html" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; text-decoration: none; font-size: 14px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"></path><path d="m11 18-6-6 6-6"></path></svg>All policies</a>
+<div style="flex: 1 1 280px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: #52A9FE; display: inline-flex; align-items: center; gap: 6px"><span class="live" style="width: 7px; height: 7px; border-radius: 999px; background: #52A9FE"></span>On call <span class="num">03:12</span></span>
+<span style="color: #3A3734">/</span>
+<span style="font-size: 14px; color: #ADAAA5">Northstar Mutual · Auto renewal</span>
+</div>
+<div style="display: flex; gap: 8px">
+<button type="button" style="min-height: 44px; padding: 0 16px; border: 0; border-radius: 10px; background: #1D1B19; box-shadow: inset 0 0 0 1px #3A3734; color: #F5F3EF; font: 500 14px 'Geist', sans-serif; cursor: pointer">Take over</button>
+<button type="button" style="min-height: 44px; padding: 0 16px; border: 0; border-radius: 10px; background: transparent; box-shadow: inset 0 0 0 1px rgba(247,94,84,0.5); color: #F75E54; font: 500 14px 'Geist', sans-serif; cursor: pointer">End call</button>
+</div>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 22px; padding: 24px; border-radius: 16px; background: #141210; box-shadow: inset 0 0 0 1px #282623">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 20px 48px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: #83807B">Their offer</span>
+<span class="num" style="font-family: 'Geist Pixel', 'Geist Mono', monospace; font-size: 52px; line-height: 48px">$219</span>
+</div>
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3A3734" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-bottom: 10px"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: #83807B">Asking for</span>
+<span class="num" style="font-family: 'Geist Pixel', 'Geist Mono', monospace; font-size: 52px; line-height: 48px; color: #C8F633">$200</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: #83807B">Renewal was</span>
+<span class="num" style="font-family: 'Geist Pixel', 'Geist Mono', monospace; font-size: 28px; line-height: 30px; color: #83807B; text-decoration: line-through; text-decoration-thickness: 2px">$248</span>
+</div>
+<p style="margin: 0 0 0 auto; max-width: 300px; font-size: 14px; line-height: 20px; color: #ADAAA5; text-wrap: pretty"><span style="color: #F5F3EF">If they stop above $214,</span> Lowball switches Maya to Bayline at $196.</p>
+</div>
+
+<div aria-label="Price rail from $180 to $250" style="position: relative; height: 76px">
+<div style="position: absolute; left: 8.57%; width: 40%; top: 24px; height: 16px; border-radius: 4px; background: color-mix(in oklch, #C8F633 14%, transparent); box-shadow: inset 0 0 0 1px color-mix(in oklch, #C8F633 30%, transparent)"></div>
+<span style="position: absolute; left: 8.57%; top: 0; font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; color: #C8F633; white-space: nowrap">Fair $186–$214</span>
+<div style="position: absolute; left: 0; right: 0; top: 31px; height: 2px; background: #282623"></div>
+<div style="position: absolute; left: 28.57%; width: 27.14%; top: 30px; height: 4px; background: repeating-linear-gradient(90deg, #83807B 0 4px, transparent 4px 8px)"></div>
+<div style="position: absolute; left: 55.71%; width: 41.43%; top: 30px; height: 4px; border-radius: 2px; background: #C8F633"></div>
+<div style="position: absolute; left: 22.86%; top: 22px; width: 2px; height: 20px; margin-left: -1px; background: #83807B"></div>
+<span style="position: absolute; left: 22.86%; top: 48px; transform: translateX(-50%); font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; color: #83807B; white-space: nowrap">Bayline $196</span>
+<div style="position: absolute; left: 28.57%; top: 18px; width: 2px; height: 28px; margin-left: -1px; background: #C8F633"></div>
+<span style="position: absolute; left: 28.57%; top: 60px; transform: translateX(-50%); font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; color: #C8F633; white-space: nowrap">Ask $200</span>
+<div style="position: absolute; left: 80%; top: 28px; width: 8px; height: 8px; margin-left: -4px; border-radius: 999px; background: #3A3734"></div>
+<span style="position: absolute; left: 80%; top: 48px; transform: translateX(-50%); font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; color: #83807B; white-space: nowrap">$236</span>
+<div style="position: absolute; left: 97.14%; top: 28px; width: 8px; height: 8px; margin-left: -4px; border-radius: 999px; background: #3A3734"></div>
+<span style="position: absolute; right: 0; top: 48px; font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; color: #83807B; white-space: nowrap">Opened $248</span>
+<div style="position: absolute; left: 55.71%; top: 24px; width: 16px; height: 16px; margin-left: -8px; border-radius: 999px; background: #F5F3EF; box-shadow: 0 0 0 4px #141210, 0 0 0 5px #3A3734"></div>
+<span style="position: absolute; left: 55.71%; top: 0; transform: translateX(-50%); font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; color: #F5F3EF; white-space: nowrap">Offer $219</span>
+</div>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start">
+
+<section aria-label="Transcript" style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+<div style="display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 16px">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 26px; letter-spacing: 0.04em; text-transform: uppercase; color: #52A9FE">Lowball</span>
+<p style="margin: 0; font-size: 18px; line-height: 26px; color: #ADAAA5; text-wrap: pretty">Hi Jordan, I'm an AI assistant calling for Maya Okafor about her auto renewal.</p>
+</div>
+<div style="display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 16px">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 26px; letter-spacing: 0.04em; text-transform: uppercase; color: #83807B">Jordan</span>
+<p style="margin: 0; font-size: 18px; line-height: 26px; color: #ADAAA5; text-wrap: pretty">Sure, I have it here. It renews at $248 a month.</p>
+</div>
+<div style="display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 16px">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 26px; letter-spacing: 0.04em; text-transform: uppercase; color: #52A9FE">Lowball</span>
+<p style="margin: 0; font-size: 18px; line-height: 26px; color: #ADAAA5; text-wrap: pretty">Bayline quoted her $196 with the same limits, and she's had a clean record since 2019. Can you get closer to that?</p>
+</div>
+<div style="display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 16px">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 26px; letter-spacing: 0.04em; text-transform: uppercase; color: #83807B">Jordan</span>
+<p style="margin: 0; font-size: 18px; line-height: 26px; color: #F5F3EF; text-wrap: pretty">Okay. Best I can do is $219.</p>
+</div>
+<div style="display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 16px; padding: 16px 0 0; border-top: 1px solid #282623">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 30px; letter-spacing: 0.04em; text-transform: uppercase; color: #52A9FE">Lowball</span>
+<p style="margin: 0; font-size: 22px; line-height: 30px; color: #F5F3EF; text-wrap: pretty">Northstar cut its California rates about 4% last month, and drivers with Maya's profile pay $186 to $214 with you. <span style="opacity: 0.55">At $200 she stays</span><span class="caret" style="display: inline-block; width: 2px; height: 22px; margin-left: 3px; vertical-align: -3px; background: #52A9FE"></span></p>
+</div>
+</section>
+
+<aside aria-label="Why $200" style="flex: 1 1 340px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0 0 4px; font-size: 14px; line-height: 20px; font-weight: 600; color: #ADAAA5">Why $200</h2>
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: 12px; background: #141210; box-shadow: inset 0 0 0 1px rgba(82,169,254,0.55)">
+<div style="display: flex; justify-content: space-between; gap: 8px; font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.04em; text-transform: uppercase"><span style="color: #ADAAA5">Rate filing · Exa</span><span style="color: #52A9FE">Citing now</span></div>
+<p style="margin: 0; font-size: 14px; line-height: 20px">Northstar's California auto rates down 4.1%, effective Sep 1.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: 12px; background: #141210; box-shadow: inset 0 0 0 1px rgba(82,169,254,0.55)">
+<div style="display: flex; justify-content: space-between; gap: 8px; font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.04em; text-transform: uppercase"><span style="color: #ADAAA5">Lowball network · Neon</span><span style="color: #52A9FE">Citing now</span></div>
+<p style="margin: 0; font-size: 14px; line-height: 20px">14 members with Maya's profile pay $186–$214 at Northstar.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: 12px; box-shadow: inset 0 0 0 1px #282623">
+<div style="display: flex; justify-content: space-between; gap: 8px; font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: #83807B"><span>Competitor quote · Kernel</span><span class="num">Cited 00:19</span></div>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #ADAAA5">Bayline: $196/mo, same limits and deductible.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: 12px; box-shadow: inset 0 0 0 1px #282623">
+<div style="display: flex; justify-content: space-between; gap: 8px; font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: #83807B"><span>Her policy · AgentMail</span><span class="num">Cited 00:19</span></div>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #ADAAA5">Clean record since 2019, no claims, 7 years with Northstar.</p>
+</div>
+</aside>
+
+</div>
+
+<footer aria-hidden="true" style="display: flex; flex-wrap: wrap; gap: 12px 32px; padding-top: 20px; border-top: 1px solid #282623">
+<div style="display: flex; align-items: center; gap: 12px">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: #52A9FE; width: 64px">Lowball</span>
+<div style="display: flex; align-items: center; gap: 3px; height: 28px">
+<span class="bar" style="width: 3px; height: 12px; border-radius: 2px; background: #52A9FE"></span><span class="bar" style="width: 3px; height: 24px; border-radius: 2px; background: #52A9FE"></span><span class="bar" style="width: 3px; height: 18px; border-radius: 2px; background: #52A9FE"></span><span class="bar" style="width: 3px; height: 28px; border-radius: 2px; background: #52A9FE"></span><span class="bar" style="width: 3px; height: 14px; border-radius: 2px; background: #52A9FE"></span><span class="bar" style="width: 3px; height: 22px; border-radius: 2px; background: #52A9FE"></span><span class="bar" style="width: 3px; height: 10px; border-radius: 2px; background: #52A9FE"></span><span class="bar" style="width: 3px; height: 26px; border-radius: 2px; background: #52A9FE"></span><span class="bar" style="width: 3px; height: 16px; border-radius: 2px; background: #52A9FE"></span><span class="bar" style="width: 3px; height: 20px; border-radius: 2px; background: #52A9FE"></span><span class="bar" style="width: 3px; height: 8px; border-radius: 2px; background: #52A9FE"></span><span class="bar" style="width: 3px; height: 24px; border-radius: 2px; background: #52A9FE"></span><span class="bar" style="width: 3px; height: 12px; border-radius: 2px; background: #52A9FE"></span><span class="bar" style="width: 3px; height: 18px; border-radius: 2px; background: #52A9FE"></span>
+</div>
+</div>
+<div style="display: flex; align-items: center; gap: 12px">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: #83807B; width: 64px">Jordan</span>
+<div style="display: flex; align-items: center; gap: 3px; height: 28px">
+<span style="width: 3px; height: 4px; border-radius: 2px; background: #3A3734"></span><span style="width: 3px; height: 4px; border-radius: 2px; background: #3A3734"></span><span style="width: 3px; height: 4px; border-radius: 2px; background: #3A3734"></span><span style="width: 3px; height: 4px; border-radius: 2px; background: #3A3734"></span><span style="width: 3px; height: 4px; border-radius: 2px; background: #3A3734"></span><span style="width: 3px; height: 4px; border-radius: 2px; background: #3A3734"></span><span style="width: 3px; height: 4px; border-radius: 2px; background: #3A3734"></span><span style="width: 3px; height: 4px; border-radius: 2px; background: #3A3734"></span><span style="width: 3px; height: 4px; border-radius: 2px; background: #3A3734"></span><span style="width: 3px; height: 4px; border-radius: 2px; background: #3A3734"></span><span style="width: 3px; height: 4px; border-radius: 2px; background: #3A3734"></span><span style="width: 3px; height: 4px; border-radius: 2px; background: #3A3734"></span><span style="width: 3px; height: 4px; border-radius: 2px; background: #3A3734"></span><span style="width: 3px; height: 4px; border-radius: 2px; background: #3A3734"></span>
+</div>
+</div>
+<span style="margin-left: auto; font-family: 'Geist Mono', monospace; font-size: 12px; line-height: 28px; color: #83807B">GPT-Live · voice “marin”</span>
+</footer>
+
+</div>
+</div>
+</body>
+</html>

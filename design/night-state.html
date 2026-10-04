@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lowball — State (Night)</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Geist+Pixel&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0B0A08}
+a{color:#F5F3EF}a:hover{color:#FFFFFF}
+.num{font-variant-numeric:tabular-nums}
+@keyframes wave{0%,100%{transform:scaleY(.35)}50%{transform:scaleY(1)}}
+.bar{transform-origin:center;animation:wave 1.1s cubic-bezier(.45,0,.55,1) infinite}
+.bar:nth-child(3n){animation-delay:-.3s}.bar:nth-child(3n+1){animation-delay:-.65s}.bar:nth-child(4n){animation-delay:-.9s}
+@keyframes breathe{0%,100%{opacity:1}50%{opacity:.35}}
+.live{animation:breathe 1.6s ease-in-out infinite}
+.row-link{transition:box-shadow .16s cubic-bezier(.23,1,.32,1),background-color .16s cubic-bezier(.23,1,.32,1)}
+.row-link:hover{background-color:#191714}
+@media (prefers-reduced-motion:reduce){.bar,.live{animation:none}}
+</style>
+</head>
+<body>
+<div style="min-height: 100vh; box-sizing: border-box; background: #0B0A08; color: #F5F3EF; font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 15px; line-height: 22px">
+<div style="max-width: 960px; margin: 0 auto; padding: 28px 24px 56px; display: flex; flex-direction: column; gap: 48px">
+
+<header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px">
+<span style="font-family: 'Geist Pixel', 'Geist Mono', monospace; font-size: 24px; line-height: 28px; letter-spacing: 0.02em; color: #C8F633">lowball</span>
+<div style="display: flex; align-items: center; gap: 16px; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; line-height: 16px; color: #83807B">
+<span>maya.lowball@agentmail.to</span>
+<span aria-label="Maya Okafor" style="width: 28px; height: 28px; border-radius: 999px; background: #1D1B19; box-shadow: inset 0 0 0 1px #3A3734; color: #ADAAA5; display: grid; place-items: center; font-family: 'Geist', sans-serif; font-size: 11px; font-weight: 600">MO</span>
+</div>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; line-height: 16px; letter-spacing: 0.04em; text-transform: uppercase; color: #83807B">Maya's insurance · 5 policies</p>
+<h1 style="margin: 0; font-size: 44px; line-height: 52px; font-weight: 600; letter-spacing: -0.025em; text-wrap: balance">You pay <span class="num">$598</span> a month. Fair is about <span class="num" style="color: #C8F633">$520</span>.</h1>
+<p style="margin: 0; font-size: 20px; line-height: 28px; color: #ADAAA5; display: flex; align-items: center; gap: 10px; flex-wrap: wrap"><span class="live" style="width: 8px; height: 8px; border-radius: 999px; background: #52A9FE; flex: none"></span>Right now I'm on the phone with Northstar about your car.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 40px; margin-top: 18px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: #83807B">Saved so far</span>
+<span class="num" style="font-family: 'Geist Pixel', 'Geist Mono', monospace; font-size: 36px; line-height: 36px; color: #C8F633">$108<span style="font-size: 16px; color: #83807B">/yr</span></span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: #83807B">Still on the table</span>
+<span class="num" style="font-family: 'Geist Pixel', 'Geist Mono', monospace; font-size: 36px; line-height: 36px; color: #F5F3EF">$936<span style="font-size: 16px; color: #83807B">/yr</span></span>
+</div>
+</div>
+</section>
+
+<section aria-label="Policies" style="display: flex; flex-direction: column; gap: 4px">
+
+<a href="night-call.html" class="row-link" style="display: flex; flex-direction: column; gap: 18px; padding: 20px; margin: 0 -20px 8px; border-radius: 14px; background: #141210; box-shadow: 0 0 0 1px rgba(82,169,254,0.45), 0 0 0 5px rgba(82,169,254,0.08); text-decoration: none; color: #F5F3EF">
+<div style="display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: flex-start">
+<div style="flex: 0 0 180px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: #52A9FE">Auto</span>
+<span style="font-size: 17px; line-height: 24px; font-weight: 600">Northstar Mutual</span>
+</div>
+<p style="flex: 1 1 320px; margin: 0; font-size: 16px; line-height: 24px; color: #ADAAA5; text-wrap: pretty"><span style="color: #F5F3EF">Overpaying about $48 a month.</span> Bayline quotes $196 for the same cover, and drivers like you pay $186–$214 here. Negotiating now.</p>
+<div style="flex: 0 0 120px; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; margin-left: auto">
+<span class="num" style="font-family: 'Geist Mono', monospace; font-size: 18px; line-height: 24px; font-weight: 500">$248<span style="font-size: 12px; color: #83807B">/mo</span></span>
+<span style="display: inline-flex; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: #52A9FE"><span class="live" style="width: 6px; height: 6px; border-radius: 999px; background: #52A9FE"></span>On call <span class="num">03:12</span></span>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding-top: 16px; border-top: 1px solid #282623">
+<div aria-hidden="true" style="display: flex; align-items: center; gap: 3px; height: 28px; flex: none">
+<span class="bar" style="width: 3px; height: 10px; border-radius: 2px; background: #52A9FE"></span>
+<span class="bar" style="width: 3px; height: 22px; border-radius: 2px; background: #52A9FE"></span>
+<span class="bar" style="width: 3px; height: 16px; border-radius: 2px; background: #52A9FE"></span>
+<span class="bar" style="width: 3px; height: 28px; border-radius: 2px; background: #52A9FE"></span>
+<span class="bar" style="width: 3px; height: 12px; border-radius: 2px; background: #52A9FE"></span>
+<span class="bar" style="width: 3px; height: 24px; border-radius: 2px; background: #52A9FE"></span>
+<span class="bar" style="width: 3px; height: 18px; border-radius: 2px; background: #52A9FE"></span>
+<span class="bar" style="width: 3px; height: 26px; border-radius: 2px; background: #52A9FE"></span>
+<span class="bar" style="width: 3px; height: 9px; border-radius: 2px; background: #52A9FE"></span>
+<span class="bar" style="width: 3px; height: 20px; border-radius: 2px; background: #52A9FE"></span>
+<span class="bar" style="width: 3px; height: 14px; border-radius: 2px; background: #52A9FE"></span>
+<span class="bar" style="width: 3px; height: 8px; border-radius: 2px; background: #52A9FE"></span>
+</div>
+<p style="flex: 1 1 360px; margin: 0; font-size: 15px; line-height: 22px; color: #F5F3EF">“Okay. Best I can do is $219.” <span style="color: #83807B">— Jordan, Northstar renewals</span></p>
+<span style="font-family: 'Geist Mono', monospace; font-size: 12px; line-height: 16px; color: #83807B; display: inline-flex; align-items: center; gap: 6px">Listen in<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg></span>
+</div>
+</a>
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: flex-start; padding: 22px 0; border-bottom: 1px solid #282623">
+<div style="flex: 0 0 180px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: #83807B">Health</span>
+<span style="font-size: 17px; line-height: 24px; font-weight: 600">Meridian Health</span>
+</div>
+<p style="flex: 1 1 320px; margin: 0; font-size: 16px; line-height: 24px; color: #ADAAA5; text-wrap: pretty"><span style="color: #F5F3EF">Probably $30 a month too high.</span> A cheaper silver plan with your doctors in it opens on Nov 1. Holding until then.</p>
+<div style="flex: 0 0 120px; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; margin-left: auto">
+<span class="num" style="font-family: 'Geist Mono', monospace; font-size: 18px; line-height: 24px; font-weight: 500">$286<span style="font-size: 12px; color: #83807B">/mo</span></span>
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: #FCB442">Building leverage</span>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: flex-start; padding: 22px 0; border-bottom: 1px solid #282623">
+<div style="flex: 0 0 180px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: #83807B">Pet</span>
+<span style="font-size: 17px; line-height: 24px; font-weight: 600">Pawsure</span>
+</div>
+<p style="flex: 1 1 320px; margin: 0; font-size: 16px; line-height: 24px; color: #ADAAA5; text-wrap: pretty"><span style="color: #F5F3EF">Won $9 a month off on Sep 29.</span> Pawsure confirmed by email. Nothing left to push on.</p>
+<div style="flex: 0 0 120px; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; margin-left: auto">
+<span class="num" style="font-family: 'Geist Mono', monospace; font-size: 18px; line-height: 24px; font-weight: 500">$22<span style="font-size: 12px; color: #83807B">/mo</span></span>
+<span class="num" style="font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: #C8F633">−$108/yr</span>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: flex-start; padding: 22px 0; border-bottom: 1px solid #282623">
+<div style="flex: 0 0 180px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: #83807B">Life</span>
+<span style="font-size: 17px; line-height: 24px; font-weight: 600">Evergreen Term</span>
+</div>
+<p style="flex: 1 1 320px; margin: 0; font-size: 16px; line-height: 24px; color: #ADAAA5; text-wrap: pretty"><span style="color: #F5F3EF">Fair for a 20-year term at 29.</span> Nothing better turned up this month.</p>
+<div style="flex: 0 0 120px; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; margin-left: auto">
+<span class="num" style="font-family: 'Geist Mono', monospace; font-size: 18px; line-height: 24px; font-weight: 500">$24<span style="font-size: 12px; color: #83807B">/mo</span></span>
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: #83807B">Fair</span>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: flex-start; padding: 22px 0; border-bottom: 1px solid #282623">
+<div style="flex: 0 0 180px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: #83807B">Renters</span>
+<span style="font-size: 17px; line-height: 24px; font-weight: 600">Hearthly</span>
+</div>
+<p style="flex: 1 1 320px; margin: 0; font-size: 16px; line-height: 24px; color: #ADAAA5; text-wrap: pretty"><span style="color: #F5F3EF">Fair.</span> Cheapest of 9 quotes with the same cover. Leaving it alone.</p>
+<div style="flex: 0 0 120px; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; margin-left: auto">
+<span class="num" style="font-family: 'Geist Mono', monospace; font-size: 18px; line-height: 24px; font-weight: 500">$18<span style="font-size: 12px; color: #83807B">/mo</span></span>
+<span style="font-family: 'Geist Mono', monospace; font-size: 11px; line-height: 14px; letter-spacing: 0.04em; text-transform: uppercase; color: #83807B">Fair</span>
+</div>
+</div>
+
+</section>
+
+<footer style="display: flex; flex-direction: column; gap: 14px">
+<form style="display: flex; align-items: center; gap: 8px; padding: 6px 6px 6px 16px; border-radius: 12px; background: #141210; box-shadow: inset 0 0 0 1px #282623">
+<label for="ask-night" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Ask Lowball</label>
+<input id="ask-night" type="text" placeholder="Ask why, or tell it what to do…" style="flex: 1; min-width: 0; height: 44px; border: 0; outline: none; background: transparent; color: #F5F3EF; font-family: 'Geist', sans-serif; font-size: 15px">
+<button type="button" aria-label="Send" style="width: 44px; height: 44px; border: 0; border-radius: 9px; background: #F5F3EF; color: #0B0A08; display: grid; place-items: center; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"></path><path d="m5 12 7-7 7 7"></path></svg></button>
+</form>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-family: 'Geist Mono', monospace; font-size: 12px; line-height: 16px; color: #83807B">
+<span>Forward any policy or renewal notice to maya.lowball@agentmail.to</span>
+<button type="button" style="display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0; border: 0; background: transparent; color: #ADAAA5; font: inherit; cursor: pointer"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"></path></svg>Replay the last 30 days</button>
+</div>
+</footer>
+
+</div>
+</div>
+</body>
+</html>
