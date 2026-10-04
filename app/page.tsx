@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Ask } from "@/components/ask";
+import { DecPageUpload } from "@/components/dec-page-upload";
 import { Chevron } from "@/components/icons";
 import { LiveRefresh } from "@/components/live-refresh";
 import { NegotiateAll } from "@/components/negotiate-all";
@@ -75,6 +76,7 @@ export default async function Home() {
 
       <div className="flex flex-col gap-3">
         <Ask placeholder="Ask Lowball anything…" />
+        <DecPageUpload />
         <NegotiateAll />
       </div>
     </main>
