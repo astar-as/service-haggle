@@ -1,0 +1,1 @@
+{"id":"muu87vhqe7a1fbd2","member":"leon-hesthaug-bb51b9","lamport":76,"ts":1791142869808,"type":"upsert","kind":"task","key":"dec-page-parser","data":{"status":"doing","owner":"leon-hesthaug-bb51b9","areas":["lib/decpage.ts","app/api/decpage","components/dec-page-upload.tsx"]},"source":"explicit"}
