@@ -14,3 +14,5 @@ next-env.d.ts
 .vercel
 .fly/
 .env*
+video/node_modules/
+video/out/

@@ -1,0 +1,22 @@
+{
+  "name": "lowball-video",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts Demo out/lowball-demo.mp4"
+  },
+  "dependencies": {
+    "@remotion/cli": "latest",
+    "@remotion/google-fonts": "latest",
+    "@remotion/media": "^4.0.532",
+    "@remotion/transitions": "latest",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "remotion": "latest"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "typescript": "^5"
+  }
+}
