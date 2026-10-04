@@ -2,9 +2,9 @@ import { EventEmitter } from "node:events";
 import { neon } from "@neondatabase/serverless";
 import { withCoverage } from "./coverage";
 import * as seed from "./seed";
-import type { Call, MemberRate, Person, Policy, PriceCandidate, Signal, Stance, StoreEvent, Transaction } from "./types";
+import type { Call, Deal, MemberRate, Person, Policy, PriceCandidate, Signal, Stance, StoreEvent, Transaction } from "./types";
 
-type Collection = "person" | "policy" | "stance" | "signal" | "transaction" | "member_rate" | "call" | "price";
+type Collection = "person" | "policy" | "stance" | "signal" | "transaction" | "member_rate" | "call" | "price" | "deal";
 
 interface Backend {
   all<T>(collection: Collection): Promise<T[]>;
@@ -25,6 +25,7 @@ function seedDocs(): Record<Collection, Map<string, unknown>> {
     member_rate: m(seed.memberRates, (x) => x.id),
     call: new Map(),
     price: new Map(),
+    deal: new Map(),
   };
 }
 
@@ -171,6 +172,15 @@ export const store = {
   },
   async removePrice(id: string) {
     await db().remove("price", id);
+  },
+  async deal(id: string) {
+    return db().get<Deal>("deal", id);
+  },
+  async deals(): Promise<Deal[]> {
+    return db().all<Deal>("deal");
+  },
+  async putDeal(d: Deal) {
+    await db().put("deal", d.id, { ...d, updatedAt: new Date().toISOString() });
   },
   async call(id: string) {
     return db().get<Call>("call", id);

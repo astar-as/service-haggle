@@ -16,6 +16,7 @@ export const person: Person = {
     { label: "Driving record", value: "Clean, no claims since 2019", disclosure: "shareable" },
     { label: "Date of birth", value: "1997-03-14", disclosure: "hidden" },
     { label: "Driver's licence", value: "D4417820", disclosure: "hidden" },
+    { label: "Home address", value: "2417 Folsom St, Apt 3, San Francisco, CA 94110", disclosure: "hidden" },
     { label: "Salary", value: "$118,000/yr", disclosure: "private" },
   ],
 };
@@ -32,6 +33,7 @@ export const policies: Policy[] = [
     memberSince: 2019,
     facts: [
       { label: "Vehicle", value: "2019 Honda Civic LX", disclosure: "shareable" },
+      { label: "VIN", value: "2HGFC2F69KH512876", disclosure: "hidden" },
       { label: "Deductible", value: "$500", disclosure: "shareable" },
       { label: "Annual mileage on file", value: "12,000", disclosure: "shareable" },
       { label: "Liability limits", value: "100/300/100", disclosure: "shareable" },

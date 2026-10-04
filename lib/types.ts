@@ -137,6 +137,53 @@ export interface PriceCandidate {
   at: string;
 }
 
+// Closing a deal over email: confirm terms, release sealed facts by draft, verify the
+// contract, Maya signs, the desk binds. Every step is a real AgentMail message.
+export type DealStatus = "confirming" | "awaiting_release" | "releasing" | "checking_contract" | "awaiting_signature" | "signing" | "bound" | "declined" | "failed";
+
+export interface DealMail {
+  at: string;
+  direction: "out" | "in" | "draft";
+  from: string;
+  to: string;
+  subject: string;
+  summary: string;
+  labels: string[];
+  attachment?: string;
+  messageId?: string;
+}
+
+export interface DealCheck {
+  label: string;
+  expected: string;
+  found: string;
+  ok: boolean;
+}
+
+export interface Deal {
+  id: string;
+  ref: string;
+  policyId: string;
+  callId?: string;
+  insurer: string;
+  monthly: number;
+  previousMonthly: number;
+  status: DealStatus;
+  note?: string;
+  inbox: string;
+  desk: string;
+  requested: { label: string; masked: string; owner: "person" | "policy" }[];
+  draftId?: string;
+  releasedAt?: string;
+  contract?: { filename: string; sha256: string; version: number; checks: DealCheck[] };
+  signature?: { name: string; at: string };
+  receipt?: { id: string; sha256: string; filename: string; policyNumber?: string };
+  mails: DealMail[];
+  deskSeen?: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 export type StoreEvent =
   | { type: "call"; call: Call }
   | { type: "stance"; stance: Stance }
