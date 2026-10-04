@@ -7,4 +7,5 @@ COPY tsconfig.json ./
 COPY lib ./lib
 COPY mastra ./mastra
 COPY worker ./worker
+COPY data ./data
 CMD ["npx", "tsx", "worker/negotiate.ts"]
