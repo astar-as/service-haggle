@@ -130,6 +130,7 @@ export async function startDeal(input: {
   monthly: number;
   insurer?: string;
   callId?: string;
+  autopilot?: boolean;
 }) {
   const [policy, person] = await Promise.all([store.policy(input.policyId), store.person()]);
   if (!policy) throw new Error(`Unknown policy ${input.policyId}`);
@@ -150,6 +151,7 @@ export async function startDeal(input: {
     desk,
     requested: [],
     mails: [],
+    autopilot: !!input.autopilot,
     createdAt: now(),
     updatedAt: now(),
   };
@@ -267,10 +269,16 @@ async function confirmStep(deal: Deal, policy: Policy, person: Person) {
       from: deal.inbox,
       to: deal.desk,
       subject: `Re: ${reply.subject ?? ""}`,
-      summary: `Drafted the reply with ${values.length} sealed facts. Waiting for ${person.firstName} to approve.`,
+      summary: deal.autopilot
+        ? `Drafted the reply with ${values.length} sealed facts. Releasing under ${person.firstName}'s standing approval.`
+        : `Drafted the reply with ${values.length} sealed facts. Waiting for ${person.firstName} to approve.`,
       labels: ["sensitive", "needs-approval"],
     },
   );
+  if (deal.autopilot) {
+    await update(deal, { status: "releasing", releasedAt: now() });
+    await releaseStep(deal);
+  }
 }
 
 // ---- release ------------------------------------------------------------------------------
@@ -308,7 +316,7 @@ async function releaseStep(deal: Deal) {
       from: deal.inbox,
       to: deal.desk,
       subject: `Re: [${deal.ref}]`,
-      summary: `Sent ${deal.requested.map((r) => lower(r.label)).join(", ")} after Maya approved the draft.`,
+      summary: `Sent ${deal.requested.map((r) => lower(r.label)).join(", ")} ${deal.autopilot ? "under Maya's standing approval" : "after Maya approved the draft"}.`,
       labels: ["sensitive", "released"],
       messageId: sent.messageId,
     },
@@ -339,6 +347,7 @@ async function receiveContract(deal: Deal, version: number) {
     deal,
     {
       contract: { filename: att.filename ?? "contract.pdf", sha256: sha256(pdf), version, checks },
+      contractPdf: pdf.toString("base64"),
     },
     {
       at: now(),
@@ -363,6 +372,14 @@ async function receiveContract(deal: Deal, version: number) {
     })
     .catch(() => {});
 
+  if (ok && deal.autopilot) {
+    const person = await store.person();
+    await update(deal, {
+      status: "signing",
+      signature: { name: person.name, at: now(), mode: "autopilot" },
+    });
+    return signStep(deal);
+  }
   if (ok) return update(deal, { status: "awaiting_signature" });
   if (version >= 2)
     return update(deal, {
@@ -449,7 +466,10 @@ export async function signDeal(id: string, name: string) {
   const person = await store.person();
   if (name.trim().toLowerCase() !== person.name.toLowerCase())
     throw new Error(`Type ${person.name} to sign`);
-  await update(deal, { status: "signing", signature: { name: person.name, at: now() } });
+  await update(deal, {
+    status: "signing",
+    signature: { name: person.name, at: now(), mode: "typed" },
+  });
   keepAlive(run(deal, () => signStep(deal)));
   return deal;
 }
@@ -471,8 +491,15 @@ async function signStep(deal: Deal) {
     "",
     `Signed electronically by ${deal.signature!.name}`,
     `Signed at: ${deal.signature!.at}`,
-    "The signer reviewed the contract above and intends to sign it. Her assistant",
-    "prepared and verified the documents but did not sign or pay on her behalf.",
+    ...(deal.signature!.mode === "autopilot"
+      ? [
+          "Signed under a standing authorization the signer set for this deal: sign when",
+          "every term matches the agreed deal. Her assistant verified each term first.",
+        ]
+      : [
+          "The signer reviewed the contract above and intends to sign it. Her assistant",
+          "prepared and verified the documents but did not sign or pay on her behalf.",
+        ]),
     "",
     `Sealed facts released for binding: ${deal.requested.map((r) => r.label).join(", ")} (approved ${deal.releasedAt})`,
   ];
@@ -488,7 +515,10 @@ async function signStep(deal: Deal) {
   })) as { messageId?: string };
   await update(
     deal,
-    { receipt: { id: receiptId, sha256: sha256(pdf), filename } },
+    {
+      receipt: { id: receiptId, sha256: sha256(pdf), filename },
+      receiptPdf: pdf.toString("base64"),
+    },
     {
       at: now(),
       direction: "out",

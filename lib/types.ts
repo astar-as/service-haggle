@@ -176,10 +176,13 @@ export interface Deal {
   draftId?: string;
   releasedAt?: string;
   contract?: { filename: string; sha256: string; version: number; checks: DealCheck[] };
-  signature?: { name: string; at: string };
+  signature?: { name: string; at: string; mode?: "typed" | "autopilot" };
   receipt?: { id: string; sha256: string; filename: string; policyNumber?: string };
   mails: DealMail[];
   deskSeen?: string[];
+  autopilot?: boolean;
+  contractPdf?: string;
+  receiptPdf?: string;
   createdAt: string;
   updatedAt: string;
 }

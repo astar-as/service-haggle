@@ -20,6 +20,7 @@ export function CloseDeal({
   const [existing, setExisting] = useState<Deal>();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string>();
+  const [autopilot, setAutopilot] = useState(false);
 
   useEffect(() => {
     fetch("/api/deals")
@@ -55,7 +56,7 @@ export function CloseDeal({
           const res = await fetch("/api/deals", {
             method: "POST",
             headers: { "content-type": "application/json" },
-            body: JSON.stringify({ callId }),
+            body: JSON.stringify({ callId, autopilot }),
           });
           const body = (await res.json()) as { deal?: Deal; error?: string };
           if (body.deal) router.push(`/deal/${body.deal.id}`);
@@ -67,9 +68,23 @@ export function CloseDeal({
       >
         {busy ? "Emailing the policy desk…" : `Close the deal at ${usd(monthly)} by email`}
       </button>
+      <label className="flex items-start gap-2.5 px-1 text-sm leading-5 text-ink-2">
+        <input
+          type="checkbox"
+          checked={autopilot}
+          onChange={(e) => setAutopilot(e.target.checked)}
+          className="mt-0.5"
+        />
+        <span>
+          <span className="font-semibold">Autopilot</span> · release my details and sign for me if
+          every term in the contract matches the deal. Anything off and I stop and ask.
+        </span>
+      </label>
       <p className="px-1 text-[13px] leading-[18px] text-subtle">
         {error ??
-          `I'll get ${insurer} to confirm in writing, ask before sharing any sealed details, check the contract, and you sign.`}
+          (autopilot
+            ? `I'll close it with ${insurer} end to end by email and send you the signed receipt.`
+            : `I'll get ${insurer} to confirm in writing, ask before sharing any sealed details, check the contract, and you sign.`)}
       </p>
     </div>
   );

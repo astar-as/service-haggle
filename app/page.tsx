@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Ask } from "@/components/ask";
+import { DealsBanner } from "@/components/deals-banner";
 import { DecPageUpload } from "@/components/dec-page-upload";
 import { Chevron } from "@/components/icons";
 import { LiveRefresh } from "@/components/live-refresh";
@@ -32,13 +33,21 @@ export default async function Home() {
           <span className="size-2.5 rounded-[3px] bg-accent" />
           lowball
         </span>
-        <Link
-          href="/profile"
-          aria-label={`${person.name}: profile`}
-          className="grid size-8 place-items-center rounded-full bg-white text-xs font-semibold text-muted shadow-[inset_0_0_0_1px_var(--color-line)] hover:text-ink"
-        >
-          {initials}
-        </Link>
+        <nav className="flex items-center gap-4">
+          <Link href="/deals" className="text-[15px] font-medium text-muted hover:text-ink">
+            Deals
+          </Link>
+          <Link href="/stack" className="text-[15px] font-medium text-muted hover:text-ink">
+            How it works
+          </Link>
+          <Link
+            href="/profile"
+            aria-label={`${person.name}: profile`}
+            className="grid size-8 place-items-center rounded-full bg-white text-xs font-semibold text-muted shadow-[inset_0_0_0_1px_var(--color-line)] hover:text-ink"
+          >
+            {initials}
+          </Link>
+        </nav>
       </header>
 
       <h1 className="mt-4 text-[44px] leading-[50px] font-semibold tracking-[-0.035em] text-balance">
@@ -52,6 +61,8 @@ export default async function Home() {
           <span className="text-money">All of it is fair.</span>
         )}
       </h1>
+
+      <DealsBanner />
 
       {live.length > 0 && <LiveAgents calls={live} policies={policies} />}
 

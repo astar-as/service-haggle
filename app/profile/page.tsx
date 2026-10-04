@@ -43,6 +43,10 @@ export default async function ProfilePage() {
         <h2 id="tell" className="px-1 text-[15px] leading-[22px] font-semibold">
           Tell me what changed
         </h2>
+        <p className="-mt-2 px-1 text-[13px] text-subtle">
+          I&apos;ll ask if something&apos;s unclear, then propose the change. Mastra agent ·
+          assistant-ui
+        </p>
         <ProfileChat />
       </section>
       <ProfileEditor

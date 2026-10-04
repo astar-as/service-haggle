@@ -106,6 +106,11 @@ export function DealView({
       <section className="flex flex-col gap-2">
         <span className="text-sm leading-5 text-subtle">
           {kindLabel(kind)} · {product} · deal {deal.ref}
+          {deal.autopilot && (
+            <span className="ml-2 rounded-full bg-accent-soft px-2 py-0.5 text-[12px] font-semibold text-accent">
+              Autopilot
+            </span>
+          )}
         </span>
         <h1 className="text-[32px] leading-[38px] font-semibold tracking-[-0.03em] text-balance">
           {WORKING.includes(deal.status) && (
@@ -186,9 +191,14 @@ export function DealView({
               <h2 id="contract" className="text-[17px] leading-6 font-semibold">
                 Contract checked against the deal
               </h2>
-              <p className="num text-sm leading-5 text-subtle">
+              <a
+                href={`/api/deals/${deal.id}/pdf?doc=contract`}
+                target="_blank"
+                rel="noreferrer"
+                className="num text-sm leading-5 text-subtle underline-offset-2 hover:text-ink hover:underline"
+              >
                 📎 {deal.contract.filename} · SHA-256 {deal.contract.sha256.slice(0, 12)}…
-              </p>
+              </a>
             </div>
             {deal.contract.checks.map((c) => (
               <div
@@ -255,9 +265,32 @@ export function DealView({
             Policy {deal.receipt.policyNumber ?? "bound"} · receipt {deal.receipt.id}
           </p>
           <p className="mt-1 text-sm leading-5 text-subtle">
-            Signed by {deal.signature?.name} · 📎 {deal.receipt.filename} emailed to {deal.insurer}.
-            Receipt SHA-256 {deal.receipt.sha256.slice(0, 12)}….
+            Signed by {deal.signature?.name}
+            {deal.signature?.mode === "autopilot"
+              ? " under her standing authorization (autopilot)"
+              : ""}{" "}
+            · emailed to {deal.insurer} · receipt SHA-256 {deal.receipt.sha256.slice(0, 12)}…
           </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <a
+              href={`/api/deals/${deal.id}/pdf?doc=receipt`}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex min-h-10 items-center rounded-lg bg-accent px-3.5 text-[14px] font-semibold text-white"
+            >
+              Open signed receipt (PDF)
+            </a>
+            {deal.contract && (
+              <a
+                href={`/api/deals/${deal.id}/pdf?doc=contract`}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex min-h-10 items-center rounded-lg px-3.5 text-[14px] font-medium text-ink-2 shadow-[inset_0_0_0_1px_var(--color-line)]"
+              >
+                Open contract
+              </a>
+            )}
+          </div>
         </section>
       )}
 

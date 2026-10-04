@@ -6,14 +6,21 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 300;
 
+// Deals without their PDF payloads (download those from /api/deals/[id]/pdf).
 export async function GET() {
+  const deals = (await store.deals()).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   return Response.json({
-    deals: (await store.deals()).sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
+    deals: deals.map(({ contractPdf, receiptPdf, ...d }) => ({
+      ...d,
+      hasContract: !!contractPdf,
+      hasReceipt: !!receiptPdf,
+    })),
   });
 }
 
 // POST { callId } closes an agreed call; { policyId, monthly?, insurer? } closes a price directly
-// (defaults to the cheapest obtainable price in the ledger).
+// (defaults to the cheapest obtainable price in the ledger). autopilot: release and sign
+// automatically when every contract term matches.
 export async function POST(req: Request) {
   if (!hasDealMail())
     return Response.json({ error: "AGENTMAIL_API_KEY is not set" }, { status: 503 });
@@ -22,6 +29,7 @@ export async function POST(req: Request) {
     policyId?: string;
     monthly?: number;
     insurer?: string;
+    autopilot?: boolean;
   };
   if (body.callId) {
     const call = await store.call(body.callId);
@@ -34,6 +42,7 @@ export async function POST(req: Request) {
         monthly,
         insurer: call.insurer,
         callId: call.id,
+        autopilot: body.autopilot,
       }),
     });
   }
@@ -49,6 +58,7 @@ export async function POST(req: Request) {
       policyId: body.policyId,
       monthly,
       insurer: body.insurer ?? best?.insurer,
+      autopilot: body.autopilot,
     }),
   });
 }
