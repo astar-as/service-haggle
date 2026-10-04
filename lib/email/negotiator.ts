@@ -5,7 +5,16 @@ import { store } from "../store";
 import { handleDelegation, type DelegationResult } from "../strategist";
 import type { Person, Policy, Turn } from "../types";
 import { agentMail, MailNotConfiguredError, type MailClient, type MailMessage } from "./client";
-import { cleanReply, emailOf, mailTurnId, mergeTranscript, messageIdOf, refTag, type EmailCall } from "./thread";
+import { brokerTick, ensureBrokerInboxes, isMockBroker } from "./brokers";
+import {
+  cleanReply,
+  emailOf,
+  mailTurnId,
+  mergeTranscript,
+  messageIdOf,
+  refTag,
+  type EmailCall,
+} from "./thread";
 
 export interface EmailOptions {
   client?: MailClient;
@@ -21,7 +30,12 @@ const usd = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`;
 const now = () => new Date().toISOString();
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const longDate = (iso: string) =>
-  new Date(`${iso.slice(0, 10)}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
+  new Date(`${iso.slice(0, 10)}T12:00:00Z`).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  });
 const errText = (e: unknown) => (e instanceof Error ? e.message : String(e));
 
 const g = globalThis as unknown as { __emailLines?: Map<string, Promise<void>> };
@@ -89,6 +103,7 @@ class EmailLine {
         this.lastMessageId = id;
         if (t.speaker === "agent") this.sentIds.add(id);
       }
+      if (isMockBroker(to)) await ensureBrokerInboxes();
       if (!call.threadId) await this.open();
       else await this.patch({ status: "live", inbox: this.inbox });
       while (!this.ended) {
@@ -112,12 +127,27 @@ class EmailLine {
   }
 
   private compose(body: string) {
-    return [this.greeting(), "", body, "", "Thank you,", "Lowball", `AI assistant for ${this.person.name}`, refTag(this.callId)].join("\n");
+    return [
+      this.greeting(),
+      "",
+      body,
+      "",
+      "Thank you,",
+      "Lowball",
+      `AI assistant for ${this.person.name}`,
+      refTag(this.callId),
+    ].join("\n");
   }
 
   private facts() {
-    const shareable = [...this.policy.facts, ...this.person.facts].filter((f) => f.disclosure === "shareable");
-    return [`Coverage: ${this.policy.product}`, ...coverageLines(this.policy), ...shareable.map((f) => `${f.label}: ${f.value}`)];
+    const shareable = [...this.policy.facts, ...this.person.facts].filter(
+      (f) => f.disclosure === "shareable",
+    );
+    return [
+      `Coverage: ${this.policy.product}`,
+      ...coverageLines(this.policy),
+      ...shareable.map((f) => `${f.label}: ${f.value}`),
+    ];
   }
 
   private async open() {
@@ -141,7 +171,9 @@ class EmailLine {
       ? `I'm Lowball, an AI assistant writing on behalf of ${this.person.name}, a ${this.call.insurer} customer since ${this.policy.memberSince}. Her ${kind} policy renews on ${longDate(this.policy.renewsOn)} and she is reviewing her options before renewing.`
       : `I'm Lowball, an AI assistant writing on behalf of ${this.person.name}. She is comparing ${kind} insurance before her renewal on ${longDate(this.policy.renewsOn)} and would like a quote for identical coverage.`;
     const ask = `${line}\n\nA short reply with the monthly figure is perfect. ${this.first} reviews and signs anything herself.`;
-    const text = this.compose([intro, "", "Details:", ...this.facts().map((f) => `- ${f}`), "", ask].join("\n"));
+    const text = this.compose(
+      [intro, "", "Details:", ...this.facts().map((f) => `- ${f}`), "", ask].join("\n"),
+    );
     const subject = retention
       ? `${this.person.name}'s ${kind} renewal: best price for the same coverage ${refTag(this.callId)}`
       : `Quote request: ${kind} insurance for ${this.person.name} ${refTag(this.callId)}`;
@@ -149,15 +181,20 @@ class EmailLine {
     this.sentIds.add(sent.messageId);
     this.lastMessageId = sent.messageId;
     this.lastInboundAt = Date.now();
-    await this.patch({ status: "live", inbox: this.inbox, threadId: sent.threadId }, [this.turn(sent.messageId, "agent", `${intro}\n\n${line}`)]);
+    await this.patch({ status: "live", inbox: this.inbox, threadId: sent.threadId }, [
+      this.turn(sent.messageId, "agent", `${intro}\n\n${line}`),
+    ]);
     await this.markLeverage();
   }
 
   private async markLeverage() {
     const offers = await competingOffers(this.callId).catch(() => [] as Offer[]);
-    const best = offers.filter((o) => !o.agreed && o.monthly > 0).sort((a, b) => a.monthly - b.monthly)[0];
+    const best = offers
+      .filter((o) => !o.agreed && o.monthly > 0)
+      .sort((a, b) => a.monthly - b.monthly)[0];
     const used = this.call.leverageSent ?? [];
-    if (best && !used.includes(best.monthly)) await this.patch({ leverageSent: [...used, best.monthly] });
+    if (best && !used.includes(best.monthly))
+      await this.patch({ leverageSent: [...used, best.monthly] });
   }
 
   private turn(messageId: string, speaker: Turn["speaker"], text: string, at = now()): Turn {
@@ -173,9 +210,18 @@ class EmailLine {
     }
     this.call = fresh;
 
+    // Demo brokers answer from their own AgentMail inboxes.
+    if (isMockBroker(this.to))
+      await brokerTick(this.callId, this.to, this.policy).catch((e) =>
+        console.error(`[email ${this.callId}] mock broker failed`, errText(e)),
+      );
+
     let msgs: MailMessage[];
     try {
-      msgs = await this.client.messages(this.inbox, { threadId: fresh.threadId, ref: refTag(this.callId) });
+      msgs = await this.client.messages(this.inbox, {
+        threadId: fresh.threadId,
+        ref: refTag(this.callId),
+      });
       this.failures = 0;
     } catch (e) {
       console.error(`[email ${this.callId}] poll failed`, errText(e));
@@ -194,7 +240,9 @@ class EmailLine {
     }
 
     const answered = new Set(this.call.answered ?? []);
-    const pending = this.call.transcript.filter((t) => t.speaker === "counterpart" && !answered.has(t.id));
+    const pending = this.call.transcript.filter(
+      (t) => t.speaker === "counterpart" && !answered.has(t.id),
+    );
     if (pending.length) {
       this.lastInboundAt = Date.now();
       return this.respond(pending);
@@ -203,7 +251,9 @@ class EmailLine {
     if (await this.maybeLeverage(offers)) return;
 
     if (Date.now() - this.lastInboundAt > this.silenceMs) {
-      await this.email(`Following up on the quote request below. Since we haven't heard back, we'll close this request for now. Thank you.`);
+      await this.email(
+        `Following up on the quote request below. Since we haven't heard back, we'll close this request for now. Thank you.`,
+      );
       return this.finish("no_reply");
     }
   }
@@ -226,19 +276,34 @@ class EmailLine {
     const request = pending.map((t) => t.text).join("\n\n");
     let result: DelegationResult;
     try {
-      result = await handleDelegation({ callId: this.callId, policyId: this.call.policyId, request, transcript: this.call.transcript.map((t) => ({ ...t })) });
+      result = await handleDelegation({
+        callId: this.callId,
+        policyId: this.call.policyId,
+        request,
+        transcript: this.call.transcript.map((t) => ({ ...t })),
+      });
     } catch (e) {
       console.error(`[email ${this.callId}] strategist failed`, e);
-      result = { say: `Thanks for getting back to me. Could you share the best monthly price you can offer ${this.first} for the same coverage?` };
+      result = {
+        say: `Thanks for getting back to me. Could you share the best monthly price you can offer ${this.first} for the same coverage?`,
+      };
     }
-    await this.apply(result, pending.map((t) => t.id));
+    await this.apply(
+      result,
+      pending.map((t) => t.id),
+    );
   }
 
   private async maybeLeverage(offers: Offer[]) {
     if (this.call.agreedMonthly !== undefined) return false;
-    const ceiling = Math.min(this.call.theirOffer ?? Number.POSITIVE_INFINITY, this.policy.monthlyPremium);
+    const ceiling = Math.min(
+      this.call.theirOffer ?? Number.POSITIVE_INFINITY,
+      this.policy.monthlyPremium,
+    );
     const margin = Math.max(5, ceiling * 0.03);
-    const best = offers.filter((o) => !o.agreed && o.monthly > 0 && o.monthly <= ceiling - margin).sort((a, b) => a.monthly - b.monthly)[0];
+    const best = offers
+      .filter((o) => !o.agreed && o.monthly > 0 && o.monthly <= ceiling - margin)
+      .sort((a, b) => a.monthly - b.monthly)[0];
     if (!best) return false;
     const used = this.call.leverageSent ?? [];
     if (used.some((m) => m <= best.monthly + 0.5)) return false;
@@ -248,12 +313,15 @@ class EmailLine {
       result = await handleDelegation({
         callId: this.callId,
         policyId: this.call.policyId,
-        request: "No new reply from the broker. A lower offer just came in on another line; send one short follow-up using it.",
+        request:
+          "No new reply from the broker. A lower offer just came in on another line; send one short follow-up using it.",
         transcript: this.call.transcript.map((t) => ({ ...t })),
       });
     } catch (e) {
       console.error(`[email ${this.callId}] strategist failed on leverage`, e);
-      result = { say: `Quick update: ${this.first} has an offer of ${usd(best.monthly)} a month from another provider for the same coverage. Can you beat that?` };
+      result = {
+        say: `Quick update: ${this.first} has an offer of ${usd(best.monthly)} a month from another provider for the same coverage. Can you beat that?`,
+      };
     }
     await this.apply(result, []);
     return true;
@@ -273,11 +341,14 @@ class EmailLine {
     }
     const say = result.say?.trim();
     if (say) await this.email(say, { answered });
-    else if (answered.length) await this.patch({ answered: [...new Set([...(this.call.answered ?? []), ...answered])] });
+    else if (answered.length)
+      await this.patch({ answered: [...new Set([...(this.call.answered ?? []), ...answered])] });
     await this.markLeverage();
     if (result.endCall) return this.finish("walked");
     if (this.call.transcript.filter((t) => t.speaker === "agent").length >= this.maxEmails) {
-      await this.email(`Thanks again for your help. We'll leave it here for now; ${this.first} will be in touch if anything changes.`);
+      await this.email(
+        `Thanks again for your help. We'll leave it here for now; ${this.first} will be in touch if anything changes.`,
+      );
       return this.finish("max_rounds");
     }
   }
@@ -286,12 +357,21 @@ class EmailLine {
     const text = this.compose(body);
     const sent = this.lastMessageId
       ? await this.client.reply(this.inbox, this.lastMessageId, { to: this.to, text })
-      : await this.client.send(this.inbox, { to: this.to, subject: `${this.policy.kind} insurance for ${this.person.name} ${refTag(this.callId)}`, text });
+      : await this.client.send(this.inbox, {
+          to: this.to,
+          subject: `${this.policy.kind} insurance for ${this.person.name} ${refTag(this.callId)}`,
+          text,
+        });
     this.sentIds.add(sent.messageId);
     this.lastMessageId = sent.messageId;
     const { answered, ...rest } = extra;
     await this.patch(
-      { ...rest, ...(answered?.length ? { answered: [...new Set([...(this.call.answered ?? []), ...answered])] } : {}) },
+      {
+        ...rest,
+        ...(answered?.length
+          ? { answered: [...new Set([...(this.call.answered ?? []), ...answered])] }
+          : {}),
+      },
       [this.turn(sent.messageId, "agent", body)],
     );
   }
@@ -317,16 +397,27 @@ class EmailLine {
       await sleep(this.pollMs);
       let msgs: MailMessage[];
       try {
-        msgs = await this.client.messages(this.inbox, { threadId: this.call.threadId, ref: refTag(this.callId) });
+        msgs = await this.client.messages(this.inbox, {
+          threadId: this.call.threadId,
+          ref: refTag(this.callId),
+        });
       } catch {
         continue;
       }
       const reply = msgs.find((m) => !this.isOwn(m) && !seen.has(mailTurnId(m.id)));
       if (!reply) continue;
-      await this.patch({}, [this.turn(reply.id, "counterpart", cleanReply(reply.text) || reply.text, reply.at)]);
+      await this.patch({}, [
+        this.turn(reply.id, "counterpart", cleanReply(reply.text) || reply.text, reply.at),
+      ]);
       await handleInboundMail({
         event_type: "message.received",
-        message: { from: reply.from, subject: reply.subject, text: reply.text, message_id: reply.id, thread_id: reply.threadId },
+        message: {
+          from: reply.from,
+          subject: reply.subject,
+          text: reply.text,
+          message_id: reply.id,
+          thread_id: reply.threadId,
+        },
       }).catch((e) => console.error(`[email ${this.callId}] confirmation handling failed`, e));
       return;
     }
@@ -334,12 +425,19 @@ class EmailLine {
 
   private async refresh() {
     const fresh = (await store.call(this.callId).catch(() => undefined)) as EmailCall | undefined;
-    if (fresh) this.call = { ...fresh, transcript: mergeTranscript(fresh.transcript, this.call.transcript) };
+    if (fresh)
+      this.call = { ...fresh, transcript: mergeTranscript(fresh.transcript, this.call.transcript) };
   }
 
   private async patch(update: Partial<EmailCall>, turns: Turn[] = []) {
-    const fresh = ((await store.call(this.callId).catch(() => undefined)) as EmailCall | undefined) ?? this.call;
-    const next: EmailCall = { ...fresh, ...update, transcript: mergeTranscript(fresh.transcript, [...this.call.transcript, ...turns]) };
+    const fresh =
+      ((await store.call(this.callId).catch(() => undefined)) as EmailCall | undefined) ??
+      this.call;
+    const next: EmailCall = {
+      ...fresh,
+      ...update,
+      transcript: mergeTranscript(fresh.transcript, [...this.call.transcript, ...turns]),
+    };
     this.call = next;
     await store.putCall(next);
   }
@@ -348,7 +446,9 @@ class EmailLine {
     if (this.ended) return;
     this.ended = true;
     if (!this.call) return;
-    await this.patch({ status: "ended", endedAt: now(), endReason: reason }).catch((e) => console.error(`[email ${this.callId}] finish`, e));
+    await this.patch({ status: "ended", endedAt: now(), endReason: reason }).catch((e) =>
+      console.error(`[email ${this.callId}] finish`, e),
+    );
     console.log(`[email ${this.callId}] ended: ${reason}`);
   }
 }
