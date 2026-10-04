@@ -4,6 +4,7 @@ import type { Call, Turn } from "@/lib/types";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 300;
 
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 

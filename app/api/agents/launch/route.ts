@@ -2,6 +2,7 @@ import { callTargets, launchAll, launchRound, type CallTarget } from "@/lib/agen
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 300;
 
 export async function POST(req: Request) {
   const body = (await req.json().catch(() => ({}))) as { policyId?: string; channel?: "browser" | "phone"; targets?: CallTarget[] };

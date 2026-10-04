@@ -1,3 +1,4 @@
+import { keepAlive } from "../background";
 import { randomUUID } from "node:crypto";
 import { store } from "../store";
 import type { Call } from "../types";
@@ -42,11 +43,11 @@ export async function createCall(input: NewCall): Promise<VoiceCall> {
 }
 
 function runInBackground(callId: string) {
-  runNegotiation(callId).catch(async (e) => {
+  keepAlive(runNegotiation(callId).catch(async (e) => {
     console.error(`[live ${callId}]`, e);
     const call = await loadCall(callId);
     if (call && call.status !== "ended") await putVoiceCall({ ...call, status: "ended", endedAt: new Date().toISOString() });
-  });
+  }));
 }
 
 export async function startBrowserCall(input: { sdp: string; callId?: string; policyId?: string }) {

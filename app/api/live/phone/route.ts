@@ -5,6 +5,7 @@ import { twilioFromEnv } from "@/lib/voice/twilio";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 300;
 
 interface PhoneRequest {
   callId?: string;

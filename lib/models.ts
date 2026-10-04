@@ -1,6 +1,7 @@
 import { createOpenAI } from "@ai-sdk/openai";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
-import { generateText, type LanguageModel } from "ai";
+import type { LanguageModelV4 } from "@ai-sdk/provider";
+import { generateText } from "ai";
 import type { z } from "zod";
 
 export type ModelTier = "smart" | "fast" | "chat";
@@ -43,16 +44,16 @@ function modelId(tier: ModelTier, provider: "neon" | "openai") {
   return smart;
 }
 
-const cache = new Map<string, LanguageModel>();
+const cache = new Map<string, LanguageModelV4>();
 
-export function getModel(tier: ModelTier = "smart"): LanguageModel {
+export function getModel(tier: ModelTier = "smart"): LanguageModelV4 {
   const provider = modelProvider();
   if (!provider) throw new ModelUnavailableError();
   const id = modelId(tier, provider);
   const key = `${provider}:${id}`;
   const hit = cache.get(key);
   if (hit) return hit;
-  let model: LanguageModel;
+  let model: LanguageModelV4;
   if (provider === "neon") {
     const neon = createOpenAICompatible({ name: "neon", ...neonConfig()! });
     model = neon.chatModel(id);

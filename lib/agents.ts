@@ -1,3 +1,4 @@
+import { keepAlive } from "./background";
 import { store } from "./store";
 import type { Call } from "./types";
 
@@ -42,11 +43,11 @@ async function launchFlyMachine(callId: string) {
 
 async function runInProcess(callId: string) {
   const { runNegotiation } = await import("./voice/negotiator");
-  runNegotiation(callId).catch(async (e: unknown) => {
+  keepAlive(runNegotiation(callId).catch(async (e: unknown) => {
     const call = await store.call(callId);
     if (call) await store.putCall({ ...call, status: "ended", endedAt: new Date().toISOString() });
     console.error(`[negotiator ${callId}]`, e);
-  });
+  }));
 }
 
 async function start(call: Call) {

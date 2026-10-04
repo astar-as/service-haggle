@@ -1,43 +1,26 @@
-import { openai } from "@ai-sdk/openai";
-import { frontendTools } from "@assistant-ui/ai-sdk";
-import {
-  type JSONSchema7,
-  streamText,
-  convertToModelMessages,
-  type UIMessage,
-} from "ai";
+import { handleChatStream } from "@mastra/ai-sdk";
+import { createUIMessageStreamResponse } from "ai";
+import { hasModel } from "@/lib/models";
+import { mastra } from "@/mastra";
 
-export const maxDuration = 30;
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 export async function POST(req: Request) {
-  const {
-    messages,
-    system,
-    tools,
-  }: {
-    messages: UIMessage[];
-    system?: string;
-    tools?: Record<string, { description?: string; parameters: JSONSchema7 }>;
-  } = await req.json();
-
-  const result = streamText({
-    model: openai.responses("gpt-6-luna"),
-    messages: await convertToModelMessages(messages),
-    system,
-    tools: {
-      ...frontendTools(tools ?? {}),
-    },
-    providerOptions: {
-      openai: {
-        reasoningEffort: "low",
-        reasoningSummary: "auto",
-      },
-    },
-  });
-
-  return result.toUIMessageStreamResponse({
+  if (!hasModel()) {
+    return Response.json(
+      { error: "No model configured. Set NEON_AI_GATEWAY_URL + NEON_AI_GATEWAY_KEY or OPENAI_API_KEY." },
+      { status: 503 },
+    );
+  }
+  const { messages, trigger } = await req.json();
+  const stream = await handleChatStream({
+    mastra,
+    agentId: "lowball",
+    version: "v7",
     sendReasoning: true,
-    onError: (error) =>
-      error instanceof Error ? error.message : String(error),
+    params: { messages, trigger },
   });
+  return createUIMessageStreamResponse({ stream });
 }

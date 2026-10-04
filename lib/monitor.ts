@@ -103,10 +103,11 @@ export function detectLifeEvents(transactions: Transaction[], asOf?: string): Li
   if (gas.length >= 4) {
     const gaps = gas.slice(1).map((t, i) => daysBetween(gas[i].date, t.date));
     for (let i = 3; i < gaps.length + 1; i++) {
-      const usual = median(gaps.slice(0, i - 1));
+      const prior = gaps.slice(0, i - 1);
+      const usual = prior.reduce((a, b) => a + b, 0) / prior.length;
       const gap = i - 1 < gaps.length ? gaps[i - 1] : Infinity;
       if (!(gap > Math.max(7, usual * 2.5))) continue;
-      const change = addDays(gas[i - 1].date, Math.max(1, Math.round(usual)));
+      const change = addDays(gas[i - 1].date, Math.max(1, Math.ceil(usual)));
       const end = asOf ?? tx[tx.length - 1]?.date ?? change;
       const postDays = daysBetween(change, end) + 1;
       if (postDays < 28) break;
@@ -660,14 +661,13 @@ export async function replay(opts: { days?: number; endDate?: string; delayMs?: 
       if (i < dates.length - 1) await sleep(delayMs);
     }
 
-    for (const p of fresh) {
-      await checkPolicy(p.id, endDate, {
-        findings: accumulated.get(p.id) ?? [],
-        knowsNetwork: true,
-        emitSignals: false,
-        useModel: state.model,
-      });
-    }
+    await Promise.all(
+      fresh.map((p) =>
+        checkPolicy(p.id, endDate, { findings: accumulated.get(p.id) ?? [], knowsNetwork: true, emitSignals: false, useModel: state.model }).catch((e) =>
+          log(`Final check failed for ${p.id}: ${e instanceof Error ? e.message : String(e)}`),
+        ),
+      ),
+    );
     const targets = await negotiationTargets();
     log(`Done. Flagged for negotiation: ${targets.map((t) => `${t.insurer} (${t.channel})`).join(", ") || "none"}.`);
     state.finishedAt = new Date().toISOString();
