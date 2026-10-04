@@ -10,7 +10,12 @@ import { buildRows, kindLabel, subtitle, usd, type Row } from "@/lib/view";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [person, policies, stances, calls] = await Promise.all([store.person(), store.policies(), store.stances(), store.calls()]);
+  const [person, policies, stances, calls] = await Promise.all([
+    store.person(),
+    store.policies(),
+    store.stances(),
+    store.calls(),
+  ]);
   const live = calls.filter((c) => c.status !== "ended");
   const { needs, fair, pays, tooMuch } = buildRows(policies, stances, calls);
   const initials = person.name
@@ -26,12 +31,13 @@ export default async function Home() {
           <span className="size-2.5 rounded-[3px] bg-accent" />
           lowball
         </span>
-        <span
-          aria-label={person.name}
-          className="grid size-8 place-items-center rounded-full bg-white text-xs font-semibold text-muted shadow-[inset_0_0_0_1px_var(--color-line)]"
+        <Link
+          href="/profile"
+          aria-label={`${person.name}: profile`}
+          className="grid size-8 place-items-center rounded-full bg-white text-xs font-semibold text-muted shadow-[inset_0_0_0_1px_var(--color-line)] hover:text-ink"
         >
           {initials}
-        </span>
+        </Link>
       </header>
 
       <h1 className="mt-4 text-[44px] leading-[50px] font-semibold tracking-[-0.035em] text-balance">
@@ -49,7 +55,10 @@ export default async function Home() {
       {live.length > 0 && <LiveAgents calls={live} policies={policies} />}
 
       {needs.length > 0 && (
-        <Group title="Needs negotiating" aside={<span className="num font-semibold text-accent">−{usd(tooMuch)}/mo</span>}>
+        <Group
+          title="Needs negotiating"
+          aside={<span className="num font-semibold text-accent">−{usd(tooMuch)}/mo</span>}
+        >
           {needs.map((r) => (
             <PolicyRow key={r.policy.id} row={r} big />
           ))}
@@ -72,7 +81,13 @@ export default async function Home() {
   );
 }
 
-function LiveAgents({ calls, policies }: { calls: Call[]; policies: { id: string; insurer: string }[] }) {
+function LiveAgents({
+  calls,
+  policies,
+}: {
+  calls: Call[];
+  policies: { id: string; insurer: string }[];
+}) {
   const byPolicy = [...new Set(calls.map((c) => c.policyId))];
   return (
     <section aria-label="Live negotiations" className="flex flex-col gap-2">
@@ -81,12 +96,21 @@ function LiveAgents({ calls, policies }: { calls: Call[]; policies: { id: string
         const insurer = policies.find((p) => p.id === policyId)?.insurer ?? lines[0].insurer;
         const phones = lines.filter((c) => c.channel !== "email").length;
         const emails = lines.length - phones;
-        const offers = lines.map((c) => c.agreedMonthly ?? c.theirOffer).filter((n): n is number => n !== undefined);
+        const offers = lines
+          .map((c) => c.agreedMonthly ?? c.theirOffer)
+          .filter((n): n is number => n !== undefined);
         const latest = lines
-          .flatMap((c) => c.transcript.filter((t) => t.text.trim()).map((t) => ({ ...t, insurer: c.insurer })))
+          .flatMap((c) =>
+            c.transcript.filter((t) => t.text.trim()).map((t) => ({ ...t, insurer: c.insurer })),
+          )
           .sort((a, b) => a.at.localeCompare(b.at))
           .at(-1);
-        const parts = [phones && `${phones} ${phones === 1 ? "call" : "calls"}`, emails && `${emails} ${emails === 1 ? "email" : "emails"}`].filter(Boolean).join(" · ");
+        const parts = [
+          phones && `${phones} ${phones === 1 ? "call" : "calls"}`,
+          emails && `${emails} ${emails === 1 ? "email" : "emails"}`,
+        ]
+          .filter(Boolean)
+          .join(" · ");
         return (
           <Link
             key={policyId}
@@ -104,7 +128,9 @@ function LiveAgents({ calls, policies }: { calls: Call[]; policies: { id: string
                 </span>
               )}
             </span>
-            {offers.length > 0 && <span className="num text-[15px] text-white/85">best {usd(Math.min(...offers))}</span>}
+            {offers.length > 0 && (
+              <span className="num text-[15px] text-white/85">best {usd(Math.min(...offers))}</span>
+            )}
             <Chevron />
           </Link>
         );
@@ -113,20 +139,33 @@ function LiveAgents({ calls, policies }: { calls: Call[]; policies: { id: string
   );
 }
 
-function Group({ title, aside, children }: { title: string; aside: React.ReactNode; children: React.ReactNode }) {
+function Group({
+  title,
+  aside,
+  children,
+}: {
+  title: string;
+  aside: React.ReactNode;
+  children: React.ReactNode;
+}) {
   return (
     <section className="flex flex-col gap-3">
       <div className="flex items-baseline justify-between px-1">
         <h2 className="text-[15px] leading-[22px] font-semibold">{title}</h2>
         {aside}
       </div>
-      <div className="overflow-hidden rounded-[18px] bg-white shadow-[0_0_0_1px_var(--color-line)]">{children}</div>
+      <div className="overflow-hidden rounded-[18px] bg-white shadow-[0_0_0_1px_var(--color-line)]">
+        {children}
+      </div>
     </section>
   );
 }
 
 function PolicyRow({ row, big }: { row: Row; big?: boolean }) {
-  const href = row.live || row.agreed !== undefined ? `/negotiation/${row.policy.id}` : `/policy/${row.policy.id}`;
+  const href =
+    row.live || row.agreed !== undefined
+      ? `/negotiation/${row.policy.id}`
+      : `/policy/${row.policy.id}`;
   const sub = subtitle(row);
   return (
     <Link
@@ -135,23 +174,53 @@ function PolicyRow({ row, big }: { row: Row; big?: boolean }) {
       style={{ minHeight: big ? 76 : 64 }}
     >
       <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-        <span className={big ? "text-[17px] leading-6 font-semibold" : "text-base leading-[22px] font-semibold"}>{row.policy.insurer}</span>
+        <span
+          className={
+            big ? "text-[17px] leading-6 font-semibold" : "text-base leading-[22px] font-semibold"
+          }
+        >
+          {row.policy.insurer}
+        </span>
         <span className="text-sm leading-5 text-subtle">
           {kindLabel(row.policy.kind)}
           {sub && " · "}
-          {sub && <span className={row.agreed !== undefined ? "font-medium text-money" : row.live ? "font-medium text-accent" : undefined}>{sub}</span>}
+          {sub && (
+            <span
+              className={
+                row.agreed !== undefined
+                  ? "font-medium text-money"
+                  : row.live
+                    ? "font-medium text-accent"
+                    : undefined
+              }
+            >
+              {sub}
+            </span>
+          )}
         </span>
       </span>
       <span className="flex flex-col items-end gap-0.5">
         {row.agreed !== undefined ? (
           <span className="flex items-baseline gap-1.5">
-            <span className="num text-sm text-faint line-through">{usd(row.policy.monthlyPremium)}</span>
-            <span className={`num font-semibold text-money ${big ? "text-[17px] leading-6" : "text-base leading-[22px]"}`}>{usd(row.agreed)}</span>
+            <span className="num text-sm text-faint line-through">
+              {usd(row.policy.monthlyPremium)}
+            </span>
+            <span
+              className={`num font-semibold text-money ${big ? "text-[17px] leading-6" : "text-base leading-[22px]"}`}
+            >
+              {usd(row.agreed)}
+            </span>
           </span>
         ) : (
-          <span className={`num font-semibold ${big ? "text-[17px] leading-6" : "text-base leading-[22px]"}`}>{usd(row.policy.monthlyPremium)}</span>
+          <span
+            className={`num font-semibold ${big ? "text-[17px] leading-6" : "text-base leading-[22px]"}`}
+          >
+            {usd(row.policy.monthlyPremium)}
+          </span>
         )}
-        {row.gap > 0 && <span className="num text-sm leading-5 font-medium text-accent">−{usd(row.gap)}</span>}
+        {row.gap > 0 && (
+          <span className="num text-sm leading-5 font-medium text-accent">−{usd(row.gap)}</span>
+        )}
       </span>
       <Chevron className="text-faint transition-transform duration-150 ease-out-strong group-hover:translate-x-0.5 group-hover:text-ink" />
     </Link>

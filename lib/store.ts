@@ -118,6 +118,9 @@ export const store = {
   async person(): Promise<Person> {
     return (await db().get<Person>("person", seed.PERSON_ID))!;
   },
+  async putPerson(p: Person) {
+    await db().put("person", p.id, p);
+  },
   async policies(): Promise<Policy[]> {
     return db().all<Policy>("policy");
   },
