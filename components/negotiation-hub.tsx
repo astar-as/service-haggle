@@ -108,6 +108,7 @@ export function NegotiationHub({
   board,
   firstName,
   initialLine,
+  canShop,
 }: {
   policy: Policy;
   stance?: Stance;
@@ -116,6 +117,7 @@ export function NegotiationHub({
   board?: PriceBoard;
   firstName: string;
   initialLine?: string;
+  canShop: boolean;
 }) {
   const [selected, setSelected] = useState(
     initialLine ?? lines.find((c) => c.status !== "ended")?.id ?? lines[0]?.id,
@@ -222,7 +224,7 @@ export function NegotiationHub({
         <CloseDeal callId={agreed.id} monthly={agreed.agreedMonthly!} insurer={agreed.insurer} />
       )}
 
-      {lines.length === 0 && stance && stance.verdict !== "fair" && (
+      {canShop && lines.length === 0 && stance && stance.verdict !== "fair" && (
         <ShopButton policyId={policy.id} insurer={policy.insurer} />
       )}
 

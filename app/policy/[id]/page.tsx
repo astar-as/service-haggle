@@ -6,6 +6,7 @@ import { Back, Chevron } from "@/components/icons";
 import { LiveRefresh } from "@/components/live-refresh";
 import { PolicyDocuments } from "@/components/policy-documents";
 import { ShopButton } from "@/components/shop-button";
+import { canNegotiate } from "@/lib/agents";
 import { store } from "@/lib/store";
 import { kindLabel, shortDate, signalLabel, usd } from "@/lib/view";
 
@@ -25,7 +26,7 @@ export default async function PolicyPage({ params }: { params: Promise<{ id: str
     .filter((c) => c.policyId === id)
     .sort((a, b) => b.startedAt.localeCompare(a.startedAt));
   const live = rounds.find((c) => c.status !== "ended");
-  const canShop = stance && stance.verdict !== "fair" && stance.verdict !== "won";
+  const canShop = stance && stance.verdict !== "fair" && stance.verdict !== "won" && canNegotiate(id);
 
   return (
     <main className="mx-auto flex max-w-[720px] flex-col gap-9 px-5 pt-7 pb-14">

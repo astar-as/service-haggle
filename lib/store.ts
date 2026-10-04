@@ -195,6 +195,9 @@ export const store = {
     await db().put("call", c.id, c);
     emit({ type: "call", call: c });
   },
+  async removePolicy(id: string) {
+    await db().remove("policy", id);
+  },
   async reset() {
     const docs = seedDocs();
     for (const [c, items] of Object.entries(docs) as [Collection, Map<string, unknown>][]) {

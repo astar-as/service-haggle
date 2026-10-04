@@ -36,6 +36,13 @@ export function callTargets(): Record<string, CallTarget[]> {
   }
 }
 
+// Someone can actually pick up: a phone number, an email broker or a demo receiver slot.
+export const reachable = (t: CallTarget) => !!(t.phone || t.email || t.slot);
+
+export function canNegotiate(policyId: string) {
+  return (callTargets()[policyId] ?? []).some(reachable);
+}
+
 function channelFor(t: CallTarget): Call["channel"] {
   if (t.email) return "email";
   if (t.phone) return "phone";

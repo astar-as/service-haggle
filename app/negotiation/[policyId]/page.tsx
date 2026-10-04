@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { LiveRefresh } from "@/components/live-refresh";
 import { NegotiationHub } from "@/components/negotiation-hub";
+import { canNegotiate } from "@/lib/agents";
 import { priceBoard, type PriceBoard } from "@/lib/pricing";
 import { store } from "@/lib/store";
 
@@ -38,6 +39,7 @@ export default async function NegotiationPage({
         board={board}
         firstName={person.firstName}
         initialLine={line}
+        canShop={canNegotiate(policyId)}
       />
     </>
   );

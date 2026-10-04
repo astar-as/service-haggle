@@ -1,5 +1,6 @@
 import { generateText } from "ai";
 import { z } from "zod";
+import { COVERAGE } from "./coverage";
 import { extractJson, getModel } from "./models";
 import { PERSON_ID } from "./seed";
 import { store } from "./store";
@@ -145,7 +146,9 @@ export async function parseDecPage(input: DecPageInput): Promise<DecPageResult> 
   const id = existing?.id ?? `${kind}-${slug(cleanInsurer(out.insurer))}`;
 
   // Keep the rules and requirements the user already set; the page only knows what's on it.
-  const before = existing?.coverage?.items ?? [];
+  // A removed seed policy coming back (demo start) still gets the rules the user set for it.
+  const prior = existing?.coverage ?? COVERAGE[id];
+  const before = prior?.items ?? [];
   const coverage: Coverage = {
     summary: out.coverage.summary,
     items: out.coverage.items.map((i) => {
@@ -158,7 +161,7 @@ export async function parseDecPage(input: DecPageInput): Promise<DecPageResult> 
         ...(prev?.rule ? { rule: prev.rule } : {}),
       };
     }),
-    requirements: existing?.coverage?.requirements ?? [],
+    requirements: prior?.requirements ?? [],
   };
 
   const facts = out.facts.map(guard);
