@@ -1,0 +1,213 @@
+[
+  {
+    "policyId": "auto-northstar",
+    "kind": "auto",
+    "query": "full coverage car insurance rates by company for a 29-year-old driver in San Francisco with a clean record",
+    "offers": [
+      {
+        "appliesTo": "San Francisco drivers with a clean driving history; full coverage. The page does not identify this rate as specifically for age 29.",
+        "insurer": "GEICO",
+        "monthly": 138,
+        "quote": "\"GEICO | $1,657\" annual full-coverage average; the page also states \"$138\" monthly.",
+        "url": "https://www.autoinsurance.com/states/california/best-car-insurance/san-francisco/"
+      },
+      {
+        "appliesTo": "San Francisco drivers with a clean driving history; full coverage. The page does not identify this rate as specifically for age 29.",
+        "insurer": "USAA",
+        "monthly": 149,
+        "quote": "\"USAA | $1,792\" annual full-coverage average; the page also states \"$149\" monthly.",
+        "url": "https://www.autoinsurance.com/states/california/best-car-insurance/san-francisco/"
+      },
+      {
+        "appliesTo": "San Francisco drivers with a clean driving history; full coverage. The page does not identify this rate as specifically for age 29.",
+        "insurer": "Mercury",
+        "monthly": 159,
+        "quote": "\"Mercury | $1,902\" annual full-coverage average; the page also states \"$159\" monthly.",
+        "url": "https://www.autoinsurance.com/states/california/best-car-insurance/san-francisco/"
+      },
+      {
+        "appliesTo": "San Francisco drivers with a clean driving history; full coverage. The page does not identify this rate as specifically for age 29.",
+        "insurer": "Progressive",
+        "monthly": 164,
+        "quote": "\"Progressive | $1,965\" annual full-coverage average; the page also states \"$164\" monthly.",
+        "url": "https://www.autoinsurance.com/states/california/best-car-insurance/san-francisco/"
+      },
+      {
+        "appliesTo": "San Francisco drivers with a clean driving history; full coverage. The page does not identify this rate as specifically for age 29.",
+        "insurer": "AAA",
+        "monthly": 194,
+        "quote": "\"AAA | $2,322\" annual full-coverage average; the page also states \"$194\" monthly.",
+        "url": "https://www.autoinsurance.com/states/california/best-car-insurance/san-francisco/"
+      },
+      {
+        "appliesTo": "San Francisco drivers with a clean driving history; full coverage. The page does not identify this rate as specifically for age 29.",
+        "insurer": "State Farm",
+        "monthly": 208,
+        "quote": "\"State Farm | $2,501\" annual full-coverage average; the page also states \"$208\" monthly.",
+        "url": "https://www.autoinsurance.com/states/california/best-car-insurance/san-francisco/"
+      },
+      {
+        "appliesTo": "San Francisco drivers with a clean driving history; full coverage. The page does not identify this rate as specifically for age 29.",
+        "insurer": "Allstate",
+        "monthly": 220,
+        "quote": "\"Allstate | $2,640\" annual full-coverage average; the page also states \"$220\" monthly.",
+        "url": "https://www.autoinsurance.com/states/california/best-car-insurance/san-francisco/"
+      }
+    ],
+    "sources": 1,
+    "costDollars": 0.012,
+    "scannedAt": "2026-10-04T19:01:37.158Z"
+  },
+  {
+    "policyId": "health-meridian",
+    "kind": "health",
+    "query": "Covered California silver plan monthly premiums by insurer for a 29-year-old in San Francisco",
+    "offers": [
+      {
+        "appliesTo": "29-year-old individual in San Francisco County; Silver 70 HMO (off-exchange) coverage; the page labels the rate as a monthly rate.",
+        "insurer": "Chinese Community Health Plan (CCHP) / Balance by CCHP",
+        "monthly": 595,
+        "quote": "The 2026 San Francisco County rate sheet lists age 29 and, under the Silver 70 Off Exchange HMO column, $594.56.",
+        "url": "https://balancebycchp.com/doc/2026-ifp-rate-sheet-san-francisco-county/?output=pdf"
+      },
+      {
+        "appliesTo": "29-year-old individual in San Francisco County; 2026 Silver MI03 HMO coverage; the page presents the figure as a monthly individual-and-family-plan rate.",
+        "insurer": "Sutter Health Plus",
+        "monthly": 746,
+        "quote": "The 2026 Sutter Health Plus rate guide lists San Francisco County, Silver MI03 HMO, age 29, at $745.95.",
+        "url": "https://edge.sitecorecloud.io/sutterhealt962c-sutterhealt8fce-production57cc-4860/media/Project/SutterHealth/SutterHealthPlan/PDF/pm-mk-25-019-q1-2026-ifp-rate-guide.pdf"
+      }
+    ],
+    "sources": 2,
+    "costDollars": 0.012,
+    "scannedAt": "2026-10-04T19:01:30.989Z"
+  },
+  {
+    "policyId": "pet-pawsure",
+    "kind": "pet",
+    "query": "cat accident and illness pet insurance monthly cost by company",
+    "offers": [
+      {
+        "appliesTo": "Age 2, Domestic Shorthair, Katy, Texas",
+        "monthly": 17,
+        "quote": "$17/month",
+        "insurer": "Spot",
+        "url": "https://www.nerdwallet.com/insurance/pet/spot-pet-insurance-review"
+      },
+      {
+        "monthly": 22,
+        "url": "https://www.forbes.com/advisor/pet-insurance/aspca-pet-insurance-review/",
+        "appliesTo": "$5,000 annual coverage, $250 deductible, 80% reimbursement",
+        "insurer": "ASPCA Pet Health Insurance",
+        "quote": "$22/month"
+      },
+      {
+        "quote": "$23/month",
+        "url": "https://www.forbes.com/advisor/pet-insurance/best-cheap-pet-insurance/",
+        "appliesTo": "Mixed-breed Cat, $20,000 annual coverage",
+        "monthly": 23,
+        "insurer": "Lemonade"
+      },
+      {
+        "quote": "$31/month",
+        "appliesTo": "Age 8, Domestic Shorthair, Katy, Texas",
+        "monthly": 31,
+        "url": "https://www.nerdwallet.com/insurance/pet/spot-pet-insurance-review",
+        "insurer": "Spot"
+      },
+      {
+        "quote": "$31/month",
+        "monthly": 31,
+        "url": "https://www.forbes.com/advisor/pet-insurance/aspca-pet-insurance-review/",
+        "appliesTo": "$10,000 annual coverage, $250 deductible, 80% reimbursement",
+        "insurer": "ASPCA Pet Health Insurance"
+      }
+    ],
+    "sources": 3,
+    "costDollars": 0.012,
+    "scannedAt": "2026-10-04T19:01:39.285Z"
+  },
+  {
+    "policyId": "life-evergreen",
+    "kind": "life",
+    "query": "20-year $500,000 term life insurance monthly rates by company for a 29-year-old non-smoker",
+    "offers": [
+      {
+        "appliesTo": "30-year-old male, healthy/Preferred or better underwriting, non-tobacco; nationwide U.S. pricing; $500,000 coverage for 20 years.",
+        "insurer": "Corebridge (Select-a-Term)",
+        "monthly": 18,
+        "quote": "$18.16 per month",
+        "url": "https://www.lifestein.com/post/best-500-000-term-life-insurance-companies-male-female-20-30-year-terms"
+      },
+      {
+        "appliesTo": "30-year-old male, healthy/Preferred or better underwriting, non-tobacco; nationwide U.S. pricing; $500,000 coverage for 20 years.",
+        "insurer": "Banner Life (OPTerm)",
+        "monthly": 18,
+        "quote": "$18.25 per month",
+        "url": "https://www.lifestein.com/post/best-500-000-term-life-insurance-companies-male-female-20-30-year-terms"
+      },
+      {
+        "appliesTo": "30-year-old male, healthy/Preferred or better underwriting, non-tobacco; nationwide U.S. pricing; $500,000 coverage for 20 years.",
+        "insurer": "Symetra (SwiftTerm)",
+        "monthly": 18,
+        "quote": "$18.26 per month",
+        "url": "https://www.lifestein.com/post/best-500-000-term-life-insurance-companies-male-female-20-30-year-terms"
+      },
+      {
+        "appliesTo": "30-year-old male, healthy/Preferred or better underwriting, non-tobacco; nationwide U.S. pricing; $500,000 coverage for 20 years.",
+        "insurer": "Protective Life (Classic Choice Term)",
+        "monthly": 18,
+        "quote": "$18.35 per month",
+        "url": "https://www.lifestein.com/post/best-500-000-term-life-insurance-companies-male-female-20-30-year-terms"
+      },
+      {
+        "appliesTo": "30-year-old male, healthy/Preferred or better underwriting, non-tobacco; nationwide U.S. pricing; $500,000 coverage for 20 years.",
+        "insurer": "Pacific Life (Promise Term)",
+        "monthly": 19,
+        "quote": "$18.82 per month",
+        "url": "https://www.lifestein.com/post/best-500-000-term-life-insurance-companies-male-female-20-30-year-terms"
+      }
+    ],
+    "sources": 1,
+    "costDollars": 0.012,
+    "scannedAt": "2026-10-04T19:01:37.272Z"
+  },
+  {
+    "policyId": "renters-hearthly",
+    "kind": "renters",
+    "query": "renters insurance monthly cost by company in San Francisco for $30,000 personal property coverage",
+    "offers": [
+      {
+        "url": "https://insurify.com/renters-insurance/california/san-francisco/",
+        "appliesTo": "30-year-old tenant, no prior claims, good credit, $30,000 personal property coverage, $300,000 liability coverage, $500 deductible, San Francisco",
+        "quote": "$14 per month",
+        "insurer": "Lemonade",
+        "monthly": 14
+      },
+      {
+        "monthly": 21,
+        "quote": "$21 per month",
+        "insurer": "Progressive",
+        "url": "https://insurify.com/renters-insurance/california/san-francisco/",
+        "appliesTo": "30-year-old tenant, no prior claims, good credit, $30,000 personal property coverage, $300,000 liability coverage, $500 deductible, San Francisco"
+      },
+      {
+        "appliesTo": "30-year-old tenant, no prior claims, good credit, $30,000 personal property coverage, $300,000 liability coverage, $500 deductible, San Francisco",
+        "url": "https://insurify.com/renters-insurance/california/san-francisco/",
+        "insurer": "GEICO",
+        "quote": "$31 per month",
+        "monthly": 31
+      },
+      {
+        "quote": "$35 per month",
+        "monthly": 35,
+        "url": "https://insurify.com/renters-insurance/california/san-francisco/",
+        "insurer": "Assurant",
+        "appliesTo": "30-year-old tenant, no prior claims, good credit, $30,000 personal property coverage, $300,000 liability coverage, $500 deductible, San Francisco"
+      }
+    ],
+    "sources": 1,
+    "costDollars": 0.012,
+    "scannedAt": "2026-10-04T19:01:38.441Z"
+  }
+]

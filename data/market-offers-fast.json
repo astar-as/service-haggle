@@ -1,0 +1,324 @@
+[
+  {
+    "policyId": "auto-northstar",
+    "kind": "auto",
+    "query": "full coverage car insurance rates by company for a 29-year-old driver in San Francisco with a clean record",
+    "offers": [
+      {
+        "monthly": 100,
+        "appliesTo": "29-year-old driver, full coverage, no specific location mentioned for these rates",
+        "insurer": "USAA",
+        "url": "https://www.insuranceopedia.com/auto-insurance/car-insurance-29-year-old",
+        "quote": "$100 a month"
+      },
+      {
+        "appliesTo": "29-year-old driver, full coverage, no specific location mentioned for these rates",
+        "url": "https://www.insuranceopedia.com/auto-insurance/car-insurance-29-year-old",
+        "insurer": "State Farm",
+        "quote": "$124 a month",
+        "monthly": 124
+      },
+      {
+        "insurer": "Auto-Owners",
+        "url": "https://www.insuranceopedia.com/auto-insurance/car-insurance-29-year-old",
+        "monthly": 141,
+        "quote": "$141 a month",
+        "appliesTo": "29-year-old driver, full coverage, no specific location mentioned for these rates"
+      },
+      {
+        "insurer": "Travelers",
+        "quote": "$160 a month",
+        "url": "https://www.insuranceopedia.com/auto-insurance/car-insurance-29-year-old",
+        "appliesTo": "29-year-old driver, full coverage, no specific location mentioned for these rates",
+        "monthly": 160
+      },
+      {
+        "url": "https://www.insuranceopedia.com/auto-insurance/car-insurance-29-year-old",
+        "appliesTo": "29-year-old driver, full coverage, no specific location mentioned for these rates",
+        "monthly": 161,
+        "quote": "$161 a month",
+        "insurer": "GEICO"
+      },
+      {
+        "url": "https://www.insuranceopedia.com/auto-insurance/car-insurance-29-year-old",
+        "appliesTo": "29-year-old driver, full coverage, no specific location mentioned for these rates",
+        "monthly": 169,
+        "insurer": "Progressive",
+        "quote": "$169 a month"
+      },
+      {
+        "appliesTo": "29-year-old driver, full coverage, no specific location mentioned for these rates",
+        "quote": "$217 a month",
+        "monthly": 217,
+        "url": "https://www.insuranceopedia.com/auto-insurance/car-insurance-29-year-old",
+        "insurer": "Allstate"
+      },
+      {
+        "quote": "$258 a month",
+        "insurer": "Farmers",
+        "url": "https://www.insuranceopedia.com/auto-insurance/car-insurance-29-year-old",
+        "monthly": 258,
+        "appliesTo": "29-year-old driver, full coverage, no specific location mentioned for these rates"
+      },
+      {
+        "quote": "$295 a month",
+        "insurer": "Nationwide",
+        "monthly": 295,
+        "appliesTo": "29-year-old driver, full coverage, no specific location mentioned for these rates",
+        "url": "https://www.insuranceopedia.com/auto-insurance/car-insurance-29-year-old"
+      }
+    ],
+    "sources": 1,
+    "costDollars": 0.007,
+    "scannedAt": "2026-10-04T19:01:29.632Z"
+  },
+  {
+    "policyId": "health-meridian",
+    "kind": "health",
+    "query": "Covered California silver plan monthly premiums by insurer for a 29-year-old in San Francisco",
+    "offers": [],
+    "sources": 0,
+    "costDollars": 0.007,
+    "scannedAt": "2026-10-04T19:01:26.533Z"
+  },
+  {
+    "policyId": "pet-pawsure",
+    "kind": "pet",
+    "query": "cat accident and illness pet insurance monthly cost by company",
+    "offers": [
+      {
+        "insurer": "Lemonade",
+        "appliesTo": "Mixed-breed cat, $20,000 annual coverage",
+        "url": "https://www.forbes.com/advisor/pet-insurance/best-cheap-pet-insurance/",
+        "quote": "$23/mo",
+        "monthly": 23
+      },
+      {
+        "appliesTo": "Mixed-breed cat, unlimited annual coverage",
+        "insurer": "Pets Best",
+        "monthly": 23,
+        "url": "https://www.forbes.com/advisor/pet-insurance/best-cheap-pet-insurance/",
+        "quote": "$23/mo"
+      },
+      {
+        "url": "https://www.forbes.com/advisor/pet-insurance/best-cheap-pet-insurance/",
+        "appliesTo": "Mixed-breed cat, $10,000 annual coverage",
+        "monthly": 28,
+        "quote": "$28/mo",
+        "insurer": "Nationwide"
+      },
+      {
+        "quote": "$34/mo",
+        "url": "https://www.forbes.com/advisor/pet-insurance/best-cheap-pet-insurance/",
+        "monthly": 34,
+        "insurer": "Prudent Pet",
+        "appliesTo": "Mixed-breed cat, unlimited annual coverage"
+      }
+    ],
+    "sources": 1,
+    "costDollars": 0.007,
+    "scannedAt": "2026-10-04T19:01:23.444Z"
+  },
+  {
+    "policyId": "life-evergreen",
+    "kind": "life",
+    "query": "20-year $500,000 term life insurance monthly rates by company for a 29-year-old non-smoker",
+    "offers": [
+      {
+        "url": "https://www.insure.com/life-insurance/average-online-term-life-insurance-rates/",
+        "appliesTo": "25-year-old female, $500,000, 20-year term",
+        "monthly": 12,
+        "insurer": "Wyshbox",
+        "quote": "$12/month"
+      },
+      {
+        "monthly": 15,
+        "url": "https://www.insure.com/life-insurance/average-online-term-life-insurance-rates/",
+        "appliesTo": "25-year-old female, $500,000, 20-year term",
+        "insurer": "Haven Life",
+        "quote": "$15/month"
+      },
+      {
+        "appliesTo": "25-year-old female, $500,000, 20-year term",
+        "insurer": "Ethos",
+        "monthly": 16,
+        "quote": "$16/month",
+        "url": "https://www.insure.com/life-insurance/average-online-term-life-insurance-rates/"
+      },
+      {
+        "monthly": 18,
+        "url": "https://www.insure.com/life-insurance/average-online-term-life-insurance-rates/",
+        "appliesTo": "25-year-old female, $500,000, 20-year term",
+        "insurer": "Bestow",
+        "quote": "$18/month"
+      },
+      {
+        "quote": "$18/month",
+        "monthly": 18,
+        "insurer": "Ladder",
+        "url": "https://www.insure.com/life-insurance/average-online-term-life-insurance-rates/",
+        "appliesTo": "25-year-old female, $500,000, 20-year term"
+      },
+      {
+        "url": "https://www.insure.com/life-insurance/average-online-term-life-insurance-rates/",
+        "insurer": "Lemonade",
+        "monthly": 18,
+        "appliesTo": "25-year-old female, $500,000, 20-year term",
+        "quote": "$18/month"
+      },
+      {
+        "monthly": 19,
+        "url": "https://www.insure.com/life-insurance/average-online-term-life-insurance-rates/",
+        "appliesTo": "25-year-old female, $500,000, 20-year term",
+        "insurer": "Fabric",
+        "quote": "$19/month"
+      },
+      {
+        "appliesTo": "25-year-old male, $500,000, 20-year term",
+        "insurer": "Haven Life",
+        "monthly": 19,
+        "quote": "$19/month",
+        "url": "https://www.insure.com/life-insurance/average-online-term-life-insurance-rates/"
+      },
+      {
+        "appliesTo": "25-year-old female, $500,000, 20-year term",
+        "url": "https://www.insure.com/life-insurance/average-online-term-life-insurance-rates/",
+        "quote": "$20/month",
+        "monthly": 20,
+        "insurer": "Sproutt"
+      },
+      {
+        "url": "https://www.insure.com/life-insurance/average-online-term-life-insurance-rates/",
+        "monthly": 21,
+        "appliesTo": "25-year-old female, $500,000, 20-year term",
+        "insurer": "Sofi",
+        "quote": "$21/month"
+      },
+      {
+        "monthly": 21,
+        "appliesTo": "25-year-old male, $500,000, 20-year term",
+        "url": "https://www.insure.com/life-insurance/average-online-term-life-insurance-rates/",
+        "insurer": "Ethos",
+        "quote": "$21/month"
+      },
+      {
+        "monthly": 21,
+        "insurer": "Ladder",
+        "appliesTo": "25-year-old male, $500,000, 20-year term",
+        "url": "https://www.insure.com/life-insurance/average-online-term-life-insurance-rates/",
+        "quote": "$21/month"
+      },
+      {
+        "url": "https://www.insure.com/life-insurance/average-online-term-life-insurance-rates/",
+        "appliesTo": "25-year-old male, $500,000, 20-year term",
+        "insurer": "Wyshbox",
+        "quote": "$21/month",
+        "monthly": 21
+      },
+      {
+        "quote": "$23/month",
+        "monthly": 23,
+        "insurer": "Fabric",
+        "appliesTo": "25-year-old male, $500,000, 20-year term",
+        "url": "https://www.insure.com/life-insurance/average-online-term-life-insurance-rates/"
+      },
+      {
+        "url": "https://www.insure.com/life-insurance/average-online-term-life-insurance-rates/",
+        "appliesTo": "25-year-old male, $500,000, 20-year term",
+        "monthly": 24,
+        "quote": "$24/month",
+        "insurer": "Sofi"
+      },
+      {
+        "monthly": 24,
+        "quote": "$24/month",
+        "appliesTo": "25-year-old male, $500,000, 20-year term",
+        "url": "https://www.insure.com/life-insurance/average-online-term-life-insurance-rates/",
+        "insurer": "Sproutt"
+      },
+      {
+        "insurer": "Lemonade",
+        "appliesTo": "25-year-old male, $500,000, 20-year term",
+        "quote": "$29/month",
+        "url": "https://www.insure.com/life-insurance/average-online-term-life-insurance-rates/",
+        "monthly": 29
+      },
+      {
+        "monthly": 37,
+        "url": "https://www.insure.com/life-insurance/average-online-term-life-insurance-rates/",
+        "quote": "$37/month",
+        "insurer": "Bestow",
+        "appliesTo": "25-year-old male, $500,000, 20-year term"
+      }
+    ],
+    "sources": 1,
+    "costDollars": 0.007,
+    "scannedAt": "2026-10-04T19:01:28.391Z"
+  },
+  {
+    "policyId": "renters-hearthly",
+    "kind": "renters",
+    "query": "renters insurance monthly cost by company in San Francisco for $30,000 personal property coverage",
+    "offers": [
+      {
+        "appliesTo": "30-year-old single woman, $30,000 personal property, $100,000 liability, $500 deductible in San Francisco",
+        "monthly": 13,
+        "url": "https://www.valuepenguin.com/best-cheap-renters-insurance-san-francisco-california",
+        "quote": "$13 per month",
+        "insurer": "Lemonade"
+      },
+      {
+        "appliesTo": "$30,000 personal property coverage in San Francisco",
+        "monthly": 14,
+        "insurer": "Lemonade",
+        "quote": "$14 per month",
+        "url": "https://insurify.com/renters-insurance/california/san-francisco/"
+      },
+      {
+        "quote": "$17 per month",
+        "monthly": 17,
+        "insurer": "Progressive",
+        "appliesTo": "30-year-old single woman, $30,000 personal property, $100,000 liability, $500 deductible in San Francisco",
+        "url": "https://www.valuepenguin.com/best-cheap-renters-insurance-san-francisco-california"
+      },
+      {
+        "monthly": 18,
+        "url": "https://www.valuepenguin.com/best-cheap-renters-insurance-san-francisco-california",
+        "insurer": "Allstate",
+        "appliesTo": "30-year-old single woman, $30,000 personal property, $100,000 liability, $500 deductible in San Francisco",
+        "quote": "$18 per month"
+      },
+      {
+        "quote": "$21 per month",
+        "insurer": "Progressive",
+        "appliesTo": "$30,000 personal property coverage in San Francisco",
+        "url": "https://insurify.com/renters-insurance/california/san-francisco/",
+        "monthly": 21
+      },
+      {
+        "insurer": "GEICO",
+        "appliesTo": "$30,000 personal property coverage in San Francisco",
+        "monthly": 31,
+        "quote": "$31 per month",
+        "url": "https://insurify.com/renters-insurance/california/san-francisco/"
+      },
+      {
+        "url": "https://www.valuepenguin.com/best-cheap-renters-insurance-san-francisco-california",
+        "insurer": "Assurant",
+        "quote": "$31 per month",
+        "appliesTo": "30-year-old single woman, $30,000 personal property, $100,000 liability, $500 deductible in San Francisco",
+        "monthly": 31
+      },
+      {
+        "monthly": 35,
+        "url": "https://insurify.com/renters-insurance/california/san-francisco/",
+        "insurer": "Assurant",
+        "appliesTo": "$30,000 personal property coverage in San Francisco",
+        "quote": "$35 per month"
+      }
+    ],
+    "sources": 2,
+    "costDollars": 0.007,
+    "scannedAt": "2026-10-04T19:01:29.308Z"
+  }
+]
