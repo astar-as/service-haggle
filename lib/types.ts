@@ -24,6 +24,20 @@ export interface Person {
   facts: Fact[];
 }
 
+export interface CoverageItem {
+  label: string;
+  value: string;
+  deductible?: string;
+  mustKeep: boolean;
+  rule?: string;
+}
+
+export interface Coverage {
+  summary: string;
+  items: CoverageItem[];
+  requirements: string[];
+}
+
 export interface Policy {
   id: string;
   personId: string;
@@ -35,6 +49,7 @@ export interface Policy {
   memberSince: number;
   phone?: string;
   facts: Fact[];
+  coverage?: Coverage;
 }
 
 export interface Stance {

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Ask } from "@/components/ask";
+import { CoverageTable } from "@/components/coverage";
 import { Back, Chevron } from "@/components/icons";
 import { LiveRefresh } from "@/components/live-refresh";
 import { ShopButton } from "@/components/shop-button";
@@ -60,13 +61,15 @@ export default async function PolicyPage({ params }: { params: Promise<{ id: str
         )}
       </section>
 
+      {policy.coverage && <CoverageTable coverage={policy.coverage} />}
+
       {signals.length > 0 && (
         <section aria-labelledby="noticed" className="flex flex-col gap-3">
           <h2 id="noticed" className="px-1 text-[15px] leading-[22px] font-semibold">
             What I&apos;ve noticed
           </h2>
           <div className="overflow-hidden rounded-[18px] bg-white shadow-[0_0_0_1px_var(--color-line)]">
-            {signals.map((s) => (
+            {signals.slice(0, 6).map((s) => (
               <div key={s.id} className="rise grid grid-cols-[64px_minmax(0,1fr)_auto] items-baseline gap-4 border-t border-hair px-5 py-[18px] first:border-t-0">
                 <span className="num text-sm leading-[22px] text-subtle">{shortDate(s.at)}</span>
                 <span className="text-base leading-[23px]">{s.title}</span>

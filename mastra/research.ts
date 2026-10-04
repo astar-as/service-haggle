@@ -19,8 +19,8 @@ function exa() {
   return exaClient;
 }
 
-const LOW_QUALITY_HOSTS = ["joingerald.com", "madmadnews.com"];
-const LOW_QUALITY_TITLE = /cash advance|buy now pay later|coupon|promo code|casino/i;
+const LOW_QUALITY_HOSTS = ["joingerald.com", "madmadnews.com", "ajkerbanglatarikh.com", "legalrightsguru.io", "blueprinttobreakup.com"];
+const LOW_QUALITY_TITLE = /cash advance|buy now pay later|coupon|promo code|casino|EBT card|alberta|ontario|australia/i;
 
 function lowQuality(url: string, title: string) {
   const host = hostOf(url);

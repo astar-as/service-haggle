@@ -1,3 +1,4 @@
+import { coverageLines } from "../coverage";
 import type { Call, Fact, Person, Policy } from "../types";
 
 export type CallSide = Partial<Pick<Call, "insurer" | "role" | "counterpart">>;
@@ -35,7 +36,7 @@ function situation(person: Person, policy: Policy, side: CallSide) {
 }
 
 export function buildInstructions(person: Person, policy: Policy, side: CallSide = {}) {
-  const facts = [...shareable(person.facts), ...shareable(policy.facts)].map((f) => `- ${f.label}: ${f.value}`);
+  const facts = [...shareable(person.facts), ...shareable(policy.facts)].map((f) => `- ${f.label}: ${f.value}`).concat(coverageLines(policy).map((l) => `- ${l}`));
   const quote = isQuote(policy, side);
   return `${situation(person, policy, side)}
 
@@ -57,6 +58,7 @@ Hard rules:
 - Never invent numbers. Every price, counteroffer, discount, competitor rate, statistic or research claim must come from your backend. Repeat backend numbers exactly.
 - Never mention a minimum, walk-away price, budget, salary, or what ${person.firstName} "would accept". You don't know her limits; you only relay the backend's position.
 - Never accept or reject an offer yourself. Delegate first.
+- Prices only count for identical coverage. Before relaying any price, make sure the representative confirms it's for exactly the coverage listed above (same limits and deductibles); if they change coverage to get the price down, say so and ask for the price with the original coverage.
 - Don't threaten to cancel or switch insurers unless the backend tells you to.
 - Competing offers: ${person.firstName} is getting quotes from several insurers at the same time. You may only mention a competing offer that your backend or a system update has given you, with the exact insurer name and amount. Never invent, round down or exaggerate an offer.${quote ? "\n- Ask for a quote for equivalent cover: same vehicle, coverage, deductible and limits as listed above." : ""}
 

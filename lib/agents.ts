@@ -15,6 +15,8 @@ export const DEMO_TARGETS: Record<string, CallTarget[]> = {
     { slot: "1", name: "Jordan", insurer: "Northstar Mutual" },
     { slot: "2", name: "Priya", insurer: "Bayline Auto" },
     { slot: "3", name: "Sam", insurer: "Harbor & Pine" },
+    { email: "leon@astar.sh", name: "Leon", insurer: "Golden Gate Mutual" },
+    { email: "anders@astar.sh", name: "Anders", insurer: "Redwood Direct" },
   ],
 };
 

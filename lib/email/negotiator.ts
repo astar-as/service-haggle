@@ -1,3 +1,4 @@
+import { coverageLines } from "../coverage";
 import { competingOffers } from "../agents";
 import { handleInboundMail } from "../mail";
 import { store } from "../store";
@@ -116,7 +117,7 @@ class EmailLine {
 
   private facts() {
     const shareable = [...this.policy.facts, ...this.person.facts].filter((f) => f.disclosure === "shareable");
-    return [`Coverage: ${this.policy.product}`, ...shareable.map((f) => `${f.label}: ${f.value}`)];
+    return [`Coverage: ${this.policy.product}`, ...coverageLines(this.policy), ...shareable.map((f) => `${f.label}: ${f.value}`)];
   }
 
   private async open() {

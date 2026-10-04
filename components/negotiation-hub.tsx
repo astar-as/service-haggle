@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { PriceBoard } from "@/lib/pricing";
 import type { Call, Policy, Stance } from "@/lib/types";
 import { kindLabel, usd } from "@/lib/view";
+import { MustMatch } from "./coverage";
 import { Back, Mail, Phone } from "./icons";
 import { ShopButton } from "./shop-button";
 
@@ -152,6 +153,8 @@ export function NegotiationHub({
       </section>
 
       {lines.length === 0 && stance && stance.verdict !== "fair" && <ShopButton policyId={policy.id} insurer={policy.insurer} />}
+
+      {policy.coverage && <MustMatch coverage={policy.coverage} />}
 
       {lines.length > 0 && (
         <section aria-label="Lines" className="flex flex-col gap-3">

@@ -1,3 +1,4 @@
+import { coverageLines } from "./coverage";
 import { competingOffers } from "./agents";
 import { sendConfirmation } from "./mail";
 import { generateLine, hasModel } from "./models";
@@ -138,6 +139,7 @@ async function buildBrief(policyId: string): Promise<Brief> {
   const shareable = [
     ...person.facts.filter((f) => f.disclosure === "shareable").map((f) => `${f.label}: ${f.value}`),
     ...policy.facts.filter((f) => f.disclosure === "shareable").map((f) => `${f.label}: ${f.value}`),
+    ...coverageLines(policy),
     `Product: ${policy.product}`,
     `Current premium: ${usd(policy.monthlyPremium)} a month`,
     `Renews: ${shortDate(policy.renewsOn)}`,

@@ -1,5 +1,6 @@
 import { EventEmitter } from "node:events";
 import { neon } from "@neondatabase/serverless";
+import { withCoverage } from "./coverage";
 import * as seed from "./seed";
 import type { Call, MemberRate, Person, Policy, PriceCandidate, Signal, Stance, StoreEvent, Transaction } from "./types";
 
@@ -122,10 +123,10 @@ export const store = {
     await db().put("person", p.id, p);
   },
   async policies(): Promise<Policy[]> {
-    return db().all<Policy>("policy");
+    return (await db().all<Policy>("policy")).map((p) => withCoverage(p));
   },
   async policy(id: string) {
-    return db().get<Policy>("policy", id);
+    return withCoverage(await db().get<Policy>("policy", id));
   },
   async putPolicy(p: Policy) {
     await db().put("policy", p.id, p);
