@@ -8,6 +8,7 @@ import { kindLabel, usd } from "@/lib/view";
 import { MustMatch } from "./coverage";
 import { Back, Mail, Phone } from "./icons";
 import { ShopButton } from "./shop-button";
+import { StopButton } from "./stop-button";
 
 const offerOf = (c: Call) => c.agreedMonthly ?? c.theirOffer;
 
@@ -119,6 +120,7 @@ export function NegotiationHub({
           <span className="inline-flex items-center gap-2 text-sm text-subtle">
             {active && <span className="live size-1.5 rounded-full bg-accent" />}
             {lines.length} {lines.length === 1 ? "agent" : "agents"} · shared memory
+            {active && <StopButton policyId={policy.id} />}
           </span>
         )}
       </header>
