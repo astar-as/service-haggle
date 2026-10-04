@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Back } from "@/components/icons";
+import { ProfileChat } from "@/components/profile-chat";
 import { ProfileEditor } from "@/components/profile-editor";
 import { readValues } from "@/lib/profile";
 import { store } from "@/lib/store";
@@ -14,6 +15,7 @@ export default async function ProfilePage() {
   ]);
   const fair = Object.fromEntries(stances.map((s) => [s.policyId, s.fairMonthly]));
   const age = person.facts.find((f) => f.label === "Age")?.value;
+  const values = readValues(person, policies);
 
   return (
     <main className="mx-auto flex max-w-[720px] flex-col gap-9 px-5 pt-7 pb-14">
@@ -37,11 +39,18 @@ export default async function ProfilePage() {
           premiums would move. Only shareable facts ever reach an insurer.
         </p>
       </section>
+      <section aria-labelledby="tell" className="flex flex-col gap-3">
+        <h2 id="tell" className="px-1 text-[15px] leading-[22px] font-semibold">
+          Tell me what changed
+        </h2>
+        <ProfileChat />
+      </section>
       <ProfileEditor
+        key={JSON.stringify(values)}
         person={person}
         policies={policies}
         fair={fair}
-        initial={readValues(person, policies)}
+        initial={values}
       />
     </main>
   );

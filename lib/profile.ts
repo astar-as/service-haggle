@@ -331,7 +331,8 @@ const FACTORS: Factor[] = [
   {
     policyKind: "auto",
     field: "mileage",
-    label: (a, b) => `Mileage ${num(a).toLocaleString("en-US")} → ${num(b).toLocaleString("en-US")} mi`,
+    label: (a, b) =>
+      `Mileage ${num(a).toLocaleString("en-US")} → ${num(b).toLocaleString("en-US")} mi`,
     ratio: (a, b) => mileage(num(b.mileage)) / mileage(num(a.mileage)),
   },
   {
@@ -386,7 +387,8 @@ const FACTORS: Factor[] = [
   {
     policyKind: "renters",
     field: "contents",
-    label: (a, b) => `Contents $${num(a).toLocaleString("en-US")} → $${num(b).toLocaleString("en-US")}`,
+    label: (a, b) =>
+      `Contents $${num(a).toLocaleString("en-US")} → $${num(b).toLocaleString("en-US")}`,
     ratio: (a, b) => contents(num(b.contents)) / contents(num(a.contents)),
   },
   {
@@ -417,7 +419,8 @@ const FACTORS: Factor[] = [
   {
     policyKind: "life",
     field: "coverage",
-    label: (a, b) => `Coverage $${num(a).toLocaleString("en-US")} → $${num(b).toLocaleString("en-US")}`,
+    label: (a, b) =>
+      `Coverage $${num(a).toLocaleString("en-US")} → $${num(b).toLocaleString("en-US")}`,
     ratio: (a, b) => coverage(num(b.coverage)) / coverage(num(a.coverage)),
   },
   {
@@ -512,5 +515,69 @@ export function applyValues(person: Person, policies: Policy[], values: Values) 
   return {
     person: personChanged ? nextPerson : undefined,
     policies: nextPolicies.filter((p) => changedPolicies.has(p.id)),
+  };
+}
+
+// ---- Conversational edits ------------------------------------------------------------------
+// The profile chat proposes changes in this shape; nothing is written until Maya applies them.
+
+export interface FactChange {
+  action: "set" | "add" | "remove";
+  owner: "person" | string; // "person" or a policy id
+  label: string;
+  value?: string;
+  disclosure?: Disclosure;
+  reason?: string;
+}
+
+const fieldFor = (c: FactChange) =>
+  FIELDS.find((f) => f.owner === c.owner && (f.fact === c.label || f.label === c.label));
+
+// Known fields feed the what-if estimator; anything else is a plain fact.
+export function valuesAfter(base: Values, changes: FactChange[]): Values {
+  const next = { ...base };
+  for (const c of changes) {
+    const f = fieldFor(c);
+    if (!f || c.action === "remove" || c.value === undefined) continue;
+    if (f.type === "number") next[f.id] = String(num(c.value));
+    else if (f.options?.includes(c.value)) next[f.id] = c.value;
+  }
+  return next;
+}
+
+export function applyChanges(person: Person, policies: Policy[], changes: FactChange[]) {
+  const nextPerson = structuredClone(person);
+  const nextPolicies = structuredClone(policies);
+  const touched = new Set<string>();
+  let personChanged = false;
+  for (const c of changes) {
+    const facts =
+      c.owner === "person" ? nextPerson.facts : nextPolicies.find((p) => p.id === c.owner)?.facts;
+    if (!facts) continue;
+    const f = fieldFor(c);
+    const label = f?.fact ?? c.label;
+    if (c.owner === "person" && f?.id === "city" && c.value) {
+      nextPerson.city = c.value;
+      personChanged = true;
+      continue;
+    }
+    const i = facts.findIndex((x) => x.label === label);
+    if (c.action === "remove") {
+      if (i >= 0) facts.splice(i, 1);
+    } else if (c.value !== undefined) {
+      const value = f
+        ? formatValue(f, f.type === "number" ? String(num(c.value)) : c.value)
+        : c.value;
+      const disclosure =
+        c.disclosure ?? (i >= 0 ? facts[i].disclosure : (f?.disclosure ?? "private"));
+      if (i >= 0) facts[i] = { ...facts[i], value, disclosure };
+      else facts.push({ label, value, disclosure });
+    } else continue;
+    if (c.owner === "person") personChanged = true;
+    else touched.add(c.owner);
+  }
+  return {
+    person: personChanged ? nextPerson : undefined,
+    policies: nextPolicies.filter((p) => touched.has(p.id)),
   };
 }
