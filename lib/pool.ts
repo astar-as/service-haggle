@@ -49,7 +49,10 @@ export async function poolStatus() {
 }
 
 export async function ensurePool(size: number) {
-  const existing = (await poolStatus()).filter((m) => ["started", "starting", "created"].includes(m.state));
+  const all = await poolStatus();
+  const stopped = all.filter((m) => m.state === "stopped" || m.state === "suspended");
+  await Promise.all(stopped.map((m) => api(`/machines/${m.id}/start`, { method: "POST" })));
+  const existing = all.filter((m) => ["started", "starting", "created", "stopped", "suspended"].includes(m.state));
   const stale = existing.filter((m) => m.image && process.env.FLY_IMAGE_REF && !m.image.endsWith(process.env.FLY_IMAGE_REF.split(":").pop()!));
   const created: string[] = [];
   for (let i = existing.length; i < size; i++) {
