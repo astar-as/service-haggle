@@ -1,4 +1,5 @@
 import { keepAlive } from "./background";
+import { withdraw } from "./pool";
 import { store } from "./store";
 import type { Call } from "./types";
 
@@ -84,6 +85,15 @@ async function start(call: Call) {
   await store.putCall(call);
   const receiver = call.channel === "browser" && call.target?.startsWith("slot:");
   if (call.channel === "browser" && !receiver) return call;
+  if (flyConfigured() && Number(process.env.FLY_POOL_SIZE ?? 0) > 0) {
+    await store.putCall({ ...call, claimable: true });
+    for (let i = 0; i < 10; i++) {
+      await new Promise((r) => setTimeout(r, 300));
+      const fresh = await store.call(call.id);
+      if (fresh?.machineId) return fresh;
+    }
+    if (!(await withdraw(call.id))) return (await store.call(call.id)) ?? call;
+  }
   if (flyConfigured()) {
     const machineId = await launchFlyMachine(call.id);
     const withMachine = { ...call, machineId };

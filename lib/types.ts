@@ -106,6 +106,7 @@ export interface Call {
   channel: "browser" | "phone" | "email";
   target?: string;
   machineId?: string;
+  claimable?: boolean;
   roundId?: string;
   insurer: string;
   role: "retention" | "quote";
