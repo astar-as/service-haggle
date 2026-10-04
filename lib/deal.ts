@@ -2,6 +2,7 @@ import { createHash, randomBytes } from "node:crypto";
 import { AgentMailClient } from "agentmail";
 import { keepAlive } from "./background";
 import { makePdf, pdfText } from "./pdf";
+import { policyDocument } from "./policy-doc";
 import { store } from "./store";
 import type { Deal, DealCheck, DealMail, Person, Policy } from "./types";
 
@@ -539,17 +540,33 @@ async function signStep(deal: Deal) {
     new Set(deal.mails.map((m) => m.messageId!).filter(Boolean)),
   );
   const policyNumber = bodyOf(bound).match(/Policy number:\s*([A-Z0-9-]+)/i)?.[1];
+  const decAtt = bound.attachments?.find((a) => (a.filename ?? "").toLowerCase().endsWith(".pdf"));
+  let policyPdf: string | undefined;
+  if (decAtt) {
+    const meta = (await mail().inboxes.messages.getAttachment(
+      deal.inbox,
+      bound.messageId,
+      decAtt.attachmentId,
+    )) as { downloadUrl: string };
+    policyPdf = Buffer.from(await (await fetch(meta.downloadUrl)).arrayBuffer()).toString("base64");
+  }
   await update(
     deal,
-    { status: "bound", receipt: { ...deal.receipt!, policyNumber } },
+    {
+      status: "bound",
+      receipt: { ...deal.receipt!, policyNumber },
+      policyPdf,
+      policyFilename: decAtt?.filename,
+    },
     {
       at: now(),
       direction: "in",
       from: deal.desk,
       to: deal.inbox,
       subject: bound.subject ?? "",
-      summary: `Bound. Policy number ${policyNumber ?? "on file"}.`,
-      labels: ["bound"],
+      summary: `Bound. Policy number ${policyNumber ?? "on file"}; the issued policy declarations are attached.`,
+      labels: ["bound", "policy"],
+      attachment: decAtt?.filename,
       messageId: bound.messageId,
     },
   );
@@ -637,41 +654,63 @@ async function deskAnswer(deal: Deal, kind: "request" | "contract" | "corrected"
     return;
   }
   if (kind === "bound") {
-    const number = `${deal.insurer.slice(0, 2).toUpperCase()}-2026-${Math.floor(10000 + Math.random() * 89999)}`;
-    const text = `Hello,\n\nThank you. The signed receipt is on file and the policy is bound.\n\nPolicy number: ${number}\nEffective: ${policy.renewsOn}\nMonthly premium: ${usd(deal.monthly)}${sign}`;
-    await mail().inboxes.messages.reply(deal.desk, incoming.messageId, { text, labels: ["bound"] });
+    // Same number series as the insurer's existing policy (e.g. NSM-CA-…), otherwise initials.
+    const onFile = deal.insurer === policy.insurer ? fact("Policy number") : "";
+    const prefix = onFile
+      ? onFile.split("-").slice(0, 2).join("-")
+      : `${deal.insurer
+          .split(/\s+/)
+          .map((w) => w[0])
+          .join("")
+          .toUpperCase()}-CA`;
+    const number = `${prefix}-${Math.floor(20000 + Math.random() * 79999)}-${Math.floor(1000 + Math.random() * 8999)}`;
+    const text = `Hello,\n\nThank you. The signed receipt is on file and the policy is bound. Your policy declarations are attached; please keep them for your records.\n\nPolicy number: ${number}\nEffective: ${policy.renewsOn}\nMonthly premium: ${usd(deal.monthly)}${sign}`;
+    const dec = policyDocument({
+      variant: "bound",
+      policy,
+      person,
+      insurer: deal.insurer,
+      monthly: deal.monthly,
+      previousMonthly: deal.previousMonthly,
+      policyNumber: number,
+      dealRef: deal.ref,
+    });
+    await mail().inboxes.messages.reply(deal.desk, incoming.messageId, {
+      text,
+      labels: ["bound", "policy"],
+      attachments: [
+        {
+          filename: `${slug(deal.insurer)}-policy-${number}.pdf`,
+          contentType: "application/pdf",
+          content: dec.toString("base64"),
+        },
+      ],
+    });
     return;
   }
   const released = bodyOf(incoming);
   const val = (label: string) =>
     released.match(new RegExp(`^${label}:\\s*(.+)$`, "im"))?.[1]?.trim();
-  const onFile = (v?: string) =>
-    v ? `on file, ending ${v.replace(/[^A-Za-z0-9]/g, "").slice(-3)}` : "on file";
   const version = kind === "contract" ? 1 : 2;
   const deductible = version === 1 && fact("Deductible") === "$500" ? "$1,000" : fact("Deductible");
-  const lines = [
-    `Contract for deal ${deal.ref} - version ${version}`,
-    "",
-    `Named insured: ${person.name}`,
-    `Date of birth: ${onFile(val("Date of birth"))}`,
-    `Driver's licence: ${onFile(val("Driver's licence"))}`,
-    `Vehicle: ${fact("Vehicle")}`,
-    `VIN: ${onFile(val("VIN"))}`,
-    "",
-    `Monthly premium: ${usd(deal.monthly)}`,
-    `Liability limits: ${fact("Liability limits")}`,
-    `Collision deductible: ${deductible}`,
-    `Effective: ${policy.renewsOn} for 12 months`,
-    "",
-    "By signing, the named insured accepts the terms above.",
-  ];
-  const pdf = makePdf(`${deal.insurer} - auto policy contract`, lines);
+  const pdf = policyDocument({
+    variant: "contract",
+    policy,
+    person,
+    insurer: deal.insurer,
+    monthly: deal.monthly,
+    previousMonthly: deal.previousMonthly,
+    version,
+    deductible,
+    dealRef: deal.ref,
+    sealed: { dob: val("Date of birth"), licence: val("Driver's licence"), vin: val("VIN") },
+  });
   const filename = `${slug(deal.insurer)}-contract-${deal.ref}-v${version}.pdf`;
   const text = [
     "Hello,",
     "",
     version === 1
-      ? `Thank you for sending the binding details. Attached is the auto policy contract for ${person.name} covering the ${fact("Vehicle")}, effective ${policy.renewsOn} for twelve months at ${usd(deal.monthly)} per month.`
+      ? `Thank you for sending the binding details. Attached is the auto policy contract for ${person.name} covering the ${fact("Vehicle")}, effective ${policy.renewsOn} for six months at ${usd(deal.monthly)} per month.`
       : `Apologies for the error in the first version. Attached is the corrected auto policy contract for ${person.name}, effective ${policy.renewsOn} at ${usd(deal.monthly)} per month.`,
     "",
     "Please review the coverage summary and return the signed copy on this thread. Coverage begins once the signed contract is on file.",

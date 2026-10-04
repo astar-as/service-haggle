@@ -183,6 +183,8 @@ export interface Deal {
   autopilot?: boolean;
   contractPdf?: string;
   receiptPdf?: string;
+  policyPdf?: string;
+  policyFilename?: string;
   createdAt: string;
   updatedAt: string;
 }

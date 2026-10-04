@@ -10,10 +10,11 @@ export const maxDuration = 300;
 export async function GET() {
   const deals = (await store.deals()).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   return Response.json({
-    deals: deals.map(({ contractPdf, receiptPdf, ...d }) => ({
+    deals: deals.map(({ contractPdf, receiptPdf, policyPdf, ...d }) => ({
       ...d,
       hasContract: !!contractPdf,
       hasReceipt: !!receiptPdf,
+      hasPolicy: !!policyPdf,
     })),
   });
 }
